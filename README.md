@@ -1,14 +1,43 @@
-# Ionea
+<p align="center">
+  <img src="assets/icon/ionea-256.png" width="160" alt="Ionea">
+</p>
 
-Ionea is a full-screen game launcher for Windows, made to be used from the couch with a controller as well as
-with a keyboard and mouse. It brings emulated games, native PC ports of console games, Steam games and other PC
-games together on one home screen.
+<h1 align="center">Ionea</h1>
 
-Many emulators run as libretro cores hosted inside Ionea itself: Ionea draws the picture, plays the sound, reads
-the controllers and owns the Home menu, save states and settings. Standalone emulators work too; their window is
-placed inside Ionea's and paused from its Home menu.
+<p align="center">
+  A full-screen game launcher for Windows, for the couch and the desk.<br>
+  Emulated games, native ports, Steam and PC games on one home screen.
+</p>
 
-Ionea ships no emulators, cores, BIOS or firmware files, keys or games. You supply your own.
+<p align="center">
+  <a href="https://github.com/Kininn/ionea/releases/latest"><b>Download the latest release</b></a>
+  &nbsp;&middot;&nbsp;
+  <a href="CHANGELOG.md">Changelog</a>
+  &nbsp;&middot;&nbsp;
+  <a href="LICENSE">MIT License</a>
+</p>
+
+---
+
+Ionea works with a controller as well as with a keyboard and mouse. Many emulators run as libretro cores hosted
+inside Ionea itself: Ionea draws the picture, plays the sound, reads the controllers and owns the Home menu, save
+states and settings. Standalone emulators work too; their window is placed inside Ionea's and paused from its Home
+menu.
+
+> Ionea ships no emulators, cores, BIOS or firmware files, keys or games. You supply your own.
+
+## Install
+
+**Installer:** download `Ionea-<version>-setup.exe` from the [latest release](https://github.com/Kininn/ionea/releases/latest)
+and run it. It installs for you only, needs no administrator rights and no .NET, and adds a Start menu shortcut.
+Installing a newer release over it keeps your data and settings. Uninstall it from Windows' Settings > Apps; it
+keeps your data unless you say otherwise.
+
+**Portable:** unpack `Ionea-<version>.zip` into any folder you can write to and start `Launcher.exe`. The data
+folder is made next to it, so the whole folder can be moved.
+
+Either way, Settings > About and updates can update Ionea in place. Needs Windows 10 or 11 (64-bit), and OpenGL
+3.3 or newer for cores that draw with the GPU.
 
 ## Features
 
@@ -30,51 +59,10 @@ Ionea ships no emulators, cores, BIOS or firmware files, keys or games. You supp
 - Per-game display, graphics and performance settings, and an in-game performance overlay.
 - Optional Discord status, cover downloads and updates from a GitHub release.
 
-## Requirements
+## More
 
-- Windows 10 or 11, 64-bit.
-- To run a release: nothing more; the release carries its own .NET. To build from source: the .NET 10 SDK
-  (`dotnet` on PATH).
-- OpenGL 3.3 or newer for cores that draw with the GPU.
-- Nothing else is assumed: no emulators, game folders or other drives.
-
-## Install and run
-
-From a release (GitHub, the latest `Ionea-<version>-setup.exe`):
-
-1. Run the installer. It installs for you only, needs no administrator rights, and puts Ionea in
-   `%LOCALAPPDATA%\Programs\Ionea` with a Start menu shortcut (a desktop shortcut if you tick it).
-2. Start Ionea from the Start menu.
-
-Installing a newer release over it keeps your data and settings, and keeps the version it replaces so Settings >
-About and updates can go back to it. Uninstall it from Windows' Settings > Apps; it asks whether to remove your data
-too and keeps it unless you say yes.
-
-Portable: unpack `Ionea-<version>.zip` into any folder you can write to and start `Launcher.exe`. The data folder
-is made next to it, so the whole folder can be moved or kept on another drive.
-
-Either way, Settings > About and updates can update Ionea in place from a GitHub release.
-
-From source (needs the .NET 10 SDK):
-
-```powershell
-powershell -File Install-Launcher.ps1                          # build and install to <system drive>\Ionea\Launcher
-powershell -File Install-Launcher.ps1 -Target <folder>         # or into any folder you can write to
-```
-
-`Install-Launcher.ps1` adds a desktop shortcut "Ionea" (`-NoShortcut` leaves it out) and keeps the program it replaces as
-`Launcher.previous.exe`, so Settings > About and updates can go back to it.
-
-Command-line switches:
-
-| Switch | What |
-|---|---|
-| `--data <folder>` | use another data folder |
-| `--windowed`, `--fullscreen`, `--size 1600x900` | how the window starts |
-| `--mute` | no launcher sounds |
-| `--esde <folder>` | also use an ES-DE folder's games and emulators |
-
-## First start
+<details>
+<summary><b>First start</b></summary>
 
 1. Create a profile: a name and, if you like, a picture.
 2. Network: Ionea stays offline until you switch something on. Each kind of online use (covers, emulator and core
@@ -88,7 +76,10 @@ Command-line switches:
 6. A short tutorial shows how to add an emulator and a game, start it and open the Home menu. Skip it any time and
    watch it later from Settings > About and updates.
 
-## Controls
+</details>
+
+<details>
+<summary><b>Controls</b></summary>
 
 The launcher's keys can be changed in Settings > Controls > Launcher keys. The defaults:
 
@@ -110,7 +101,10 @@ Game controls (the buttons a game sees) are set per device in Settings > Control
 games played inside Ionea and to standalone emulators whose settings Ionea manages. Steam and PC games keep their
 own controls.
 
-## Settings
+</details>
+
+<details>
+<summary><b>Settings</b></summary>
 
 - **Profile**: name, picture, play stats and the profile's own preferences.
 - **Look and layout**: theme, brightness, colours, icon shape, reduce effects; home screen layout and sort; full
@@ -124,7 +118,10 @@ own controls.
 - **About and updates**: version, changelog, the tutorial, the update source (a GitHub repository or a folder),
   checking for and installing updates, and going back to the previous version.
 
-## Where data lives
+</details>
+
+<details>
+<summary><b>Where data lives</b></summary>
 
 Ionea keeps its data in a `data` folder next to `Launcher.exe`, made on first start: settings, the library,
 profiles with their saves and save states, covers, emulators it downloaded, required files and the log. If that
@@ -135,7 +132,32 @@ Your own emulator and system definitions go in `data\definitions\` and win over 
 `definitions\`. Updates replace only the program, `definitions\`, `THIRD-PARTY.md` and `CHANGELOG.md`; the data
 folder is never touched.
 
-## Building from source
+</details>
+
+<details>
+<summary><b>Command-line switches</b></summary>
+
+| Switch | What |
+|---|---|
+| `--data <folder>` | use another data folder |
+| `--windowed`, `--fullscreen`, `--size 1600x900` | how the window starts |
+| `--mute` | no launcher sounds |
+| `--esde <folder>` | also use an ES-DE folder's games and emulators |
+
+</details>
+
+<details>
+<summary><b>Building from source</b></summary>
+
+From source (needs the .NET 10 SDK):
+
+```powershell
+powershell -File Install-Launcher.ps1                          # build and install to <system drive>\Ionea\Launcher
+powershell -File Install-Launcher.ps1 -Target <folder>         # or into any folder you can write to
+```
+
+`Install-Launcher.ps1` adds a desktop shortcut "Ionea" (`-NoShortcut` leaves it out) and keeps the program it replaces as
+`Launcher.previous.exe`, so Settings > About and updates can go back to it.
 
 ```powershell
 dotnet build -c Release                                        # build only
@@ -149,7 +171,10 @@ with Inno Setup 6, when it is installed.
 
 How the code is laid out and how to run the tests: [AGENTS.md](AGENTS.md).
 
+</details>
+
 ## Licence
 
-Ionea is released under the MIT License; see [LICENSE](LICENSE). The third-party data used in the definitions, and its licences, are listed in
-[THIRD-PARTY.md](THIRD-PARTY.md). Emulators, cores and other programs you use with Ionea keep their own licences.
+Ionea is released under the MIT License; see [LICENSE](LICENSE). The third-party data used in the definitions, and
+its licences, are listed in [THIRD-PARTY.md](THIRD-PARTY.md). Emulators, cores and other programs you use with
+Ionea keep their own licences.
