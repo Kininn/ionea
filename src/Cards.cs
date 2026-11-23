@@ -165,12 +165,13 @@ public abstract class Card : IScreen
         return false;
     }
 
-    protected TextBlock Note(string text, double size = 26, Thickness? margin = null)
+    // host: where the note goes (the body unless given; Settings gives its page, which is cleared on each page change).
+    protected TextBlock Note(string text, double size = 26, Thickness? margin = null, Panel host = null)
     {
         var t = Fonts.Text(text, size, P.Text2);
         t.TextWrapping = TextWrapping.Wrap; t.TextTrimming = TextTrimming.None;
         t.Margin = margin ?? new Thickness(4, 0, 0, 10);
-        Body.Children.Add(t);
+        (host ?? Body).Children.Add(t);
         return t;
     }
 }
@@ -1377,8 +1378,9 @@ public sealed class SettingsCard : MenuCard
             w.Settings.TaskManagerGroup = !w.Settings.TaskManagerGroup; w.Settings.Save();
             EmbedLogic.Group = w.Settings.TaskManagerGroup;
         });
-        Note(T("settings.on_emulators_show_in_ionea_s"), 22, new Thickness(4, 4, 0, 0));
         EndBox();
+        // On the page (RowHost), not the card's body: the body is never cleared, so it stacked up once per visit.
+        Note(T("settings.on_emulators_show_in_ionea_s"), 22, new Thickness(28, -2, 0, 10), RowHost);
     }
 
     // Settings > Network (Online.cs): Offline mode, the sources with their hosts, the SteamGridDB key, the Discord

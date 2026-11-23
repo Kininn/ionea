@@ -28,17 +28,19 @@ public sealed class Pointer
     long lastMove;
     bool overClickable, hidden = true;
     public bool Held;                       // left button down (counts as A held)
+    public readonly TextTip Tips;           // the whole text over text cut short with "…" (TextTip.cs)
     public static string LastRoute;         // for test scripts
 
     public Pointer(MainWindow win)
     {
         w = win;
+        Tips = new TextTip(w.Stage, Layer);
         w.PreviewMouseMove += (s, e) => Move(e);
         w.PreviewMouseDown += (s, e) => Down(e);
         w.PreviewMouseUp += (s, e) => { if (!Scripted && e.ChangedButton == MouseButton.Left && Held) { Held = false; Route(MouseAct.Up, e.GetPosition(w.Stage)); } };
         w.PreviewMouseWheel += (s, e) => Wheel(e);
         w.Deactivated += (s, e) => Held = false;
-        w.MouseLeave += (s, e) => Held = false;
+        w.MouseLeave += (s, e) => { Held = false; Tips.Hide(); };
         w.Clock.Tick += (s, e) => { if (!hidden && Environment.TickCount64 - lastMove > 3000 && !Held) Hide(); };
         Apply();
     }
@@ -49,6 +51,7 @@ public sealed class Pointer
     // The keyboard or a controller was used: the cursor steps aside until the mouse moves again.
     public void Hide()
     {
+        Tips.Hide();
         if (hidden) return;
         hidden = true;
         Apply();
@@ -77,8 +80,9 @@ public sealed class Pointer
         lastMove = Environment.TickCount64;
         bool was = hidden;
         hidden = false;
-        if (!HoverAllowed(sp)) { if (was) Apply(); return; }   // the wheel is scrolling: hover doesn't fight it
+        if (!HoverAllowed(sp)) { Tips.Hide(); if (was) Apply(); return; }   // the wheel is scrolling: hover doesn't fight it
         bool click = Route(MouseAct.Move, e.GetPosition(w.Stage));
+        Tips.At(e.GetPosition(w.Stage));   // after the route: what it opened or scrolled is in place
         if (click != overClickable || was) { overClickable = click; Apply(); }
     }
 
@@ -87,6 +91,7 @@ public sealed class Pointer
         if (!On || Scripted) return;
         if (GameHides) { Hide(); return; }
         lastMove = Environment.TickCount64;
+        Tips.Hide();
         if (hidden) { hidden = false; Apply(); }
         wheelLock = false;   // a click is deliberate: hover follows the mouse again
         // binding a mouse button to a game button (KeyboardScreen): any button is taken as it is
@@ -110,6 +115,7 @@ public sealed class Pointer
     void Wheel(MouseWheelEventArgs e)
     {
         if (!On || Scripted) return;
+        Tips.Hide();
         try { var sp = w.PointToScreen(e.GetPosition(w)); NoteWheel(sp); lastScreen = sp; } catch { /* window not shown yet */ }
         var m = e.Delta > 0 ? MouseAct.WheelUp : MouseAct.WheelDown;
         if (!Route(m, e.GetPosition(w.Stage))) w.Dispatch(e.Delta > 0 ? Act.Up : Act.Down);

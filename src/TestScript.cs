@@ -398,6 +398,7 @@ public sealed class TestScript
                     if (m == MouseAct.Down) w.Mouse.Held = true;
                     if (m == MouseAct.Up) w.Mouse.Held = false;
                     bool used = w.Mouse.Route(m, pt);
+                    if (m == MouseAct.Move) w.Mouse.Tips.At(pt); else w.Mouse.Tips.Hide();   // as the pointer does
                     if (!used && m == MouseAct.Right) w.Dispatch(Act.Back);
                     if (!used && m is MouseAct.WheelUp or MouseAct.WheelDown) w.Dispatch(m == MouseAct.WheelUp ? Act.Up : Act.Down);
                     Log.Write($"SCRIPT mouse {arg}: {(used ? "used" : "not used")}");
@@ -996,6 +997,7 @@ public sealed class TestScript
             "whofocus" => (w.TopScreen as WhoCard)?.FocusName,
             "coresave" => w.Profiles.Active == null ? null : ProfileSaves.CoreSave(w.Profiles, w.Lib.Data.Games.FirstOrDefault(g => g.Name == w.Home?.SelectedName)?.Rom ?? "x"),
             "text" => (Keyboard() as TextBox)?.Text,
+            "tip" => w.Mouse.Tips.Shown ?? "none",   // tip <whole text>: the text shown over text cut short under the mouse (TextTip.cs)
             "quiethas" => lastQuiet.Contains(want) ? want : "has: " + lastQuiet,
             "filehas" => want.Split('|', 2) is var fh && File.Exists(T(fh[0])) ? (File.ReadAllText(T(fh[0])).Contains(fh[1]) ? want : "has: " + File.ReadAllText(T(fh[0])).Trim()) : "missing",
             "filelacks" => want.Split('|', 2) is var fl && File.Exists(T(fl[0])) ? (File.ReadAllText(T(fl[0])).Contains(fl[1]) ? "has: " + File.ReadAllText(T(fl[0])).Trim() : want) : "missing",   // filelacks <file>|<text>: the file is there without the text

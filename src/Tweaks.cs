@@ -353,7 +353,7 @@ public static class Tweaks
         return keys == null ? null : SwitchRead.Read(g.Rom, keys).FirstOrDefault(t => t.Type == SwitchRead.Game)?.IdText;
     }
 
-    // An unpacked game (The Duskbloods Network Test: its rom is exefs\main): the title id is in
+    // An unpacked game (its rom is exefs\main): the title id is in
     // main.npdm beside it. META header; the u32 at 0x70 is where ACI0 starts; the program id is the u64 at
     // ACI0 + 0x10. Only read, for the game's own settings file; how the game starts is not touched.
     public static string NpdmId(string rom)
@@ -551,7 +551,7 @@ public static class Tweaks
         Log.Write($"tweaks: \"{g.Name}\" -> {file} ({string.Join(", ", defs.Select(d => d.Key + "=" + (values.GetValueOrDefault(d.Key) ?? "default")))})");
     }
 
-    // ---- a game's mod (Duskbloods' 60 fps patch): "mod:user\load\{gameid}\<name>" ----
+    // ---- a game's mod (e.g. a 60 fps patch): "mod:user\load\{gameid}\<name>" ----
     // On: its exefs / romfs / cheats folders as the emulator reads them. Off: renamed <folder>.off, so the
     // emulator skips them; its own settings file is not touched (Lichii writes that when it closes).
     static readonly string[] ModParts = { "exefs", "romfs", "cheats" };

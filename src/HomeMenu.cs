@@ -182,7 +182,7 @@ public sealed class GameMenu
 
     // An emulator with a mouse-panning hotkey (Lichii / Eden, the yuzu family: written at start by EmuControls)
     // starts with mouse panning off; each press of the hotkey flips it. Qt only takes it while that emulator is
-    // the active app. Posted 1 s after start (build 60), The Duskbloods on Lichii 366 never got it:
+    // the active app. Posted 1 s after start, a Lichii 366 game never got it:
     // focus was still moving and Lichii reset its window 3 s later. So it waits until the game window has been
     // taken in (again) for PanSettleSecs and is in front, then checks that it took (PanCheck) and tries again
     // if not: at most PanMaxTries, the last one a real key press. An odd number of presses, so even if the
@@ -683,7 +683,7 @@ public sealed class GameMenu
         SyncPanning(fg);
         bool on = game != null && (proc != null || core != null);
         if (on && fg != lastFg) { lastFg = fg; if (fg != w.Hwnd && (emb == null || fg != emb.Child)) Log.Write($"home menu: in front: {Front()}"); }
-        // Embedded: the launcher, the game window, or any other window of the emulator. With The Duskbloods on
+        // Embedded: the launcher, the game window, or any other window of the emulator. With a game on
         // Lichii 366 the Home menu key was never caught while it played; the window in front
         // (logged above) was likely another of Lichii's windows.
         bool playing = on && !Paused && card == null && (emb != null
