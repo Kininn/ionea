@@ -17,6 +17,10 @@
   <a href="LICENSE">MIT License</a>
 </p>
 
+<p align="center">
+  <img src="assets/screenshots/home.png" width="860" alt="Ionea's home screen">
+</p>
+
 ---
 
 Ionea works with a controller as well as with a keyboard and mouse. Many emulators run as libretro cores hosted
@@ -36,7 +40,8 @@ keeps your data unless you say otherwise.
 **Portable:** unpack `Ionea-<version>.zip` into any folder you can write to and start `Launcher.exe`. The data
 folder is made next to it, so the whole folder can be moved.
 
-Either way, Settings > About and updates can update Ionea in place. Needs Windows 10 or 11 (64-bit), and OpenGL
+Either way, Ionea can update itself from this page's releases: switch on Launcher updates in Settings > Network,
+then check in Settings > About and updates. Needs Windows 10 or 11 (64-bit), and OpenGL
 3.3 or newer for cores that draw with the GPU.
 
 ## Features

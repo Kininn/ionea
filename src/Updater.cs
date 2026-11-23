@@ -6,7 +6,7 @@
 //   - Source folder (none by default; the user sets it): Check compares its version (VersionPrefix + build.txt) with
 //     this one; the same version with source files changed after this exe was built also counts as newer.
 //     Update now runs the folder's Install-Launcher.ps1 -BuildOnly into <install>\update\staged, then swaps.
-//   - Repo (the default kind, address empty until set): a GitHub repo's latest release (tag = version, a .zip asset with a
+//   - Repo (the default kind, address DefaultRepo until changed): a GitHub repo's latest release (tag = version, a .zip asset with a
 //     SHA-256). Only with Offline mode off and the "Launcher updates" online switch on (Online.cs), both off by
 //     default. Every request goes to api.github.com/repos/<owner>/<repo>/ of the set repo only (RepoApi); GitHub
 //     sends the zip on to its file storage. A private repo needs the user's own access token (About and updates >
@@ -41,7 +41,8 @@ public sealed class UpdatePrefs
 {
     public string Kind { get; set; } = "repo";     // "repo" (GitHub releases, downloaded by the user) or "folder" (a source folder built here)
     public string Folder { get; set; }             // the source folder, or null = none set
-    public string Repo { get; set; }               // https://github.com/<owner>/<repo>; null = none
+    public const string DefaultRepo = "https://github.com/Kininn/ionea";   // where Ionea's releases are published
+    public string Repo { get; set; } = DefaultRepo; // https://github.com/<owner>/<repo>; "" = none (null is not saved, so it would read back as the default)
     public string TokenSealed { get; set; }        // the user's GitHub access token for a private repo, encrypted for this Windows user (DPAPI); null = none
     public bool CheckAtStart { get; set; }         // off by default
     public DateTime? LastChecked { get; set; }
@@ -186,7 +187,7 @@ public static class Updater
     {
         if (Busy) return;
         Offer = null;
-        Set(UpdateState.Checking, T("settings.checking"), T("settings.checking_2", RepoKind ? (P.Repo ?? T("settings.checking_no_repo")) : Folder ?? T("settings.checking_no_source_folder")));
+        Set(UpdateState.Checking, T("settings.checking"), T("settings.checking_2", RepoKind ? (string.IsNullOrEmpty(P.Repo) ? T("settings.checking_no_repo") : P.Repo) : Folder ?? T("settings.checking_no_source_folder")));
         try
         {
             var (st, status, detail, offer) = RepoKind ? await CheckRepo(w) : await Task.Run(() => CheckFolder(Folder));

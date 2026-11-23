@@ -1426,9 +1426,9 @@ public sealed class SettingsCard : MenuCard
         {
             // Left / Right clears it. Goes online only through the Launcher updates switch (Network), never offline.
             Aside(AddRow(T("settings.repo_address"), () => string.IsNullOrEmpty(u.Repo) ? T("common.none") : u.Repo.Replace("https://github.com/", ""),
-                _ => { if (u.Repo != null) { u.Repo = null; w.Settings.Save(); Updater.Forget(); Refresh(); } },
-                () => new TextCard(w, T("settings.repo_address_https_github_com_owner"), u.Repo ?? "https://github.com/", 200,
-                    v => { var r = Updater.ParseRepo(v); u.Repo = r is var (o, n) ? $"https://github.com/{o}/{n}" : null; w.Settings.Save(); Updater.Forget(); Refresh(); },
+                _ => { if (!string.IsNullOrEmpty(u.Repo)) { u.Repo = ""; w.Settings.Save(); Updater.Forget(); Refresh(); } },
+                () => new TextCard(w, T("settings.repo_address_https_github_com_owner"), string.IsNullOrEmpty(u.Repo) ? "https://github.com/" : u.Repo, 200,
+                    v => { var r = Updater.ParseRepo(v); u.Repo = r is var (o, n) ? $"https://github.com/{o}/{n}" : ""; w.Settings.Save(); Updater.Forget(); Refresh(); },
                     v => Updater.ParseRepo(v) == null ? T("settings.like_https_github_com_owner_repo") : null).Open()),
                 Online.Offline ? T("settings.offline_mode_is_on") : T("settings.launcher_updates_switch") + (Online.Allowed("updates") ? "on" : "off"));
             // A private repo answers only with the user's own token. Never shown again once set; Left / Right clears it.

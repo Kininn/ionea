@@ -2,6 +2,9 @@
 
 Newest first. Settings > About and updates shows this file from the update source.
 
+## 1.0.1 (2026-11-23)
+- Updates now come from Ionea's own GitHub releases (github.com/Kininn/ionea) without setting anything up: switch on Launcher updates in Settings > Network, then check in Settings > About and updates. The address can still be changed or cleared there.
+
 ## 1.0.0 (2026-11-23)
 - Text cut short with … (a setting's name or value, a path) shows in full just above it while the mouse is on it.
 - Settings: the note under Group in Task Manager no longer piles up on other Settings pages each time Library is opened.

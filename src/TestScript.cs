@@ -745,7 +745,7 @@ public sealed class TestScript
                 // | updateback (Go back to the previous version, restarts) | updategame on|off (as if a game were running)
                 case "updatefolder": w.Settings.Updates.Folder = arg == "default" ? null : TP(arg); w.Settings.Save(); Updater.Forget(); break;
                 case "updatekind": w.Settings.Updates.Kind = arg; w.Settings.Save(); Updater.Forget(); break;
-                case "updaterepo": w.Settings.Updates.Repo = arg == "none" ? null : arg; w.Settings.Save(); Updater.Forget(); break;
+                case "updaterepo": w.Settings.Updates.Repo = arg == "none" ? "" : arg; w.Settings.Save(); Updater.Forget(); break;
                 // updatetoken env:<NAME> | none: the access token from an environment variable (never written in a script)
                 case "updatetoken":
                     if (arg == "none") Updater.SetToken(null);
