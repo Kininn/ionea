@@ -2,6 +2,10 @@
 
 Newest first. Settings > About and updates shows this file from the update source.
 
+## 1.0.5 (2026-11-23)
+- Moving a game to another folder on the same drive: if a file can't be moved part way (in use by another program), the files already moved go back to where they were. Before, they could be deleted.
+- Moving or uninstalling a multi-disc game (.m3u) now takes each disc's tracks too (the .bin files its .cue names), so the game still plays in its new folder. Dreamcast .gdi tracks whose names have spaces are found too.
+
 ## 1.0.4 (2026-11-23)
 - Offline mode is now the Network connection switch in Settings > Network, like a Wi-Fi switch: off by default, and Ionea goes online only while it is on. Your current choice carries over.
 - Settings > About and updates has Update notification (at launch, says when a new version is out) and Auto update (at launch, installs a new version and restarts; never while a game is running). Both are off by default.

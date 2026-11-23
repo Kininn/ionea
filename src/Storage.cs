@@ -146,9 +146,12 @@ public static class Storage
         void Add(string f) { if (File.Exists(f) && !set.Contains(f, StringComparer.OrdinalIgnoreCase)) set.Add(f); }
         foreach (var f in Directory.EnumerateFiles(dir))
             if (string.Equals(System.IO.Path.GetFileNameWithoutExtension(f), stem, StringComparison.OrdinalIgnoreCase)) Add(f);
-        // Tracks listed by a .cue / .gdi / .m3u (only files in the same folder).
-        foreach (var list in set.ToList().Where(f => f.EndsWith(".cue", StringComparison.OrdinalIgnoreCase) || f.EndsWith(".m3u", StringComparison.OrdinalIgnoreCase) || f.EndsWith(".gdi", StringComparison.OrdinalIgnoreCase)))
+        // Tracks listed by a .cue / .gdi / .m3u (only files in the same folder). A list found through another
+        // list is read too: an .m3u names the discs' .cue files, and each .cue names its .bin tracks.
+        for (int i = 0; i < set.Count; i++)
         {
+            string list = set[i];
+            if (!(list.EndsWith(".cue", StringComparison.OrdinalIgnoreCase) || list.EndsWith(".m3u", StringComparison.OrdinalIgnoreCase) || list.EndsWith(".gdi", StringComparison.OrdinalIgnoreCase))) continue;
             try
             {
                 foreach (var line in File.ReadLines(list))
@@ -160,7 +163,12 @@ public static class Storage
                         name = a >= 0 && b > a ? l[(a + 1)..b] : l[5..].Split(' ')[0];
                     }
                     else if (list.EndsWith(".m3u", StringComparison.OrdinalIgnoreCase) && l.Length > 0 && !l.StartsWith("#")) name = l;
-                    else if (list.EndsWith(".gdi", StringComparison.OrdinalIgnoreCase)) { var p = l.Split(' ', StringSplitOptions.RemoveEmptyEntries); if (p.Length >= 5) name = p[4].Trim('"'); }
+                    else if (list.EndsWith(".gdi", StringComparison.OrdinalIgnoreCase))
+                    {
+                        // track, sector, type, sector size, then the file name (quoted when it has spaces)
+                        var m = System.Text.RegularExpressions.Regex.Match(l, @"^\d+\s+\d+\s+\d+\s+\d+\s+(""[^""]+""|\S+)");
+                        if (m.Success) name = m.Groups[1].Value.Trim('"');
+                    }
                     if (name != null && name.IndexOfAny(new[] { '\\', '/', ':' }) < 0) Add(System.IO.Path.Combine(dir, name));
                 }
             }
@@ -200,17 +208,31 @@ public static class Storage
             else plan.Add((f, to, true));
         }
 
+        if (sameDrive)
+        {
+            // On the same drive the originals themselves are moved, so a failure part way (a file in use) moves
+            // the ones already moved back; they are never deleted.
+            var moved = new List<(string from, string to)>();
+            try
+            {
+                foreach (var (from, to, copy) in plan) if (copy) { File.Move(from, to); moved.Add((from, to)); }
+            }
+            catch
+            {
+                for (int i = moved.Count - 1; i >= 0; i--)
+                    try { File.Move(moved[i].to, moved[i].from); }
+                    catch (Exception e) { Log.Write($"storage: couldn't move {moved[i].to} back to {moved[i].from}: {e.Message}"); }
+                throw;
+            }
+            commit(System.IO.Path.Combine(destDir, System.IO.Path.GetFileName(rom)));
+            foreach (var (from, _, copy) in plan) if (!copy) TryDelete(from);
+            return;
+        }
+
         var made = new List<string>();
         long done = 0;
         try
         {
-            if (sameDrive)
-            {
-                foreach (var (from, to, copy) in plan) if (copy) { File.Move(from, to); made.Add(to); }
-                commit(System.IO.Path.Combine(destDir, System.IO.Path.GetFileName(rom)));
-                foreach (var (from, _, copy) in plan) if (!copy) TryDelete(from);
-                return;
-            }
             foreach (var (from, to, copy) in plan)
             {
                 if (!copy) { done += new FileInfo(from).Length; progress(done); continue; }
