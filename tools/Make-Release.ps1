@@ -7,7 +7,7 @@
 #                               (-Iscc, PATH, or its usual install folders); otherwise the script says so and goes on.
 #   SHA256SUMS                  "<sha256>  <name>" for each of the two (the updater finds the zip's line by its name).
 # Usage:
-#   Make-Release.ps1 [-Out <dir>] [-Iscc <ISCC.exe>] [-NoInstaller]   builds the next build number (Install-Launcher.ps1 -BuildOnly)
+#   Make-Release.ps1 [-Out <dir>] [-Iscc <ISCC.exe>] [-NoInstaller]   builds the next build number (Install-Launcher.ps1 -BuildOnly -Release; commit build.txt)
 #   Make-Release.ps1 -From <install dir> [-Out]   packs an installed copy instead (its own version)
 # Publish all three files as a release tagged v<major>.<minor>.<patch>.<build> (the tag the script prints).
 param([string]$From, [string]$Out = (Join-Path $PSScriptRoot '..\bin\release'), [string]$Iscc, [switch]$NoInstaller)
@@ -23,7 +23,7 @@ try {
         Copy-Item (Join-Path $From 'definitions') (Join-Path $pack 'definitions') -Recurse
         foreach ($f in 'THIRD-PARTY.md', 'CHANGELOG.md') { if (Test-Path (Join-Path $From $f)) { Copy-Item (Join-Path $From $f) $pack } }
     } else {
-        & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot '..\Install-Launcher.ps1') -BuildOnly $pack | Out-Host
+        & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot '..\Install-Launcher.ps1') -BuildOnly $pack -Release | Out-Host
         if ($LASTEXITCODE) { throw 'Build failed.' }
     }
     # nothing but the four items, whatever the source folder held

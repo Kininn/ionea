@@ -30,6 +30,7 @@ public sealed class ScanCard : MenuCard
     {
         this.first = first; this.then = then;
         Current = this;
+        var rows = new StackPanel(); Body.Children.Add(rows); RowHost = rows;   // Build clears the rows, not the title
         LoadThen(() => Scan.Run(w, deep), res => { r = res ?? new ScanResult { Deep = deep }; Build(); });
     }
 
@@ -60,7 +61,7 @@ public sealed class ScanCard : MenuCard
         if (r.Games.Count > 0)
             AddRow(Loc.N(r.GamesCapped ? "settings.games_capped" : "settings.games", r.Games.Count), () => takeGames ? T("common.add") : T("home.skip"), _ => { takeGames = !takeGames; Refresh(); }, () => { takeGames = !takeGames; Refresh(); });
         if (Rows.Count > 0) Divider();
-        else if (r.Empty) Note(T("settings.nothing_new_found"), 28, new Thickness(4, 0, 0, 18));
+        else if (r.Empty) Note(T("settings.nothing_new_found"), 28, new Thickness(4, 0, 0, 18), RowHost);
         bool none = r.Emus.Count == 0 && !w.Emus.Data.Emulators.Any(e => e.Present);
         if (none && EmuInstall.Offers().Count > 0) Opens(AddRow(T("settings.download_an_emulator"), activate: () => { done = true; w.Settings.ScanAsked = true; w.Settings.Save(); Close(false); new EmuInstallCard(w, then).Open(); }));
         if (!r.Deep) AddRow(T("settings.look_harder"), activate: () => { done = true; Close(false); Run(w, first, then, true); });
@@ -129,13 +130,14 @@ public sealed class EmuInstallCard : MenuCard
         }
         if (Rows.Count == 0) AddRow(T("common.back"), activate: () => Close());
         var defs = EmuInstall.Offers();
-        for (int i = 0; i < defs.Count && i < Rows.Count; i++) { var d = defs[i]; if (!Online.Allowed(d.IsCore ? "cores" : "emulators")) Rows[i].Dim = () => true; }
+        for (int i = 0; i < defs.Count && i < Rows.Count; i++) { string kind = defs[i].IsCore ? "cores" : "emulators"; Rows[i].Dim = () => !Online.Allowed(kind); }
         Refresh();
     }
 
     public async void Get(EmuDef def)
     {
-        if (!Online.Allowed(def.IsCore ? "cores" : "emulators")) { new MessageCard(w, Online.Offline ? T("settings.offline_mode_is_on") : def.IsCore ? T("settings.cores_are_off") : T("settings.emulator_installs_are_off"), Online.Offline ? T("settings.switch_it_off_in_settings_network") : T("settings.switch_them_on_in_settings_network")).Open(); return; }
+        string kind = def.IsCore ? "cores" : "emulators";
+        if (!Online.Allowed(kind)) { new SwitchOnCard(w, kind, () => Get(def)).Open(); return; }
         Close(false);
         var (emu, err) = await EmuInstall.Run(w, def);
         LastResult = emu != null ? "installed " + emu.Name : err ?? "cancelled";
@@ -152,6 +154,24 @@ public sealed class EmuInstallCard : MenuCard
     }
 
     public override void Close(bool sound = true) { base.Close(sound); if (Current == this) Current = null; }
+}
+
+// A download that its switch (or Offline mode) does not allow yet: switch that one kind on here and go on,
+// instead of a trip to Settings > Network. The download itself is still asked for with its address.
+public sealed class SwitchOnCard : MenuCard
+{
+    public SwitchOnCard(MainWindow w, string kind, Action then) : base(w, Online.Offline ? T("settings.offline_mode_is_on") : kind == "cores" ? T("settings.cores_are_off") : T("settings.emulator_installs_are_off"), 900)
+    {
+        Note(Online.Offline ? T("settings.needs_offline_off_and_on", Online.Label(kind)) : T("settings.needs_it_on", Online.Label(kind)), 30, new Thickness(4, 0, 0, 26));
+        WithIcon(AddRow(T("settings.switch_on"), activate: () =>
+        {
+            Close(false);
+            if (Online.Offline) Online.SetOffline(false);
+            Online.Set(kind, true);
+            then?.Invoke();
+        }), "globe");
+        AddRow(T("common.cancel"), activate: () => Close());
+    }
 }
 
 // Change cover: every picture the game can have, side by side, and Choose a file. Missing ones are fetched

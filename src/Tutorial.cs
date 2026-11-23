@@ -83,14 +83,16 @@ public sealed class Tutorial
         Check();
     }
 
-    public void Begin()
+    // skipEmulator: the first start already added one (the scan or its download), so it begins at the game
+    public void Begin(bool skipEmulator = false)
     {
         Asked();
         emusBefore = w.Emus.Data.Emulators.Count;
         hadEmus = emusBefore > 0;
         sawList = false;
         gameId = null; shownKey = null;
-        step = Step.Emulator;
+        step = skipEmulator && hadEmus ? Step.Game : Step.Emulator;
+        if (step == Step.Game) gamesBefore = w.Lib.Data.Games.Where(g => !g.Removed).Select(g => g.Id).ToHashSet();
         var pal = Palette.I;   // the theme may have changed since
         bubble.Background = pal.Card; line.Foreground = pal.Text; count.Foreground = pal.Text2; skip.Foreground = pal.Accent;
         ring.BorderBrush = Palette.RingBrush();
@@ -174,7 +176,11 @@ public sealed class Tutorial
         switch (step)
         {
             case Step.Emulator:
-                if (top == w.Home) return ("gear", w.Home.TutorialSpot("gear"), Press(Key("menu"), "First, an emulator. Open Settings"));
+                // none yet: Add, where Home's focus already is (Add > Emulator); some: Settings, where they are listed
+                if (top == w.Home)
+                    return hadEmus || w.Home.View != "home" ? ("gear", w.Home.TutorialSpot("gear"), Press(Key("menu"), "First, an emulator. Open Settings"))
+                        : ("add", w.Home.TutorialSpot("add"), Press(Key("accept"), T("home.first_an_emulator_open_add")));
+                if (top is AddMenuCard) return ("row:Emulator", Row("Emulator"), T("home.add_an_emulator"));
                 if (top is SettingsCard sc)
                     return sc.Category == "Library" ? ("row:" + EmulatorsCard.Title, Row(EmulatorsCard.Title), T("home.open_2") + EmulatorsCard.Title)
                         : ("rail:Library", sc.RailElement("Library"), T("home.go_to_library"));
@@ -269,8 +275,9 @@ public sealed class TutorialCard : MenuCard
 {
     public TutorialCard(MainWindow w) : base(w, T("home.let_s_add_your_first_game"), 860)
     {
-        Note(T("home.an_emulator_then_a_game_about"), 30, new Thickness(4, -6, 0, 26));
-        AddRow(T("home.start"), activate: () => { Close(false); w.Tutor.Begin(); });
+        bool have = w.Emus.Data.Emulators.Count > 0;   // the first start's scan or download added one: straight to the game
+        Note(T(have ? "home.a_game_then_play_it" : "home.an_emulator_then_a_game_about"), 30, new Thickness(4, -6, 0, 26));
+        AddRow(T("home.start"), activate: () => { Close(false); w.Tutor.Begin(skipEmulator: have); });
         AddRow(T("home.skip"), activate: () => Close());
         w.Settings.TutorialAsked = true; w.Settings.Save();
     }

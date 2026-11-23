@@ -2,6 +2,15 @@
 
 Newest first. Settings > About and updates shows this file from the update source.
 
+## 1.0.2 (2026-11-23)
+- First start: the Network screen starts on Done, so pressing through it leaves everything off. "Turn everything on" becomes "Turn everything off" once all is on.
+- Downloading an emulator or core while Offline mode is on, or while its switch is off, now asks once and can switch it on right there, instead of the download list doing nothing.
+- The "Found on this PC" title no longer disappears from the emulator search's result.
+- The controls setup's "Play with" line shows a device that is both keyboard and mouse once, and shows longer names in full.
+- The tutorial points at the Add tile for the first emulator (Add > Emulator), where the focus already is. When the first start already added an emulator, it goes straight to the game.
+- The emulator's settings card has its Games heading back.
+- Building Ionea from a copy of the source no longer changes the copy's build.txt; local builds count on in bin\build.txt.
+
 ## 1.0.1 (2026-11-23)
 - Updates now come from Ionea's own GitHub releases (github.com/Kininn/ionea) without setting anything up: switch on Launcher updates in Settings > Network, then check in Settings > About and updates. The address can still be changed or cleared there.
 

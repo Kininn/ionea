@@ -16,7 +16,7 @@
     <Company></Company>
     <!-- Version (Updater.cs): VersionPrefix is raised by hand for a release; the build number and date
          are stamped by Install-Launcher.ps1 (build.txt counts up). A plain `dotnet build` is build 0. -->
-    <VersionPrefix>1.0.1</VersionPrefix>
+    <VersionPrefix>1.0.2</VersionPrefix>
     <IoneaBuild Condition="'$(IoneaBuild)' == ''">0</IoneaBuild>
     <IoneaBuilt Condition="'$(IoneaBuilt)' == ''">$([System.DateTime]::Now.ToString('yyyy-MM-ddTHH:mm:ss'))</IoneaBuilt>
     <AssemblyVersion>$(VersionPrefix).$(IoneaBuild)</AssemblyVersion>

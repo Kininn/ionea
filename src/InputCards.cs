@@ -205,7 +205,7 @@ public sealed class SetupDeviceCard : MenuCard
     readonly Action changed;
     InputPrefs S => w.Settings.Input;
 
-    public SetupDeviceCard(MainWindow w) : base(w, T("settings.play_with"), 900)
+    public SetupDeviceCard(MainWindow w) : base(w, T("settings.play_with"), 1000)
     {
         AddRow(T("settings.keyboard_and_mouse"), () => Names(w, "keyboard", "mouse"), activate: () => Pick("keyboard"));
         AddRow(T("settings.controller_2"), () => Names(w, "pad"), activate: () => Pick("pad"));
@@ -215,9 +215,9 @@ public sealed class SetupDeviceCard : MenuCard
 
     static string Names(MainWindow w, params string[] kinds)
     {
-        var names = kinds.Select(k => w.Devs.Show(k)).Where(d => d.Name != null && d.On).Select(d => d.Name).ToList();
+        var names = kinds.Select(k => w.Devs.Show(k)).Where(d => d.Name != null && d.On).Select(d => d.Name).Distinct().ToList();   // one device can be the keyboard and the mouse
         string v = names.Count == 0 ? (kinds[0] == "pad" ? T("settings.none_plugged_in") : T("settings.none_found")) : string.Join("  ·  ", names);
-        return v.Length > 34 ? v[..33] + "…" : v;
+        return v.Length > 30 ? v[..29] + "…" : v;
     }
 
     void Pick(string kind)

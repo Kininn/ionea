@@ -182,6 +182,7 @@ public class MenuCard : Card
     protected sealed class Row
     {
         public Func<string> Value; public Action<int> Change; public Action Activate;
+        public Func<string> Label;     // a label that follows the state (Refresh sets it); null = the text it was made with
         public Border El; public TextBlock ValueText;
         public Toggle Switch;          // shown instead of the text while the value is On / Off (IsSwitch)
         public bool Opens;             // opens another card (a chevron): its value is a summary, never a switch
@@ -581,6 +582,7 @@ public class MenuCard : Card
         for (int i = 0; i < Rows.Count; i++)
         {
             var r = Rows[i]; bool f = i == Focus && RowsActive;
+            if (r.Label != null && (r.El.Child as Grid)?.Children[0] is TextBlock lt) lt.Text = r.Label();
             string v = r.Value?.Invoke() ?? "";
             if (r.IsSwitch(v))
             {

@@ -1,11 +1,14 @@
 # Builds the launcher and installs it to <system drive>\Ionea\Launcher (or -Target), plus a desktop shortcut "Ionea".
 # The data folder (<target>\data: name, settings, games, covers) is never touched.
-# Version: every build gets the next build number (build.txt next to this script) and today's date;
+# Version: every build gets the next build number and today's date. build.txt (next to this script, tracked) is the last
+# release's number; this folder's own builds count on in bin\build.txt (not tracked), so building from a clone never
+# changes its files;
 # the version itself (1.0.0) is VersionPrefix in Launcher.csproj. The installed exe before this one is kept as
 # Launcher.previous.exe (definitions.previous\), so Settings > About and updates > Go back to the previous version works.
 #   -BuildOnly <dir>   build into <dir> only (Launcher.exe, definitions\, THIRD-PARTY.md, CHANGELOG.md), install nothing.
 #                      Ionea's own Update now uses this, then swaps the exe itself and restarts (Updater.cs).
-#   -BuildNumber <n>   use this build number and leave build.txt alone (tests).
+#   -BuildNumber <n>   use this build number and leave both counters alone (tests).
+#   -Release           write the number to build.txt (Make-Release.ps1 does this; commit it).
 #   -Version <x.y.z>   build as this version instead of Launcher.csproj's (tests).
 #   -Target <dir>      where to install (default <system drive>\Ionea\Launcher); any folder the user can write to.
 #   -FrameworkDependent  a small exe that needs the .NET 10 Desktop Runtime on the PC (the default carries its own).
@@ -13,7 +16,7 @@
 # (WPF and reflection), so the PC it runs on needs no .NET. The layout is unchanged: Launcher.exe, definitions\,
 # THIRD-PARTY.md, CHANGELOG.md.
 # Building needs the .NET 10 SDK (dotnet) on PATH; nothing else on the PC is assumed.
-param([string]$Target = (Join-Path $env:SystemDrive 'Ionea\Launcher'), [switch]$NoShortcut, [string]$BuildOnly, [int]$BuildNumber = -1, [string]$Version, [switch]$FrameworkDependent)
+param([string]$Target = (Join-Path $env:SystemDrive 'Ionea\Launcher'), [switch]$NoShortcut, [string]$BuildOnly, [int]$BuildNumber = -1, [string]$Version, [switch]$FrameworkDependent, [switch]$Release)
 $ErrorActionPreference = 'Stop'
 $src = $PSScriptRoot
 if (-not (Get-Command dotnet -ErrorAction SilentlyContinue)) { throw 'The .NET 10 SDK is needed to build Ionea (https://dotnet.microsoft.com/download). Install it, then run this again.' }
@@ -24,12 +27,18 @@ if (-not $BuildOnly) {
     if ($running) { throw "The launcher is running (PID $($running.ProcessId -join ', ')). Close it first." }
 }
 
-# the build number: build.txt + 1, written back only after a good build
-$counter = Join-Path $src 'build.txt'
+# the build number: one past the higher of the two counters, written back only after a good build
+$released = Join-Path $src 'build.txt'
+$local = Join-Path $src 'bin\build.txt'
+$counter = if ($Release) { $released } else { $local }
 $bump = $BuildNumber -lt 0
 if ($bump) {
     $last = 0
-    if (Test-Path $counter) { [int]::TryParse((Get-Content $counter -Raw).Trim(), [ref]$last) | Out-Null }
+    foreach ($c in $released, $local) {
+        $n = 0
+        if (Test-Path $c) { [int]::TryParse((Get-Content $c -Raw).Trim(), [ref]$n) | Out-Null }
+        $last = [Math]::Max($last, $n)
+    }
     $BuildNumber = $last + 1
 }
 $built = (Get-Date).ToString('yyyy-MM-ddTHH:mm:ss')
@@ -47,7 +56,7 @@ else { $props += '--self-contained', 'true', '-p:PublishReadyToRun=true', '-p:Pu
 dotnet publish (Join-Path $src 'Launcher.csproj') -c Release -r win-x64 `
     -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true @props -o $out -nologo -v q
 if ($LASTEXITCODE -ne 0) { throw 'Build failed.' }
-if ($bump) { Set-Content $counter $BuildNumber -Encoding ascii }
+if ($bump) { New-Item -ItemType Directory -Force (Split-Path $counter) | Out-Null; Set-Content $counter $BuildNumber -Encoding ascii }
 $ver = (Get-Item (Join-Path $out 'Launcher.exe')).VersionInfo.FileVersion
 Write-Host "Built Ionea $ver ($built)"
 

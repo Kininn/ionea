@@ -307,17 +307,22 @@ public sealed class OnlineCard : MenuCard
     public OnlineCard(MainWindow w, Action then = null) : base(w, T("settings.network"), 1180)
     {
         this.then = then;
-        // One press for the usual answer: Offline mode off and every source on (programs still ask each time).
-        WithIcon(AddRow(T("settings.turn_everything_on"), activate: () =>
+        // One press for everything: Offline mode off and every source on (programs still ask each time), or
+        // every source off again once all is on. Done has the focus, so pressing through first start leaves all off.
+        static bool AllOn() => !Online.Offline && Online.Items.All(i => Online.Switched(i.Id));
+        var all = WithIcon(AddRow(T("settings.turn_everything_on"), activate: () =>
         {
-            if (Online.Offline) Online.SetOffline(false);
-            foreach (var i in Online.Items) if (!Online.Switched(i.Id)) Online.Set(i.Id, true);
+            bool off = AllOn();
+            if (!off && Online.Offline) Online.SetOffline(false);
+            foreach (var i in Online.Items) if (Online.Switched(i.Id) == off) Online.Set(i.Id, !off);
             Sounds.Play("select");
             Refresh();
         }), "globe");
+        all.Label = () => AllOn() ? T("settings.turn_everything_off") : T("settings.turn_everything_on");
         OnlineRows();
         Divider();
         AddRow(T("common.done"), activate: () => Close());
+        Focus = Rows.Count - 1;
     }
 
     public override void Close(bool sound = true)
