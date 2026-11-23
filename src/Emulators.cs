@@ -208,6 +208,37 @@ public sealed class EmuList
             }
         }
         if (n > 0) lib.Save();
+        Adopt(lib, found);
+    }
+
+    // Games with no emulator (added before one for their system was there, or whose emulator was removed) take
+    // one of these that plays their system and file type. Returns how many did.
+    public int Adopt(Library lib, IEnumerable<Emulator> from, Game only = null)
+    {
+        var l = from.Where(e => e.Present && EmuDefs.Of(e)?.IsPort != true).ToList();
+        if (l.Count == 0) return 0;
+        int n = 0;
+        foreach (var g in only != null ? new List<Game> { only } : lib.Data.Games)
+        {
+            if (g.Source != "rom" || g.System == null || g.Rom == null || Get(g.Emulator) != null) continue;
+            if (PickFor(g, l) is not Emulator e) continue;
+            g.Emulator = e.Id; n++;
+            Log.Write($"\"{g.Name}\" had no emulator; now plays with {e.Name}");
+        }
+        if (n > 0) lib.Save();
+        return n;
+    }
+
+    // The one a game with no emulator takes: a core Ionea runs games with first (inside the launcher), then a
+    // standalone emulator, then any other core. Each must play the game's system; one that also lists the file's
+    // type comes first (as the scan picks one: an archive in a folder named for the system may be listed by none).
+    public static Emulator PickFor(Game g, IEnumerable<Emulator> from)
+    {
+        string ext = Path.GetExtension(g.Rom ?? "").ToLowerInvariant();
+        var all = from.Where(e => e.Systems.Contains(g.System)).OrderBy(e => e.Name, StringComparer.CurrentCultureIgnoreCase).ToList();
+        var fits = all.Where(e => e.Exts.Count == 0 || e.Exts.Contains(ext)).ToList();
+        if (fits.Count == 0 && ext is ".zip" or ".7z") fits = all;
+        return fits.FirstOrDefault(e => e.IsCore && EmuDefs.TakesGames(EmuDefs.Of(e))) ?? fits.FirstOrDefault(e => !e.IsCore) ?? fits.FirstOrDefault();
     }
 
     static string[] SafeDirs(string d) { try { return Directory.GetDirectories(d); } catch { return Array.Empty<string>(); } }
@@ -362,7 +393,10 @@ public static class RomLogic
         string system = null, string coverFrom = null, bool save = true)
     {
         string ext = Path.GetExtension(rom).ToLowerInvariant();
-        if (system == null || !emu.Systems.Contains(system))
+        // emu null: no emulator plays it yet. The game keeps its system and asks for an emulator when it is started;
+        // the first one added for its system takes it (EmuList.Adopt).
+        if (emu == null) system ??= Scan.SystemOfFile(rom);
+        else if (system == null || !emu.Systems.Contains(system))
         {
             string head = null;
             try { head = GameId.SystemOf(rom); } catch (Exception caught) { Log.Debug("emulators: system of game", caught); }
@@ -372,12 +406,12 @@ public static class RomLogic
         var g = new Game
         {
             Id = Library.NewId(), Name = name, Source = "rom", Added = DateTime.Now, Rom = Path.GetFullPath(rom), Target = Path.GetFullPath(rom),
-            Emulator = emu.Id, System = system,
+            Emulator = emu?.Id, System = system,
         };
         if (cover != null) { g.Cover = g.Id + ".png"; g.CoverFrom = coverFrom; g.CoverUrl = ""; Art.SavePng(cover, Path.Combine(lib.CoversDir, g.Cover)); }
         lib.Data.Games.Add(g);
         if (save) lib.Save();
-        Log.Write($"added game file \"{name}\" -> {rom} with {emu.Name}");
+        Log.Write($"added game file \"{name}\" -> {rom} with {emu?.Name ?? "no emulator yet (" + (system ?? "system unknown") + ")"}");
         return g;
     }
 

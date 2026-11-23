@@ -461,8 +461,6 @@
   "settings.new_game_files": "New game files",
   "settings.no_new_games": "No new games.",
   "settings.and_more": "and {0} more",
-  "settings.add_an_emulator_first": "Add an emulator first",
-  "settings.game_files_start_through_an_emulator": "Game files start through an emulator.",
   "settings.choose_a_game_file": "Choose a game file",
   "settings.game_files": "Game files|",
   "settings.all_files": "|All files (*.*)|*.*",
@@ -476,6 +474,18 @@
   "settings.use": "Use",
   "settings.only_partly_looked_through": "  ·  only partly looked through",
   "settings.nothing_new_found": "Nothing new found.",
+  "settings.import_a_folder": "Import a folder",
+  "settings.choose_a_folder_to_import": "Choose a folder to import",
+  "settings.games_and_emulators_in_it": "games and emulators in it",
+  "settings.games_folder": "Games folder",
+  "settings.every_game_in_a_folder": "every game in a folder",
+  "settings.emulators_folder": "Emulators folder",
+  "settings.every_emulator_in_a_folder": "every emulator in a folder",
+  "settings.chosen_folder": "Chosen folder",
+  "settings.no_emulator_yet": "no emulator yet",
+  "settings.already_on_this_pc": "already on this PC",
+  "settings.games_with_no_emulator_note": "Games with no emulator yet are added too. Starting one says how to get an emulator or native port for it.",
+  "settings.added_with_no_emulator": "No emulator plays this yet. It is added anyway, and starting it says how to get one.  ·  Enter adds the game  ·  Esc cancels",
   "settings.look_harder": "Look harder",
   "settings.added": "Added",
   "settings.cores_are_off": "Cores are off",
@@ -491,7 +501,6 @@
   "settings.installed_games": "installed games",
   "settings.program_or_shortcut": "Program or shortcut",
   "settings.exe_or_lnk": ".exe or .lnk",
-  "settings.add_an_emulator_first_2": "add an emulator first",
   "settings.plays_in_an_emulator": "plays in an emulator",
   "settings.steam_is_not_installed_on_this": "Steam is not installed on this PC.",
   "settings.no_installed_steam_games_were_found": "No installed Steam games were found.",
@@ -752,13 +761,25 @@
     "one": "{1}  ·  {0} file missing",
     "other": "{1}  ·  {0} files missing"
   },
-  "settings.games_capped": {
-    "one": "{0}+ game",
-    "other": "{0}+ games"
-  },
   "settings.games_in_other_folders": {
     "one": "{0} game is in other folders",
     "other": "{0} games are in other folders"
+  },
+  "settings.games_capped_note": {
+    "one": "Only the first {0} game is listed. Import again to add the rest.",
+    "other": "Only the first {0} games are listed. Import again to add the rest."
+  },
+  "settings.n_emulators": {
+    "one": "{0} emulator",
+    "other": "{0} emulators"
+  },
+  "settings.n_game_folders": {
+    "one": "{0} game folder",
+    "other": "{0} game folders"
+  },
+  "settings.n_need_an_emulator": {
+    "one": "{0} needs an emulator",
+    "other": "{0} need an emulator"
   },
   "settings.default_filter": "Default ({0})",
   "settings.this_pc_drive": "This PC ({0})",
@@ -936,6 +957,9 @@
   "errors.saves_are_shared": "Saves are shared",
   "errors.can_t_keep_profiles_apart": "{0} can't keep profiles apart",
   "errors.its_emulator_was_removed_from_ionea": "Its emulator was removed from Ionea. Add it again in Settings > Library > Emulators and ports.",
+  "errors.needs_an_emulator": "{0} needs an emulator",
+  "errors.needs_an_emulator_or_native_port": "Ionea has no emulator or native port for {0} yet. Download one, or add one that is already on this PC, then start the game again.",
+  "errors.needs_an_emulator_or_native_port_any": "Ionea has no emulator or native port for this game yet. Download one, or add one that is already on this PC, then start the game again.",
   "errors.s_program_is_missing_choose_it": "{0}'s program is missing. Choose it again in Settings > Library > Emulators and ports.",
   "errors.steam_doesn_t_list_this_game": "Steam doesn't list this game as installed any more.",
   "errors.its_shortcut_is_missing_from_ionea": "Its shortcut is missing from Ionea's data folder.",

@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using static Ionea.Loc;
 
 namespace Ionea;
 
@@ -30,11 +31,13 @@ public sealed class ScanFolder
     public string Path, System, From;
     public bool Take = true;
     public bool Capped;        // the scan stopped in this folder before its end (too many files)
+    public int Depth = Scan.Depth;   // how many levels of subfolders are looked through
 }
 
 public sealed class ScanGame
 {
     public string File, System;
+    public bool NoEmu;         // no emulator Ionea has or found plays its system: added anyway, it asks for one at start
 }
 
 public sealed class ScanResult
@@ -43,6 +46,7 @@ public sealed class ScanResult
     public List<ScanFolder> Folders = new();
     public List<ScanGame> Games = new();
     public string Esde;          // ES-DE's folder when it was found and none is set
+    public string Chosen;        // Import a folder: the folder the user chose (null: the scan of this PC)
     public bool Deep;            // "Look harder" ran
     public bool GamesCapped;     // more games than the scan takes at once (MaxGames)
     public bool Empty => Emus.Count == 0 && Folders.Count == 0 && Games.Count == 0 && Esde == null;
@@ -76,6 +80,41 @@ public static class Scan
         .Replace("{appdata}", AppData).Replace("{localappdata}", LocalAppData)
         .Replace("{documents}", Documents).Replace("{home}", H);
 
+    // An emulator program the scan came across: on the results when the catalog knows it and Ionea doesn't have it yet.
+    static void TakeExe(EmuList emus, ScanResult r, HashSet<string> exes, string exe, string where)
+    {
+        if (exe == null || !exes.Add(exe) || !File.Exists(exe)) return;
+        if (EmuCatalog.ForExe(exe) is not EmuDef def) return;
+        if (emus.ByExe(exe) != null || emus.Data.Dismissed.Any(z => string.Equals(z, exe, StringComparison.OrdinalIgnoreCase))) return;
+        if (!ProductFits(def, exe)) { Log.Write($"scan: {exe} has {def.Name}'s name but another product name; skipped"); return; }
+        var found = new ScanEmu { Exe = Path.GetFullPath(exe), Def = def, Where = where };
+        try { found.Missing = ReqFiles.Missing(emus.FromPreset(def, exe)); } catch (Exception caught) { Log.Debug("scan: required files", caught); }
+        r.Emus.Add(found);
+    }
+
+    // Import a folder: one folder the user chose, with everything in it: the emulators and cores anywhere inside
+    // (a few levels down), and its games, with the systems their folders are named for ("SNES", "PS2",
+    // "Nintendo - Game Boy Advance"). Games no emulator plays yet are offered too. Nothing changes until the
+    // user confirms (ScanCard), as with the scan of the PC.
+    public const int FolderDepth = 5;
+    public static ScanResult RunFolder(MainWindow w, string folder)
+    {
+        var sw = Stopwatch.StartNew();
+        string root = Clean(folder);
+        var r = new ScanResult { Deep = true, Chosen = root };
+        if (root == null || !Directory.Exists(root)) return r;
+        var exes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        int dirs = 0;
+        Deep(root, 0, ref dirs, (exe, where) => TakeExe(w.Emus, r, exes, exe, where), sw, FolderDepth, T("settings.chosen_folder"));
+        r.Folders.Add(new ScanFolder { Path = root, System = SystemByName(Path.GetFileName(root))?.Id, From = T("settings.chosen_folder"), Depth = FolderDepth });
+        var present = w.Emus.Data.Emulators.Where(e => e.Present).Select(e => EmuDefs.Of(e)).Concat(r.Emus.Select(e => e.Def)).Where(d => d != null);
+        Identify(w, r, new HashSet<string>(present.SelectMany(d => d.Systems), StringComparer.OrdinalIgnoreCase));
+        // Its games are listed one row per system (ScanCard); with none, the folder isn't kept as a game folder.
+        if (r.Games.Count == 0) r.Folders.Clear();
+        Log.Write($"import folder {root}: {r.Emus.Count} emulator(s), {r.Games.Count} game(s) ({r.Games.Count(g => g.NoEmu)} with no emulator yet) in {dirs} folders, {sw.ElapsedMilliseconds} ms");
+        return r;
+    }
+
     public static ScanResult Run(MainWindow w, bool deep)
     {
         var sw = Stopwatch.StartNew();
@@ -84,16 +123,7 @@ public static class Scan
         var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);   // folders already looked in
         var exes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-        void TakeExe(string exe, string where)
-        {
-            if (exe == null || !exes.Add(exe) || !File.Exists(exe)) return;
-            if (EmuCatalog.ForExe(exe) is not EmuDef def) return;
-            if (emus.ByExe(exe) != null || emus.Data.Dismissed.Any(z => string.Equals(z, exe, StringComparison.OrdinalIgnoreCase))) return;
-            if (!ProductFits(def, exe)) { Log.Write($"scan: {exe} has {def.Name}'s name but another product name; skipped"); return; }
-            var found = new ScanEmu { Exe = Path.GetFullPath(exe), Def = def, Where = where };
-            try { found.Missing = ReqFiles.Missing(emus.FromPreset(def, exe)); } catch (Exception caught) { Log.Debug("scan: required files", caught); }
-            r.Emus.Add(found);
-        }
+        void TakeExe(string exe, string where) => Scan.TakeExe(emus, r, exes, exe, where);
         void Look(string d, string where, int depth)
         {
             if (string.IsNullOrEmpty(d) || !Directory.Exists(d)) return;
@@ -232,17 +262,17 @@ public static class Scan
     static string Str(JsonElement e, string name) => e.TryGetProperty(name, out var v) && v.ValueKind == JsonValueKind.String ? v.GetString() : null;
 
     static readonly string[] SkipDeep = { "Windows", "$Recycle.Bin", "System Volume Information", "WinSxS", "node_modules", ".git", "Temp", "Microsoft", "WindowsApps", "Packages", "steamapps\\shadercache", "$WinREAgent" };
-    static void Deep(string d, int depth, ref int dirs, Action<string, string> program, Stopwatch sw)
+    static void Deep(string d, int depth, ref int dirs, Action<string, string> program, Stopwatch sw, int maxDepth = 6, string where = "Looked harder")
     {
-        if (depth > 6 || dirs > 200_000 || sw.ElapsedMilliseconds > 90_000) return;
+        if (depth > maxDepth || dirs > 200_000 || sw.ElapsedMilliseconds > 90_000) return;
         dirs++;
-        foreach (string f in Files(d)) if (f.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) || f.EndsWith("_libretro.dll", StringComparison.OrdinalIgnoreCase)) program(f, "Looked harder");
+        foreach (string f in Files(d)) if (f.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) || f.EndsWith("_libretro.dll", StringComparison.OrdinalIgnoreCase)) program(f, where);
         foreach (string s in Dirs(d))
         {
             string n = Path.GetFileName(s);
             if (n.StartsWith(".") || SkipDeep.Any(x => n.Equals(x, StringComparison.OrdinalIgnoreCase))) continue;
             try { if ((File.GetAttributes(s) & FileAttributes.ReparsePoint) != 0) continue; } catch { continue; }
-            Deep(s, depth + 1, ref dirs, program, sw);
+            Deep(s, depth + 1, ref dirs, program, sw, maxDepth, where);
         }
     }
 
@@ -385,14 +415,97 @@ public static class Scan
         "patches", "shaders", "overlays", "config", "cache",
     };
 
+    // A folder named for a system says its games' system: its id or ES-DE name ("snes", "psx"), its name
+    // ("Super Nintendo"), its libretro name with or without the maker ("Nintendo - Game Boy Advance", "Game Boy
+    // Advance") or a common short name ("PS2", "Genesis"). Case, spaces and punctuation don't count. The short
+    // lists' systems win over ES-DE's extra ones (EmuSystem.More). Null when the name says no system.
+    static readonly Dictionary<string, string> Aliases = new()
+    {
+        ["ps1"] = "psx", ["playstation1"] = "psx", ["playstationone"] = "psx", ["psone"] = "psx", ["sonyplaystation"] = "psx",
+        ["playstation"] = "psx", ["ps2"] = "ps2", ["ps3"] = "ps3", ["ps4"] = "ps4", ["ps5"] = "ps5", ["vita"] = "psvita", ["psv"] = "psvita",
+        ["famicom"] = "nes", ["superfamicom"] = "snes", ["supernes"] = "snes", ["n64"] = "n64", ["nintendo64"] = "n64",
+        ["gameboy"] = "gb", ["gameboycolor"] = "gbc", ["gameboyadvance"] = "gba", ["ds"] = "nds", ["nintendods"] = "nds",
+        ["3ds"] = "3ds", ["n3ds"] = "3ds", ["nintendo3ds"] = "3ds", ["gamecube"] = "gc", ["ngc"] = "gc", ["nintendogamecube"] = "gc",
+        ["nintendowii"] = "wii", ["nintendowiiu"] = "wiiu", ["nintendoswitch"] = "switch",
+        ["megadrive"] = "genesis", ["segagenesis"] = "genesis", ["segamegadrive"] = "genesis", ["md"] = "genesis",
+        ["dc"] = "dreamcast", ["segadreamcast"] = "dreamcast", ["playstationportable"] = "psp", ["sonypsp"] = "psp",
+    };
+    // Names too general to say a system (a "PC" folder holds PC games, not IBM PC disk images).
+    static readonly HashSet<string> NotSystemNames = new(StringComparer.OrdinalIgnoreCase) { "pc", "windows", "ports", "games", "roms", "mess", "electron", "flash" };
+    static Dictionary<string, EmuSystem> byName;
+    static IReadOnlyList<EmuSystem> namesFor;
+
+    public static string NameKey(string s) => new string((s ?? "").Where(char.IsLetterOrDigit).Select(char.ToLowerInvariant).ToArray());
+
+    public static EmuSystem SystemByName(string folderName)
+    {
+        string key = NameKey(folderName);
+        if (key.Length == 0 || NotSystemNames.Contains(key)) return null;
+        var systems = EmuCatalog.Systems;
+        if (byName == null || !ReferenceEquals(namesFor, systems))
+        {
+            var d = new Dictionary<string, EmuSystem>(StringComparer.Ordinal);
+            void Put(string name, EmuSystem s) { string k = NameKey(name); if (k.Length > 0 && !NotSystemNames.Contains(k)) d.TryAdd(k, s); }
+            foreach (var s in systems.OrderBy(s => s.More ? 1 : 0))   // the short lists' systems first: they keep a shared name
+            {
+                Put(s.Id, s); Put(s.Name, s);
+                foreach (string e in s.Esde ?? Array.Empty<string>()) Put(e, s);
+                if (s.Thumbs != null) { Put(s.Thumbs, s); int dash = s.Thumbs.IndexOf(" - ", StringComparison.Ordinal); if (dash > 0) Put(s.Thumbs[(dash + 3)..], s); }
+            }
+            foreach (var (alias, id) in Aliases) if (systems.FirstOrDefault(s => s.Id == id) is EmuSystem s) d[alias] = s;
+            byName = d; namesFor = systems;
+        }
+        return byName.TryGetValue(key, out var found) ? found : null;
+    }
+
+    // An extension only one of the short lists' systems uses (.gba, .nds, .sfc, .z64): that system. Shared ones
+    // (.iso, .bin, .chd, .zip) and the many ES-DE systems' extensions say nothing on their own.
+    // Program and data extensions a system also uses (.app: Wii U content too; .elf, .prx: programs and plugins).
+    static readonly HashSet<string> WeakExts = new(StringComparer.OrdinalIgnoreCase) { ".zip", ".7z", ".gz", ".app", ".elf", ".prx", ".dol", ".img", ".dat", ".rom", ".bin", ".iso", ".chd", ".cue", ".m3u", ".nca" };
+    public static string SystemByExt(string ext)
+    {
+        if (string.IsNullOrEmpty(ext) || WeakExts.Contains(ext)) return null;
+        var l = EmuCatalog.Systems.Where(s => !s.More && s.Exts.Contains(ext)).Take(2).ToList();
+        return l.Count == 1 ? l[0].Id : null;
+    }
+
+    // Archives in a folder named for a system are its games when it is a cartridge system (ROM sets come zipped);
+    // disc systems' emulators open their disc images, not archives of them.
+    static readonly string[] DiscExts = { ".iso", ".cue", ".chd", ".gdi", ".cdi", ".rvz", ".wbfs", ".wud" };
+    static bool Zipped(EmuSystem s) => !s.Exts.Any(x => DiscExts.Contains(x)) && s.Id is not ("switch" or "switch2" or "ps3" or "ps4" or "ps5" or "3ds" or "wiiu");
+
+    // A game file's system as the scan sees it: its header, else its folder's name (and the extension that
+    // system uses), else an extension only one system has. For a file picked by hand (Add game > Game file).
+    public static string SystemOfFile(string file)
+    {
+        string sys = null;
+        try { sys = GameId.SystemOf(file); } catch (Exception caught) { Log.Debug("scan: system of file", caught); }
+        if (sys != null) return sys;
+        string ext = Path.GetExtension(file).ToLowerInvariant();
+        for (string d = Path.GetDirectoryName(file); d != null && sys == null; d = Path.GetDirectoryName(d))
+        {
+            if (SystemByName(Path.GetFileName(d)) is EmuSystem s && (ext is ".zip" or ".7z" ? Zipped(s) : s.Exts.Contains(ext))) sys = s.Id;
+            if (Path.GetPathRoot(d) == d) break;
+        }
+        return sys ?? SystemByExt(ext);
+    }
+
     static void Identify(MainWindow w, ScanResult r, HashSet<string> playable)
     {
         var taken = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        // The library's game files, once: a check per file against the whole library is too slow for big folders.
+        var have = new HashSet<string>(w.Lib.Data.Games.Where(g => g.Source == "rom" && g.Rom != null).Select(g => Norm(g.Rom)), StringComparer.OrdinalIgnoreCase);
+        // Import a folder: an emulator's own folder in it holds its firmware and system files, not games.
+        var emuDirs = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        if (r.Chosen != null)
+            foreach (string exe in r.Emus.Select(e => e.Exe).Concat(w.Emus.Data.Emulators.Select(e => e.Exe)))
+                if (exe != null && Path.GetDirectoryName(Norm(exe)) is string ed && !string.Equals(ed, r.Chosen, StringComparison.OrdinalIgnoreCase)) emuDirs.Add(ed);
         foreach (var f in r.Folders)
         {
-            var folderSys = f.System != null ? EmuCatalog.System(f.System) : null;
             int files = 0;
-            bool Go(string dir, int left)   // false: stop (a cap was reached)
+            // folderSys: the system this folder's games are for (the scan's, or a folder's name); fromName: it came from a
+            // folder's name, so the user sorted these files by system and archives (.zip) count as that system's games.
+            bool Go(string dir, int left, EmuSystem folderSys, bool fromName)   // false: stop (a cap was reached)
             {
                 var all = Files(dir);
                 var named = Named(all);   // the files a playlist or cue sheet here stands for
@@ -400,7 +513,7 @@ public static class Scan
                 var sub = new List<string>();
                 foreach (string d in Dirs(dir))
                 {
-                    if (NotGames.Contains(Path.GetFileName(d)) || IsHidden(d)) continue;
+                    if (NotGames.Contains(Path.GetFileName(d)) || IsHidden(d) || emuDirs.Contains(Norm(d))) continue;
                     string eboot = Path.Combine(d, "eboot.bin"), ps3 = Path.Combine(d, "PS3_GAME", "USRDIR", "EBOOT.BIN");
                     if (File.Exists(eboot)) { if (!RomLogic.IsPs4Update(d)) list.Add(eboot); }   // PS4 game folder
                     else if (File.Exists(ps3)) list.Add(ps3);                                    // PS3 folder game
@@ -417,17 +530,23 @@ public static class Scan
                     try { sys = GameId.SystemOf(file); } catch (Exception caught) { Log.Debug("scan: system of file", caught); }
                     if (sys == null && ext == ".m3u" && Refs(file).FirstOrDefault() is string disc)   // a playlist: its first disc says
                         try { sys = GameId.SystemOf(disc); } catch (Exception caught) { Log.Debug("scan: system of disc", caught); }
-                    if (sys == null && folderSys != null && folderSys.Exts.Contains(ext) && ext is not (".zip" or ".7z")) sys = folderSys.Id;
-                    if (sys == null || !playable.Contains(sys) || !taken.Add(file)) continue;
-                    if (RomLogic.Check(file, w.Lib) != null) continue;
-                    r.Games.Add(new ScanGame { File = file, System = sys });
+                    if (sys == null && folderSys != null && (ext is ".zip" or ".7z" ? fromName && Zipped(folderSys) : folderSys.Exts.Contains(ext))) sys = folderSys.Id;
+                    sys ??= SystemByExt(ext);
+                    if (sys == null || !taken.Add(file) || have.Contains(Norm(file)) || AddGameLogic.InInbox(file)) continue;
+                    r.Games.Add(new ScanGame { File = file, System = sys, NoEmu = !playable.Contains(sys) });
                 }
                 if (left > 0)
                     foreach (string d in sub)
-                        if (!Go(d, left - 1)) return false;
+                    {
+                        var s = SystemByName(Path.GetFileName(d));   // "Games\SNES\...": that folder is the SNES's
+                        if (!Go(d, left - 1, s ?? folderSys, s != null || fromName)) return false;
+                    }
                 return true;
             }
-            if (!Go(f.Path, Depth) && r.GamesCapped) return;
+            var top = f.System != null ? EmuCatalog.System(f.System) : null;
+            bool topNamed = false;
+            if (top == null && SystemByName(Path.GetFileName(f.Path)) is EmuSystem n) { top = n; topNamed = true; }
+            if (!Go(f.Path, f.Depth, top, topNamed) && r.GamesCapped) return;
         }
     }
 
@@ -504,28 +623,34 @@ public static class Scan
         w.Settings.Save();
 
         int games = 0;
+        Waiting = 0;
         string icons = RomArt.IconsDir(w.Lib);
+        var have = new HashSet<string>(w.Lib.Data.Games.Where(g => g.Source == "rom" && g.Rom != null).Select(g => Norm(g.Rom)), StringComparer.OrdinalIgnoreCase);
         foreach (var g in r.Games)
         {
             if (!folders.Any(f => g.File.StartsWith(f.Path + "\\", StringComparison.OrdinalIgnoreCase))) continue;
-            if (RomLogic.Check(g.File, w.Lib) != null) continue;
+            if (!File.Exists(g.File) || !have.Add(Norm(g.File))) continue;
+            // No emulator plays it yet: it is added all the same, and asks for one when it is started (Launch).
             var emu = w.Emus.ForFile(g.File).FirstOrDefault(e => e.Systems.Contains(g.System)) ?? w.Emus.Sorted().FirstOrDefault(e => e.Present && e.Systems.Contains(g.System));
-            if (emu == null) continue;
             try
             {
                 System.Windows.Media.Imaging.BitmapSource cover = null;
                 try { cover = RomArt.Cover(g.File, icons); } catch (Exception caught) { Log.Debug("scan: game file cover", caught); }
                 RomLogic.Commit(w.Lib, g.File, emu, RomLogic.NameFromFile(g.File), cover, g.System, cover != null ? "icon" : null, save: false);
                 games++;
+                if (emu == null) Waiting++;
             }
             catch (Exception x) { Log.Write($"scan: {g.File} not added: {x.Message}"); }
         }
         if (games > 0) w.Lib.Save();
         if (added.Count > 0) { w.Emus.UseCores(w.Lib, added); ReqFiles.SupplyAll(); }
-        Log.Write($"scan confirmed: {added.Count} emulator(s), {folders.Count} game folder(s), {games} game(s)");
+        Log.Write($"scan confirmed: {added.Count} emulator(s), {folders.Count} game folder(s), {games} game(s), {Waiting} with no emulator yet");
         if (games > 0) Covers.Queue(w);
         return games;
     }
+
+    // The last Apply's games that no emulator plays yet.
+    public static int Waiting;
 
     // ---- small helpers ----
 

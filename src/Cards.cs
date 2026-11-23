@@ -297,6 +297,7 @@ public class MenuCard : Card
         ["New game files"] = "spark", ["From Steam"] = "library", ["Program or shortcut"] = "app", ["Game file"] = "file",
         ["Install a checked download"] = "shield", ["Download an emulator"] = "save", ["Download"] = "save",
         ["Choose a program"] = "app", ["Look for emulators"] = "search", ["Look harder"] = "search",
+        ["Import a folder"] = "folder", ["Games folder"] = "folder", ["Emulators folder"] = "folder",
         ["File types"] = "file", ["Program"] = "app", ["Required files"] = "key",
         ["Ionea manages controls"] = "controller", ["Play inside Ionea"] = "screen", ["Open the emulator"] = "move",
         ["Add a file or zip"] = "file", ["Add a folder"] = "folder", ["Cover"] = "picture", ["Change cover"] = "picture",
@@ -1373,6 +1374,7 @@ public sealed class SettingsCard : MenuCard
         Opens(AddRow(T("settings.removed_games"), () => w.Lib.RemovedGames().Count.ToString(), activate: () => new RemovedCard(w).Open()));
         BeginBox(T("common.add"));
         Opens(AddRow(T("home.add_game"), activate: () => new AddChoiceCard(w).Open()));
+        Opens(AddRow(T("settings.import_a_folder"), () => T("settings.games_and_emulators_in_it"), activate: () => ScanCard.PickFolder(w)));
         Opens(AddRow(T("settings.look_for_emulators"), () => T("settings.on_this_pc"), activate: () => ScanCard.Run(w, false, null)));
         BeginBox(T("settings.advanced"));
         // On: emulators and native ports run under Ionea's name, so Task Manager shows them in Ionea's group (from the next start). Off by default.

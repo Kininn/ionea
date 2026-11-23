@@ -135,6 +135,9 @@ public sealed class LaunchFx
         else if (rom)
         {
             emu = w.Emus.Get(g.Emulator);
+            // No emulator yet (added before one for its system was there): one added since takes it now.
+            if (emu == null && g.System != null && w.Emus.Adopt(w.Lib, w.Emus.Data.Emulators, g) > 0) emu = w.Emus.Get(g.Emulator);
+            if (emu == null && g.Emulator == null) { new NoEmulatorCard(w, g).Open(); return; }
             if (emu == null) { new MessageCard(w, T("errors.can_t_start_this_game"), T("errors.its_emulator_was_removed_from_ionea")).Open(); return; }
             if (!emu.Present) { new MessageCard(w, T("errors.can_t_start_this_game"), T("errors.s_program_is_missing_choose_it", emu.Name)).Open(); return; }
             if (g.Rom == null || !File.Exists(g.Rom))

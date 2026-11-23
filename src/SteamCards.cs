@@ -21,7 +21,8 @@ public sealed class AddChoiceCard : MenuCard
         AddRow(T("settings.new_game_files"), () => fresh == 0 ? T("settings.none_waiting") : fresh == 1 ? T("settings.1_ready_to_add") : T("settings.ready_to_add", fresh), activate: () => { Close(false); new NewRomsCard(w).Open(); });
         AddRow(T("settings.from_steam"), () => T("settings.installed_games"), activate: () => { Close(false); new SteamPickCard(w).Open(); });
         AddRow(T("settings.program_or_shortcut"), () => T("settings.exe_or_lnk"), activate: () => { Close(false); new AddGameFlow(w).Start(); });
-        AddRow(T("settings.game_file"), () => w.Emus.Data.Emulators.Count == 0 ? T("settings.add_an_emulator_first_2") : T("settings.plays_in_an_emulator"), activate: () => { Close(false); new AddRomFlow(w).Start(); });
+        AddRow(T("settings.game_file"), () => T("settings.plays_in_an_emulator"), activate: () => { Close(false); new AddRomFlow(w).Start(); });
+        AddRow(T("settings.games_folder"), () => T("settings.every_game_in_a_folder"), activate: () => { Close(false); ScanCard.PickFolder(w); });
         AddRow(T("common.cancel"), activate: () => Close());
     }
 }

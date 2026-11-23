@@ -21,17 +21,26 @@ public sealed class ScanCard : MenuCard
     readonly bool first;
     readonly Action then;
     ScanResult r;
-    bool takeGames = true, takeEsde = true, done;
+    bool takeEsde = true, done;
+    readonly HashSet<string> skipSystems = new(StringComparer.OrdinalIgnoreCase);   // systems whose games the user set to Skip
     public bool Ready => r != null;
 
-    public static void Run(MainWindow w, bool first, Action then, bool deep = false) => new ScanCard(w, first, then, deep).Open();
+    public static void Run(MainWindow w, bool first, Action then, bool deep = false) => new ScanCard(w, first, then, deep, null).Open();
 
-    ScanCard(MainWindow w, bool first, Action then, bool deep) : base(w, first ? T("settings.found_on_this_pc") : T("settings.look_for_emulators"), 1240)
+    // Import a folder: everything in a folder the user chose (Scan.RunFolder), on the same results.
+    public static void RunFolder(MainWindow w, string folder, Action then = null) => new ScanCard(w, false, then, true, folder).Open();
+
+    // Asks for the folder, then imports it.
+    public static void PickFolder(MainWindow w, Action then = null) =>
+        Picker.Folder(w, T("settings.choose_a_folder_to_import"), null, path => RunFolder(w, path, then));
+
+    ScanCard(MainWindow w, bool first, Action then, bool deep, string folder)
+        : base(w, folder != null ? T("settings.import_a_folder") : first ? T("settings.found_on_this_pc") : T("settings.look_for_emulators"), 1240)
     {
         this.first = first; this.then = then;
         Current = this;
         var rows = new StackPanel(); Body.Children.Add(rows); RowHost = rows;   // Build clears the rows, not the title
-        LoadThen(() => Scan.Run(w, deep), res => { r = res ?? new ScanResult { Deep = deep }; Build(); });
+        LoadThen(() => folder != null ? Scan.RunFolder(w, folder) : Scan.Run(w, deep), res => { r = res ?? new ScanResult { Deep = deep }; Build(); });
     }
 
     static string Short(string p)
@@ -58,13 +67,24 @@ public sealed class ScanCard : MenuCard
             Aside(AddRow(Short(x.Path), () => x.Take ? T("common.add") : T("home.skip"), _ => { x.Take = !x.Take; Refresh(); }, () => { x.Take = !x.Take; Refresh(); }),
                 (sys != null ? $"{x.From}  ·  {sys}" : x.From) + (x.Capped ? T("settings.only_partly_looked_through") : ""));
         }
-        if (r.Games.Count > 0)
-            AddRow(Loc.N(r.GamesCapped ? "settings.games_capped" : "settings.games", r.Games.Count), () => takeGames ? T("common.add") : T("home.skip"), _ => { takeGames = !takeGames; Refresh(); }, () => { takeGames = !takeGames; Refresh(); });
+        // The games, one row per system, the most games first. A system no emulator plays yet says so: its games are
+        // added all the same and ask for an emulator when they are started.
+        foreach (var grp in r.Games.GroupBy(g => g.System).OrderByDescending(g => g.Count()).ThenBy(g => SystemName(g.Key), StringComparer.CurrentCultureIgnoreCase))
+        {
+            string id = grp.Key;
+            bool noEmu = grp.All(g => g.NoEmu);
+            string count = Loc.N("settings.games", grp.Count());
+            void Flip() { if (!skipSystems.Remove(id)) skipSystems.Add(id); Refresh(); }
+            Aside(AddRow(SystemName(id), () => skipSystems.Contains(id) ? T("home.skip") : T("common.add"), _ => Flip(), Flip),
+                noEmu ? $"{count}  ·  {T("settings.no_emulator_yet")}" : count);
+        }
+        if (r.GamesCapped) Note(Loc.N("settings.games_capped_note", Scan.MaxGames), 22, new Thickness(4, 4, 0, 10), RowHost);
+        if (r.Games.Any(g => g.NoEmu)) Note(T("settings.games_with_no_emulator_note"), 22, new Thickness(4, 4, 0, 10), RowHost);
         if (Rows.Count > 0) Divider();
         else if (r.Empty) Note(T("settings.nothing_new_found"), 28, new Thickness(4, 0, 0, 18), RowHost);
         bool none = r.Emus.Count == 0 && !w.Emus.Data.Emulators.Any(e => e.Present);
         if (none && EmuInstall.Offers().Count > 0) Opens(AddRow(T("settings.download_an_emulator"), activate: () => { done = true; w.Settings.ScanAsked = true; w.Settings.Save(); Close(false); new EmuInstallCard(w, then).Open(); }));
-        if (!r.Deep) AddRow(T("settings.look_harder"), activate: () => { done = true; Close(false); Run(w, first, then, true); });
+        if (!r.Deep && r.Chosen == null) AddRow(T("settings.look_harder"), activate: () => { done = true; Close(false); Run(w, first, then, true); });
         AddRow(r.Empty ? T("common.done") : T("common.add"), activate: Confirm);
         Compact();
         Focus = Rows.Count - 1;
@@ -75,23 +95,27 @@ public sealed class ScanCard : MenuCard
     {
         if (r == null) return;
         done = true;
-        if (!takeGames) r.Games.Clear();
+        r.Games.RemoveAll(g => skipSystems.Contains(g.System));
+        if (r.Chosen != null && r.Games.Count == 0) r.Folders.Clear();   // every system skipped: the chosen folder isn't kept either
         if (!takeEsde) r.Esde = null;
         int emus = r.Emus.Count(e => e.Take), folders = r.Folders.Count(f => f.Take);
-        int games = Scan.Apply(w, r);
+        int games = Scan.Apply(w, r), waiting = Scan.Waiting;
         Close();
         if (emus + folders + games > 0)
         {
             w.Home?.Rebuild(null);
             if (games > 0) w.Home?.SlideIn();
             var bits = new List<string>();
-            if (emus > 0) bits.Add(emus == 1 ? "1 emulator" : $"{emus} emulators");
-            if (games > 0) bits.Add(games == 1 ? "1 game" : $"{games} games");
-            if (folders > 0) bits.Add(folders == 1 ? "1 game folder" : $"{folders} game folders");
+            if (emus > 0) bits.Add(Loc.N("settings.n_emulators", emus));
+            if (games > 0) bits.Add(Loc.N("settings.games", games));
+            if (folders > 0) bits.Add(Loc.N("settings.n_game_folders", folders));
+            if (waiting > 0) bits.Add(Loc.N("settings.n_need_an_emulator", waiting));
             w.Toasts.Show(T("settings.added"), string.Join("  ·  ", bits), "plus");
         }
         then?.Invoke();
     }
+
+    static string SystemName(string id) => EmuCatalog.System(id)?.Name ?? id;
 
     public override void Close(bool sound = true)
     {
@@ -110,6 +134,35 @@ public sealed class ScanCard : MenuCard
     }
 }
 
+// A game added with no emulator (Import a folder, Game file): what to do to play it. It names the system and offers
+// the emulators Ionea can download for it, and adding one already on this PC. The first one added for the system
+// takes the game (EmuList.Adopt), so starting it again just works.
+public sealed class NoEmulatorCard : MenuCard
+{
+    public static NoEmulatorCard Current;
+    readonly string said;
+
+    public NoEmulatorCard(MainWindow w, Game g) : base(w, T("errors.needs_an_emulator", g.Name), 1180)
+    {
+        Current = this;
+        string sys = EmuCatalog.System(g.System)?.Name;
+        string text = sys != null ? T("errors.needs_an_emulator_or_native_port", sys) : T("errors.needs_an_emulator_or_native_port_any");
+        said = T("errors.needs_an_emulator", g.Name) + " | " + text;
+        Note(text, 26, new Thickness(4, 0, 0, 18));
+        if (EmuInstallCard.Offers(g.System).Count > 0)
+            Opens(AddRow(T("settings.download_an_emulator"), () => T("settings.official_releases"), activate: () => { Close(false); new EmuInstallCard(w, null, g.System).Open(); }));
+        Opens(AddRow(T("settings.add_emulator_2"), () => T("settings.already_on_this_pc"), activate: () => { Close(false); new AddEmulatorCard(w).Open(); }));
+        AddRow(T("common.ok"), activate: () => Close());
+        Focus = 0;
+        Refresh();
+    }
+
+    // For tests: the text and the rows.
+    public string Summary => said + " | " + Labels;
+
+    public override void Close(bool sound = true) { base.Close(sound); if (Current == this) Current = null; }
+}
+
 // Official releases of emulators whose definitions name one (definitions' release). The release's file list
 // is fetched under Emulator installs without a question; the emulator itself is asked for with its address.
 public sealed class EmuInstallCard : MenuCard
@@ -118,21 +171,24 @@ public sealed class EmuInstallCard : MenuCard
     public static string LastResult;
     readonly Action then;
 
-    public EmuInstallCard(MainWindow w, Action then = null) : base(w, T("settings.download_an_emulator"), 1080)
+    // system: only the ones for that system (a game with no emulator asks for one).
+    public EmuInstallCard(MainWindow w, Action then = null, string system = null) : base(w, T("settings.download_an_emulator"), 1080)
     {
         this.then = then;
         Current = this;
-        foreach (var d in EmuInstall.Offers())
+        var defs = Offers(system);
+        foreach (var d in defs)
         {
             var def = d;
             string sys = string.Join(", ", def.Systems.Select(s => EmuCatalog.System(s)?.Name ?? s).Take(3));
             Aside(AddRow(def.Name, activate: () => Get(def)), sys);
         }
         if (Rows.Count == 0) AddRow(T("common.back"), activate: () => Close());
-        var defs = EmuInstall.Offers();
         for (int i = 0; i < defs.Count && i < Rows.Count; i++) { string kind = defs[i].IsCore ? "cores" : "emulators"; Rows[i].Dim = () => !Online.Allowed(kind); }
         Refresh();
     }
+
+    public static List<EmuDef> Offers(string system) => EmuInstall.Offers().Where(d => system == null || d.Systems.Contains(system)).ToList();
 
     public async void Get(EmuDef def)
     {

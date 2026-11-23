@@ -2,8 +2,10 @@
 
 Newest first. Settings > About and updates shows this file from the update source.
 
-## Not released yet
+## 1.0.7 (2026-11-23)
 - The focus ring on the Home buttons and the profile picture now sits right against the icon, with no gap, in every Icon shape (round, rounded square, square).
+- Import a folder (Home + > Import a folder, Add game > Games folder, Add emulator > Emulators folder, Settings > Library): Ionea finds every emulator and game in one folder and its subfolders and shows them on one screen, one row per system, so a big collection is added in one go. Systems come from folder names such as "SNES", "PS2" or "Nintendo - Game Boy Advance", or from a file type only one system uses.
+- Games can be added before there is an emulator for them. Starting one says it needs an emulator or native port and offers to download or add one. The first emulator added for that system then runs the game.
 
 ## 1.0.6 (2026-11-23)
 - Two games with the same file name in different folders no longer swap saves between profiles. Each has its own saves per profile; saves made by an earlier version are found and kept.

@@ -304,6 +304,7 @@ public sealed class AddEmulatorCard : MenuCard
                 EmuPick.AddExe(w, exe);
             });
         });
+        AddRow(T("settings.emulators_folder"), () => T("settings.every_emulator_in_a_folder"), activate: () => { Close(false); ScanCard.PickFolder(w, () => new EmulatorsCard(w).Open()); });
         AddRow(T("settings.look_for_emulators"), () => T("settings.on_this_pc"), activate: () => { Close(false); ScanCard.Run(w, false, () => new EmulatorsCard(w).Open()); });
         AddRow(T("common.cancel"), activate: () => { Close(); new EmulatorsCard(w).Open(); });
     }
@@ -344,6 +345,7 @@ public static class EmuPick
             var e = w.Emus.FromPreset(p, exe);
             e.Controls = true;   // Ionea manages its controls, as for every emulator; its page's switch turns it off
             w.Emus.Add(e);
+            w.Emus.Adopt(w.Lib, new[] { e });   // games waiting for an emulator of its systems take it
             Sounds.Play("favorite");
             w.Toasts.Show(T("settings.emulator_added"), $"{e.Name}: {e.SystemText}", "plus");
             Next(w, e);
@@ -477,14 +479,11 @@ public sealed class AddRomFlow
 
     public void Start(string pickedForTest = null)
     {
-        if (w.Emus.Data.Emulators.Count == 0)
-        {
-            new MessageCard(w, T("settings.add_an_emulator_first"), T("settings.game_files_start_through_an_emulator")).Open();
-            return;
-        }
+        // With no emulator for it yet a game file is added all the same (it asks for one when started), so the
+        // picker shows the main systems' files too.
         if (pickedForTest == null)
         {
-            var exts = w.Emus.AllExts();
+            var exts = w.Emus.AllExts().Concat(EmuCatalog.Systems.Where(s => !s.More).SelectMany(s => s.Exts)).Distinct(StringComparer.OrdinalIgnoreCase).OrderBy(x => x, StringComparer.Ordinal).ToList();
             string roms = NewRoms.GameRoots(w).FirstOrDefault();
             Picker.File(w, T("settings.choose_a_game_file"), T("settings.game_files") + string.Join(";", exts.Select(x => "*" + x)) + T("settings.all_files"), exts.ToArray(),
                 roms ?? Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Use);
@@ -500,6 +499,8 @@ public sealed class AddRomFlow
         var fits = w.Emus.ForFile(rom);
         if (fits.Count == 0)
         {
+            // None plays it: added with its system when Ionea can tell it (header, folder name, file type).
+            if (Scan.SystemOfFile(rom) is string sys) { new AddRomCard(w, rom, null, sys).Open(); return; }
             new MessageCard(w, T("settings.no_emulator_for_this_file"), T("settings.none_of_your_emulators_opens_files", Path.GetExtension(rom))).Open();
             return;
         }
@@ -528,7 +529,8 @@ public sealed class EmuChoiceCard : MenuCard
 public sealed class AddRomCard : MenuCard, IScreen
 {
     readonly string rom;
-    readonly Emulator emu;
+    readonly Emulator emu;   // null: none plays it yet (system says what it needs)
+    readonly string system;
     readonly System.Windows.Controls.TextBox box;
     readonly System.Windows.Controls.TextBlock msg;
     readonly System.Windows.Controls.Border preview;
@@ -539,9 +541,9 @@ public sealed class AddRomCard : MenuCard, IScreen
     public bool WantsText => InBox;
     public System.Windows.Controls.TextBox NameBox => box;
 
-    public AddRomCard(MainWindow w, string file, Emulator e) : base(w, T("home.add_game"), 1080)
+    public AddRomCard(MainWindow w, string file, Emulator e, string system = null) : base(w, T("home.add_game"), 1080)
     {
-        rom = file; emu = e;
+        rom = file; emu = e; this.system = system;
         var top = new System.Windows.Controls.Grid { Margin = new Thickness(0, 0, 0, 20) };
         top.ColumnDefinitions.Add(new System.Windows.Controls.ColumnDefinition { Width = new GridLength(230) });
         top.ColumnDefinitions.Add(new System.Windows.Controls.ColumnDefinition());
@@ -557,9 +559,10 @@ public sealed class AddRomCard : MenuCard, IScreen
         right.Children.Add(box);
         box.GotKeyboardFocus += (_, _) => { if (Focus >= 0) { Focus = -1; Refresh(); } };
         right.Children.Add(new System.Windows.Controls.Border { Height = 3, CornerRadius = new CornerRadius(1.5), Background = P.Accent, Margin = new Thickness(0, 2, 0, 0), RenderTransform = shake });
-        var path = Fonts.Text($"{e.Name}  ·  {Path.GetFileName(rom)}", 20, P.Text2); path.Margin = new Thickness(0, 14, 0, 0);
+        string with = e?.Name ?? $"{EmuCatalog.System(system)?.Name ?? system}  ·  {T("settings.no_emulator_yet")}";
+        var path = Fonts.Text($"{with}  ·  {Path.GetFileName(rom)}", 20, P.Text2); path.Margin = new Thickness(0, 14, 0, 0);
         right.Children.Add(path);
-        msg = Fonts.Text(T("home.enter_adds_the_game_down_for"), 22, P.Text2); msg.Margin = new Thickness(0, 10, 0, 0);
+        msg = Fonts.Text(e == null ? T("settings.added_with_no_emulator") : T("home.enter_adds_the_game_down_for"), 22, P.Text2); msg.Margin = new Thickness(0, 10, 0, 0);
         msg.TextWrapping = TextWrapping.Wrap; msg.TextTrimming = TextTrimming.None;
         right.Children.Add(msg);
         top.Children.Add(right);
@@ -610,13 +613,13 @@ public sealed class AddRomCard : MenuCard, IScreen
         string err = AddGameLogic.CheckName(name, w.Lib) ?? RomLogic.Check(rom, w.Lib);
         if (err != null) { Error(err); if (Focus >= 0) { Focus = -1; Refresh(); box.Focus(); } return; }
         Game g;
-        try { g = RomLogic.Commit(w.Lib, rom, emu, name, photo ?? iconCover, coverFrom: photo != null ? "own" : "icon"); if (w.Home?.ViewFolder is string f) { g.Folder = f; w.Lib.Save(); } }
+        try { g = RomLogic.Commit(w.Lib, rom, emu, name, photo ?? iconCover, system, coverFrom: photo != null ? "own" : "icon"); if (w.Home?.ViewFolder is string f) { g.Folder = f; w.Lib.Save(); } }
         catch (Exception e) { Log.Write("add rom: " + e); Error(T("home.could_not_add_the_game") + e.Message); return; }
         Close(false);
         Sounds.Play("favorite");
         w.Home?.Rebuild(g.Id);
         w.Home?.SlideIn();
-        w.Toasts.Show(T("home.game_added"), $"{name}  ·  {emu.Name}", "plus");
+        w.Toasts.Show(T("home.game_added"), $"{name}  ·  {emu?.Name ?? T("settings.no_emulator_yet")}", "plus");
         if (string.IsNullOrEmpty(w.Opt.Script)) Covers.Queue(w);   // its box art now, not at the next start (test scripts use coverfetch)
     }
 

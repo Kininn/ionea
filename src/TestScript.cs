@@ -872,6 +872,7 @@ public sealed class TestScript
                 case "fullscreen": w.SetFullscreen(arg == "on"); next = 600; break;
                 // the scan, covers, the emulator download
                 case "scan": ScanCard.Run(w, arg == "first", null, arg == "deep"); next = 300; break;   // scan [first|deep]
+                case "scanfolder": ScanCard.RunFolder(w, TP(arg)); next = 300; break;   // scanfolder <folder>: Import a folder with that folder chosen (waitscan, then as scan)
                 case "waitscan":   // waitscan <seconds>: until the results are shown
                 {
                     var until = DateTime.Now.AddSeconds(double.Parse(arg, CultureInfo.InvariantCulture));
@@ -1026,6 +1027,10 @@ public sealed class TestScript
             "scanrows" => ScanCard.Current?.Summary ?? "none",
             "scannot" => ScanCard.Current?.Summary is string sn && !sn.Contains(want) ? want : "found in: " + (ScanCard.Current?.Summary ?? "none"),
             "scanhas" => ScanCard.Current?.Summary is string ss && ss.Contains(want) ? want : "not in: " + (ScanCard.Current?.Summary ?? "none"),
+            // gameemu <game>|<emulator name or none>: the emulator a game plays with
+            "gameemu" => w.Lib.Data.Games.FirstOrDefault(g => g.Name == want.Split('|')[0]) is Game ge ? ge.Name + "|" + (w.Emus.Get(ge.Emulator)?.Name ?? "none") : "no game",
+            // noemucard <part>: the card a game with no emulator shows on start, its title, text or a row
+            "noemucard" => NoEmulatorCard.Current?.Summary is string ns && ns.Contains(want) ? want : "not in: " + (NoEmulatorCard.Current?.Summary ?? "none"),
             "requests" => Online.Requests.ToString(),
             "updatestate" => Updater.TestState,                  // notchecked | uptodate | available <version> | failed | refused
             "updatedetail" => (Updater.Detail ?? "").Contains(want) ? want : Updater.Detail ?? "none",   // updatedetail <part of the sentence>

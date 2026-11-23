@@ -19,6 +19,7 @@ public sealed class AddMenuCard : MenuCard
         Opens(WithIcon(AddRow(T("home.game"), activate: () => { Close(false); new AddChoiceCard(w).Open(); }), "plus"));
         Opens(WithIcon(AddRow(T("home.emulator"), activate: () => { Close(false); new AddEmulatorCard(w).Open(); }), "chip"));
         Opens(WithIcon(AddRow(T("home.container"), activate: () => { Close(false); ContainerPickCard.Start(w); }), "folder"));
+        Opens(WithIcon(AddRow(T("settings.import_a_folder"), () => T("settings.games_and_emulators_in_it"), activate: () => { Close(false); ScanCard.PickFolder(w); }), "search"));
         AddRow(T("common.cancel"), activate: () => Close());
     }
 }
