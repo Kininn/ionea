@@ -403,6 +403,7 @@
     "one": "{0} game",
     "other": "{0} games"
   },
+  "settings.games_heading": "Games",
   "settings.systems": "Systems",
   "settings.file_types": "File types",
   "settings.file_types_separate_with_spaces": "File types (separate with spaces)",

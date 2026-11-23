@@ -56,7 +56,7 @@ public sealed class EmulatorCard : MenuCard
     {
         int games = w.Lib.Data.Games.Count(g => g.Emulator == e.Id && !g.Removed);
         // In boxes: what it plays, the program itself, how Ionea runs it, then remove / done.
-        BeginBox(T("settings.games"));
+        BeginBox(T("settings.games_heading"));
         AddRow(T("settings.systems"), () => e.SystemText, activate: () => { Close(false); new SystemPickCard(w, e, false).Open(); });
         AddRow(T("settings.file_types"), () => string.Join(" ", e.Exts), activate: () =>
             new TextCard(w, T("settings.file_types_separate_with_spaces"), string.Join(" ", e.Exts), 200, v =>

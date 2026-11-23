@@ -18,7 +18,7 @@
 </p>
 
 <p align="center">
-  <img src="assets/screenshots/home.png" width="860" alt="Ionea's home screen">
+  <img src="assets/screenshots/home.jpg" width="860" alt="Ionea's home screen">
 </p>
 
 ---
@@ -64,6 +64,27 @@ then check in Settings > About and updates. Needs Windows 10 or 11 (64-bit), and
 - Game info: version, updates, add-ons, region, size and play time; cover choice and adjustment.
 - Per-game display, graphics and performance settings, and an in-game performance overlay.
 - Optional Discord status, cover downloads and updates from a GitHub release.
+
+## Screenshots
+
+<table>
+  <tr>
+    <td align="center"><img src="assets/screenshots/home-large.jpg" width="420" alt="Large layout"><br><sub>Large layout</sub></td>
+    <td align="center"><img src="assets/screenshots/home-light.jpg" width="420" alt="Light theme"><br><sub>Light theme</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="assets/screenshots/in-game-menu.jpg" width="420" alt="The Home menu over a running game"><br><sub>The Home menu over a running game</sub></td>
+    <td align="center"><img src="assets/screenshots/game-options.jpg" width="420" alt="Hold a tile for its quick menu"><br><sub>Hold a tile for its quick menu</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="assets/screenshots/game-info.jpg" width="420" alt="Game info: version, region, size and play time"><br><sub>Game info: version, region, size and play time</sub></td>
+    <td align="center"><img src="assets/screenshots/search.jpg" width="420" alt="Search as you type"><br><sub>Search as you type</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="assets/screenshots/settings.jpg" width="420" alt="Settings: look and layout"><br><sub>Settings: look and layout</sub></td>
+    <td align="center"><img src="assets/screenshots/emulator.jpg" width="420" alt="An emulator: systems, file types, program and required files"><br><sub>An emulator: systems, file types, program and required files</sub></td>
+  </tr>
+</table>
 
 ## More
 
