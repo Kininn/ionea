@@ -12,7 +12,7 @@
 // the Discord app does. No Discord running: try again every 15 s. Discord drops the status when the pipe closes.
 // The application ("Ionea", id below) and its art asset "ionea" live in the Discord Developer Portal.
 // Per profile on/off: Settings > Profile or Network > Discord status (Settings.Discord, ProfilePrefs.Discord).
-// Off, or Offline mode on: the pipe is closed and not opened again until it is on. Each connection
+// Off, or the network connection off: the pipe is closed and not opened again until it is on. Each connection
 // is written to the network activity log (Online.Note).
 // Test hook: IONEA_DISCORD_PIPE names the pipe to use instead (a fake Discord), so tests never reach the real one.
 using System;

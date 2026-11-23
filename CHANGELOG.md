@@ -2,6 +2,11 @@
 
 Newest first. Settings > About and updates shows this file from the update source.
 
+## 1.0.4 (2026-11-23)
+- Offline mode is now the Network connection switch in Settings > Network, like a Wi-Fi switch: off by default, and Ionea goes online only while it is on. Your current choice carries over.
+- Settings > About and updates has Update notification (at launch, says when a new version is out) and Auto update (at launch, installs a new version and restarts; never while a game is running). Both are off by default.
+- Launcher updates no longer have their own switch in Settings > Network: checking, Update notification and Auto update in About and updates are how you ask for them, with the network connection on.
+
 ## 1.0.3 (2026-11-23)
 - Updates come only from Ionea's own GitHub releases (github.com/Kininn/ionea). The address is built in and shown in Settings > About and updates; it can't be changed or mistyped.
 - Removed the "Update from" choice, the source folder, the repo address and the access token from Settings > About and updates. Older settings with these saved still load; the saved values are ignored.

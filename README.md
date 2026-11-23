@@ -41,8 +41,8 @@ keeps your data unless you say otherwise.
 **Portable:** unpack `Ionea-<version>.zip` into any folder you can write to and start `Launcher.exe`. The data
 folder is made next to it, so the whole folder can be moved.
 
-Either way, Ionea can update itself from this page's releases: switch on Launcher updates in Settings > Network,
-then check in Settings > About and updates. Needs Windows 10 or 11 (64-bit), and OpenGL
+Either way, Ionea can update itself from this page's releases: switch on the network connection in Settings >
+Network, then check in Settings > About and updates (or switch on Update notification or Auto update there). Needs Windows 10 or 11 (64-bit), and OpenGL
 3.3 or newer for cores that draw with the GPU.
 
 ## Features
@@ -92,8 +92,8 @@ then check in Settings > About and updates. Needs Windows 10 or 11 (64-bit), and
 <summary><b>First start</b></summary>
 
 1. Create a profile: a name and, if you like, a picture.
-2. Network: Ionea stays offline until you switch something on. Each kind of online use (covers, emulator and core
-   downloads, definition updates, launcher updates) has its own switch, and all start off. A program (an emulator
+2. Network: the Network connection switch starts off, so Ionea stays offline until you switch it on. Each kind of
+   online use (covers, emulator and core downloads, definition updates) also has its own switch, and all start off. A program (an emulator
    or a core) is only downloaded after you confirm it. Settings > Network > Network activity lists every request.
 3. The scan looks for emulators and game folders on this PC. When it finds nothing, it offers to download an
    emulator or a core.
@@ -140,10 +140,11 @@ own controls.
 - **Sound**: launcher sounds and levels.
 - **Controls**: devices, pop-ups when a device connects, launcher keys and game controls.
 - **Library**: emulators, storage places, removed games, adding games, looking for emulators, Task Manager grouping.
-- **Network**: offline mode (per profile), the online switches, network activity, a SteamGridDB key and Discord
+- **Network**: the network connection (per profile, off by default), the online switches, network activity, a SteamGridDB key and Discord
   status.
 - **About and updates**: version, changelog, the tutorial, where updates come from (this repository's releases, built in),
-  checking for and installing updates, and going back to the previous version.
+  checking for and installing updates, Update notification and Auto update at launch (both off by default), and
+  going back to the previous version.
 
 </details>
 

@@ -92,8 +92,8 @@ public sealed class Settings
     public bool Outro { get; set; } = true;           // the short outro when the launcher closes (Outro.cs)
     public bool NintendoButtons { get; set; }        // games in the launcher: Xbox A/B swapped to the Nintendo positions
     public bool Discord { get; set; } = true;        // "Playing Ionea" + the game on Discord (Discord.cs); per profile
-    // Offline mode (Online.cs): no online connection of any kind. Per profile and on for every new one; kept only
-    // in the profile's file, so before a profile is chosen Ionea stays offline.
+    // The Network connection switch, inverted (Online.cs): true = off, no online connection of any kind. Per profile
+    // and off for every new one; kept only in the profile's file, so before a profile is chosen Ionea stays offline.
     [JsonIgnore] public bool Offline { get; set; } = true;
     public List<Place> Places { get; set; }          // where game files can be stored (null: Storage.Defaults)
     public InputPrefs Input { get; set; } = new();   // keyboard / controller / mouse: on or off, pop-ups, bindings (InputSetup.cs)

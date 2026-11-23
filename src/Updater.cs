@@ -4,7 +4,9 @@
 //   (AppVersion). Shown in Settings > About and updates and small in the start screen's corner.
 //   One update source, not a setting: the latest release of Ionea's own GitHub repo (Updater.Owner/Name, built in,
 //     so no other repo can be set or mistyped; tag = version, a .zip asset with a SHA-256). Only with
-//     Offline mode off and the "Launcher updates" online switch on (Online.cs), both off by default. Every request
+//     the network connection on (Online.cs; off by default), and only when asked for in About and updates: Check for
+//     updates, or at launch Update notification (a pop-up) / Auto update (installs and restarts), both off by
+//     default (AtLaunch). Every request
 //     goes to api.github.com/repos/<Owner>/<Name>/ only (RepoApi); GitHub sends the zip on to its file storage.
 //     Update now asks once, downloads the zip into
 //     <install>\update\download, checks its SHA-256, unpacks it and swaps. A matching zip already in the Inbox or
@@ -40,7 +42,8 @@ public sealed class UpdatePrefs
 {
     // (no update source here: updates come only from Updater.Owner/Name; an old settings.json's Kind / Folder /
     // Repo / TokenSealed are ignored)
-    public bool CheckAtStart { get; set; }         // off by default
+    public bool CheckAtStart { get; set; }         // Update notification: at launch, a pop-up when a new version is out. Off by default
+    public bool AutoUpdate { get; set; }           // Auto update: at launch, installs a new version and restarts. Off by default
     public DateTime? LastChecked { get; set; }
     public string LastResult { get; set; }
     public string RestartedFrom { get; set; }      // set just before a restart into another version: the toast after it
@@ -157,7 +160,8 @@ public static class Updater
 
     // ---- checking ----
 
-    public static async Task Check(MainWindow w, bool quiet = false)
+    // quiet: no error pop-up (at launch); notify: then a pop-up when a new version is out.
+    public static async Task Check(MainWindow w, bool quiet = false, bool notify = true)
     {
         if (Busy) return;
         Offer = null;
@@ -170,7 +174,7 @@ public static class Updater
         }
         catch (Exception e) { Set(UpdateState.Failed, T("settings.failed"), T("settings.the_check_failed", e.Message)); }
         P.LastChecked = DateTime.Now; P.LastResult = Detail; settings.Save();
-        if (State == UpdateState.Available && quiet) w.Toasts.Show(T("settings.update_ready"), T("settings.ionea_settings_about_and_updates", Offer.VersionText), "info");
+        if (State == UpdateState.Available && quiet && notify) w.Toasts.Show(T("settings.update_ready"), T("settings.ionea_settings_about_and_updates", Offer.VersionText), "info");
         else if (!quiet && State is UpdateState.Failed or UpdateState.Refused) w.Toasts.Show(T("settings.update_check"), Detail, "error");
     }
 
@@ -241,10 +245,10 @@ public static class Updater
         string info = Path.Combine(WorkDir, "release.json");
         var hdr = ApiHeaders("application/vnd.github+json");
         int code = 0;
-        // the release's page: a data file (no question), refused while Offline mode is on or the Launcher updates switch is off
+        // the release's page: a data file (no question), refused while the network connection is off
         var r = await Online.Download(w, "updates", RepoApi(owner, name) + "releases/latest", info, T("settings.ionea_release_info"), hdr, info: true, status: c => code = c);
-        if (r == OnlineResult.Blocked)
-            return (UpdateState.Refused, Online.Offline ? T("settings.offline") : T("settings.switched_off"), Online.Offline ? T("settings.offline_mode_is_on_settings_network") : T("settings.the_launcher_updates_switch_is_off"), null);
+        if (r == OnlineResult.Blocked && Online.Offline)
+            return (UpdateState.Refused, T("settings.offline"), T("settings.the_network_connection_is_off"), null);
         if (r != OnlineResult.Done) return (UpdateState.Failed, T("settings.failed"), T("settings.the_release_page_could_not_be_read", owner, name, Online.Word(r) + (code > 0 ? ", " + code : "")), null);
 
         using var doc = JsonDocument.Parse(File.ReadAllText(info));
@@ -355,8 +359,8 @@ public static class Updater
         return Convert.ToHexString(SHA256.HashData(s)).ToLowerInvariant();
     }
 
-    // The release's zip into <install>\update\download (off the UI thread): through Online.Download (Offline mode,
-    // the switch, the repo's own address and the network log all apply), then its size and SHA-256 checked.
+    // The release's zip into <install>\update\download (off the UI thread): through Online.Download (the network
+    // connection, the repo's own address and the network log all apply), then its size and SHA-256 checked.
     // (null, path) when it is there, otherwise (why not, null); a wrong download is deleted.
     public static async Task<(string why, string zip)> FetchZip(MainWindow w, UpdateOffer o)
     {
@@ -368,7 +372,7 @@ public static class Updater
         int code = 0;
         // Update now's question was the question (UpdateAskCard shows what and from where)
         var r = await Online.Download(w, "updates", o.AssetApi, dest, o.AssetName, ApiHeaders("application/octet-stream"), info: true, status: c => code = c).ConfigureAwait(false);
-        if (r == OnlineResult.Blocked) return (Online.Offline ? T("settings.offline_mode_is_on_settings_network_2") : T("settings.the_launcher_updates_switch_is_off_2"), null);
+        if (r == OnlineResult.Blocked && Online.Offline) return (T("settings.the_network_connection_is_off_2"), null);
         if (r != OnlineResult.Done) return (T("settings.the_download_failed", o.AssetName, Online.Word(r) + (code > 0 ? ", " + code : "")), null);
         if ((o.Size > 0 && new FileInfo(dest).Length != o.Size) || Sha(dest) != o.Sha256)
         {
@@ -551,7 +555,7 @@ public static class Updater
         w.Close();
     }
 
-    // At start: the toast after an update, and the check at start when it is on.
+    // At start: the toast after an update, and the launch check when Update notification or Auto update is on.
     public static void AfterStart(MainWindow w, bool script)
     {
         if (P.RestartedFrom is string from)
@@ -564,7 +568,26 @@ public static class Updater
                 Ui.After(1800, () => w.Toasts.Show(back ? T("settings.back_to_the_previous_version") : T("settings.ionea_updated"), $"{AppVersion.Three(fv)} → {AppVersion.Number}" + (AppVersion.BuildNo > 0 ? T("settings.build", AppVersion.BuildNo) : ""), "info"));
             }
         }
-        if (P.CheckAtStart && !script) Ui.After(8000, () => _ = Check(w, quiet: true));
+        if ((P.CheckAtStart || P.AutoUpdate) && !script) Ui.After(8000, () => _ = AtLaunch(w));
+    }
+
+    // The launch check (also TestScript updatelaunch): only with the network connection on (the repo; a test
+    // folder needs none). A new version is a pop-up (Update notification), or with Auto update it is installed
+    // and Ionea restarts into it; never while a game runs (then a pop-up says it waits for Update now).
+    public static async Task AtLaunch(MainWindow w)
+    {
+        if (Busy || (RepoKind && Online.Offline)) return;
+        if (!P.CheckAtStart && !P.AutoUpdate) return;
+        await Check(w, quiet: true, notify: !P.AutoUpdate);
+        if (!P.AutoUpdate || State != UpdateState.Available || Offer == null) return;
+        if (GameRunning(w))
+        {
+            Log.Write("update: auto update waits, a game is running");
+            w.Toasts.Show(T("settings.update_ready"), T("settings.ionea_is_ready_auto_update_waits", Offer.VersionText), "info");
+            return;
+        }
+        Log.Write("update: auto update to " + Offer.VersionText);
+        UpdateNow(w, confirmed: true);
     }
 
     // ---- what the rows show ----

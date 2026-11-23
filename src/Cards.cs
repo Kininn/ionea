@@ -282,7 +282,7 @@ public class MenuCard : Card
         ["Remove from the list"] = "minus", ["Remove from the launcher"] = "trash", ["Removed games"] = "hidden",
         ["Uninstall"] = "trash", ["Uninstall with Steam"] = "trash",
         ["Profile and play stats"] = "person", ["Switch profile"] = "swap", ["Discord status"] = "chat", ["Group in Task Manager"] = "chip",
-        ["Offline mode"] = "globe", ["Language"] = "globe", ["Network activity"] = "info", ["Clear log"] = "trash",
+        ["Network connection"] = "globe", ["Language"] = "globe", ["Network activity"] = "info", ["Clear log"] = "trash",
         ["Picture"] = "picture", ["Remove the picture"] = "minus", ["Rename"] = "pen",
         ["Add a profile"] = "plus", ["Remove a profile"] = "minus",
         ["Look"] = "look", ["Theme"] = "look", ["Brightness"] = "sun", ["Display"] = "screen", ["Screen mode"] = "screen", ["Games display"] = "screen", ["Game display"] = "screen", ["Sort"] = "sort", ["Performance overlay"] = "gauge", ["Intro at start"] = "spark", ["Outro when closing"] = "spark", ["Icon shape"] = "layout", ["Colours"] = "palette", ["Layout"] = "layout", ["Order"] = "sort",
@@ -302,7 +302,7 @@ public class MenuCard : Card
         ["Add a file or zip"] = "file", ["Add a folder"] = "folder", ["Cover"] = "picture", ["Change cover"] = "picture",
         ["Restart now"] = "restart", ["Quit"] = "door",
         ["Version"] = "info", ["Updates from"] = "globe",
-        ["Check for updates"] = "search", ["Update now"] = "save", ["Check at start"] = "bell", ["Last checked"] = "history",
+        ["Check for updates"] = "search", ["Update now"] = "save", ["Update notification"] = "bell", ["Auto update"] = "restart", ["Last checked"] = "history",
         ["Changelog"] = "file", ["Go back to the previous version"] = "restart",
     };
 
@@ -540,15 +540,16 @@ public class MenuCard : Card
         return r;
     }
 
-    // The network rows (Online.cs): the first start's Network screen and Settings > Network. Offline mode on
-    // top; while it is on every other network row is greyed and does nothing (a pop-up says why).
+    // The network rows (Online.cs): the first start's Network screen and Settings > Network. The Network connection
+    // switch on top (off by default, like a Wi-Fi switch); while it is off every other network row is greyed and
+    // does nothing (a pop-up says why).
     protected void OnlineRows(Action connection = null)
     {
         BeginBox(T("settings.connection"));
-        Aside(AddRow(T("settings.offline_mode"), () => Online.Offline ? T("common.on") : T("common.off"), _ => Online.SetOffline(!Online.Offline)), T("settings.no_connection_at_all"));
+        Aside(AddRow(T("settings.network_connection"), () => Online.Offline ? T("common.off") : T("common.on"), _ => Online.SetOffline(!Online.Offline)), T("settings.off_ionea_never_goes_online"));
         connection?.Invoke();
         BeginBox(T("settings.sources"));
-        foreach (var it in Online.Items)
+        foreach (var it in Online.Switches)
         {
             var i = it;
             NetRow(Aside(AddRow(i.Label, () => Online.Switched(i.Id) ? T("common.on") : T("common.off"), _ => { if (!OfflineSaysNo()) Online.Set(i.Id, !Online.Switched(i.Id)); }), Online.HostsText(i)));
@@ -556,12 +557,12 @@ public class MenuCard : Card
         EndBox();
     }
 
-    // A row that only matters online: greyed while Offline mode is on.
+    // A row that only matters online: greyed while the network connection is off.
     protected Row NetRow(Row r) { r.Dim = () => Online.Offline; return r; }
     protected bool OfflineSaysNo()
     {
         if (!Online.Offline) return false;
-        w.Toasts.Show(T("settings.offline_mode_is_on"), T("settings.switch_it_off_first"), "info");
+        w.Toasts.Show(T("settings.network_connection_is_off"), T("settings.switch_it_on_first"), "info");
         return true;
     }
 
@@ -1385,7 +1386,7 @@ public sealed class SettingsCard : MenuCard
         Note(T("settings.on_emulators_show_in_ionea_s"), 22, new Thickness(28, -2, 0, 10), RowHost);
     }
 
-    // Settings > Network (Online.cs): Offline mode, the sources with their hosts, the SteamGridDB key, the Discord
+    // Settings > Network (Online.cs): the network connection, the sources with their hosts, the SteamGridDB key, the Discord
     // status, and the activity log (kept on this PC only).
     void BuildOnline()
     {
@@ -1412,14 +1413,18 @@ public sealed class SettingsCard : MenuCard
         Opens(AddRow(T("settings.changelog"), activate: () => new ChangelogCard(w).Open()));
         AddRow(T("settings.watch_the_tutorial"), () => "", activate: () => { Close(false); w.Tutor.Begin(); });
         BeginBox(T("settings.updates"));
-        // Ionea's own releases, built in (Updater.Owner/Name): shown, never changed. Goes online only through the
-        // Launcher updates switch (Network), never offline.
+        // Ionea's own releases, built in (Updater.Owner/Name): shown, never changed. Goes online only when asked
+        // for here (a check, Update notification, Auto update) and only with the network connection on.
         Aside(AddRow(T("settings.update_from"), () => "github.com/" + Updater.RepoName),
-            Online.Offline ? T("settings.offline_mode_is_on") : T("settings.launcher_updates_switch") + (Online.Allowed("updates") ? "on" : "off"));
+            Online.Offline ? T("settings.network_connection_is_off") : T("settings.network_connection_is_on"));
         AddRow(T("settings.check_for_updates"), () => Updater.Status, activate: () => _ = Updater.Check(w));
         var now = AddRow(T("settings.update_now"), () => Updater.OfferText, activate: () => Updater.UpdateNow(w));
         now.Dim = () => Updater.Offer == null;
-        AddRow(T("settings.check_at_start"), () => u.CheckAtStart ? T("common.on") : T("common.off"), _ => { u.CheckAtStart = !u.CheckAtStart; w.Settings.Save(); Refresh(); });
+        // Both off by default; at launch, with the network connection on (Updater.AtLaunch).
+        Aside(AddRow(T("settings.update_notification"), () => u.CheckAtStart ? T("common.on") : T("common.off"), _ => { u.CheckAtStart = !u.CheckAtStart; w.Settings.Save(); Refresh(); }),
+            T("settings.at_launch_says_when_a_new"));
+        Aside(AddRow(T("settings.auto_update"), () => u.AutoUpdate ? T("common.on") : T("common.off"), _ => { u.AutoUpdate = !u.AutoUpdate; w.Settings.Save(); Refresh(); }),
+            T("settings.at_launch_installs_a_new"));
         AddRow(T("settings.last_checked"), () => Updater.LastCheckedText);
         BeginBox(T("settings.previous_version"));
         var back = AddRow(T("settings.go_back"), () => Updater.PreviousVersion is Version v ? AppVersion.Three(v) + (v.Revision > 0 ? $" ({v.Revision})" : "") : T("common.none"),

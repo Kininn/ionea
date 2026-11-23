@@ -66,7 +66,7 @@ public sealed class MainWindow : Window
         Loc.Use(opt.Language ?? Settings.Language, opt.DataDir);   // UI language (Loc.cs)
         EmbedLogic.Group = Settings.TaskManagerGroup;
         if (!EmbedLogic.Group) EmbedLogic.RemoveLinks();
-        Online.Init(Settings, opt.DataDir);   // Offline mode, the source switches and the activity log (Online.cs)
+        Online.Init(Settings, opt.DataDir);   // the network connection, the source switches and the activity log (Online.cs)
         Online.Changed += () => RefreshDiscord();
         Updater.Init(Settings);               // version and updates (Updater.cs)
         if (!string.IsNullOrEmpty(opt.Script)) Online.TestHost = opt.OnlineTestHost;
@@ -457,7 +457,7 @@ public sealed class MainWindow : Window
         string.IsNullOrEmpty(Opt.Script) || Environment.GetEnvironmentVariable("IONEA_DISCORD_PIPE") != null);
     public void RefreshDiscord()
     {
-        if (!Settings.Discord || Online.Offline) { Discord.Set(new(true, null, null, false, null)); return; }   // Offline mode: no Discord status either
+        if (!Settings.Discord || Online.Offline) { Discord.Set(new(true, null, null, false, null)); return; }   // network connection off: no Discord status either
         var g = Launch?.Playing;
         if (g == null) { Discord.Set(new(false, null, null, false, null)); return; }
         bool paused = GameMenu?.Game?.Id == g.Id && GameMenu.Paused;

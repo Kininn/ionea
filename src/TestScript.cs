@@ -739,10 +739,14 @@ public sealed class TestScript
                 case "online":   // online <item> on|off: its switch, as Settings > Going online changes it
                 { var q = arg.Split(' '); Online.Set(q[0], q[1] == "on"); break; }
                 case "onlineforget": Online.Forget(arg); break;
-                case "offline": Online.SetOffline(arg == "on"); break;   // offline on|off: Offline mode, as Settings > Network changes it
+                case "offline": Online.SetOffline(arg == "on"); break;   // offline on|off: the Network connection switch off|on, as Settings > Network changes it
                 // updates (Updater.cs): updatefolder <dir|default> | updatekind folder|repo
                 // | updatecheck (waits for it) | updatenow (no question; waits; logs SCRIPT done before a restart)
                 // | updateback (Go back to the previous version, restarts) | updategame on|off (as if a game were running)
+                // | updatenotify on|off | updateauto on|off (Update notification, Auto update) | updatelaunch (the launch
+                // check, Updater.AtLaunch; waits; logs SCRIPT done before a restart)
+                case "updatenotify": w.Settings.Updates.CheckAtStart = arg == "on"; w.Settings.Save(); break;
+                case "updateauto": w.Settings.Updates.AutoUpdate = arg == "on"; w.Settings.Save(); break;
                 case "updatefolder": Updater.TestFolder = arg == "default" ? null : TP(arg); Updater.Forget(); break;   // never saved
                 case "updatekind": Updater.TestUseFolder = arg == "folder"; Updater.Forget(); break;
                 case "updategame": Updater.TestGameRunning = arg == "on"; break;
@@ -754,14 +758,16 @@ public sealed class TestScript
                     Ui.After(100, Poll); return;
                 }
                 case "updatenow":
+                case "updatelaunch":
                 {
                     Updater.BeforeRestart = () => Log.Write($"SCRIPT done, {fails} failed");
-                    Updater.UpdateNow(w, confirmed: true);
+                    if (cmd == "updatelaunch") _ = Updater.AtLaunch(w); else Updater.UpdateNow(w, confirmed: true);
                     var until = DateTime.Now.AddMinutes(11);
                     void Poll()
                     {
                         if (Program.RestartExe != null) return;   // restarting: this run's script ends here
-                        if (UpdatingCard.Working && DateTime.Now < until) Ui.After(250, Poll); else Ui.After(1000, () => { if (Program.RestartExe == null) Step(); });
+                        // updatelaunch checks first (Busy), then updates (Working)
+                        if ((UpdatingCard.Working || Updater.Busy) && DateTime.Now < until) Ui.After(250, Poll); else Ui.After(1000, () => { if (Program.RestartExe == null) Step(); });
                     }
                     Ui.After(250, Poll); return;
                 }
@@ -1206,7 +1212,7 @@ public sealed class TestScript
             "browserpicked" => picked == "none" ? "none" : Path.GetFileName(picked.TrimEnd('\\')),   // what the file browser gave (its name)
             "browserdir" => FileBrowserCard.Current == null ? "closed" : FileBrowserCard.Current.Dir == null ? "This PC" : Path.GetFileName(FileBrowserCard.Current.Dir.TrimEnd('\\')) is string bn && bn.Length > 0 ? bn : FileBrowserCard.Current.Dir,
             "browserrows" => FileBrowserCard.Current?.Labels ?? "closed",
-            "offline" => Online.Offline ? "on" : "off",   // Offline mode
+            "offline" => Online.Offline ? "on" : "off",   // on = the network connection off
             "hosts" => Online.Find(want.Split('|')[0]) is OnlineItem hi ? hi.Id + "|" + Online.HostsText(hi) : "no item",   // hosts <item>|<shown hosts>
             "onlinelog" => Online.Entries.Count.ToString(),
             "onlinelast" => Online.Entries.LastOrDefault() is OnlineLogEntry ol ? ol.Item + "|" + ol.Result : "none",

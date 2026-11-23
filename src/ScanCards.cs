@@ -156,13 +156,13 @@ public sealed class EmuInstallCard : MenuCard
     public override void Close(bool sound = true) { base.Close(sound); if (Current == this) Current = null; }
 }
 
-// A download that its switch (or Offline mode) does not allow yet: switch that one kind on here and go on,
+// A download that its switch (or the network connection) does not allow yet: switch that one kind on here and go on,
 // instead of a trip to Settings > Network. The download itself is still asked for with its address.
 public sealed class SwitchOnCard : MenuCard
 {
-    public SwitchOnCard(MainWindow w, string kind, Action then) : base(w, Online.Offline ? T("settings.offline_mode_is_on") : kind == "cores" ? T("settings.cores_are_off") : T("settings.emulator_installs_are_off"), 900)
+    public SwitchOnCard(MainWindow w, string kind, Action then) : base(w, Online.Offline ? T("settings.network_connection_is_off") : kind == "cores" ? T("settings.cores_are_off") : T("settings.emulator_installs_are_off"), 900)
     {
-        Note(Online.Offline ? T("settings.needs_offline_off_and_on", Online.Label(kind)) : T("settings.needs_it_on", Online.Label(kind)), 30, new Thickness(4, 0, 0, 26));
+        Note(Online.Offline ? T("settings.needs_the_network_connection_on", Online.Label(kind)) : T("settings.needs_it_on", Online.Label(kind)), 30, new Thickness(4, 0, 0, 26));
         WithIcon(AddRow(T("settings.switch_on"), activate: () =>
         {
             Close(false);

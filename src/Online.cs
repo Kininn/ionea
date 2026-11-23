@@ -1,17 +1,19 @@
 ﻿#nullable disable
 // Network. Ionea reaches the internet only for the kinds of use the
-// user switched on, and not at all while Offline mode is on (per profile, on for every new profile and
-// install). Every download goes through Online.Download:
-//   - Offline mode on, or the item's switch off: refused before any request is made;
+// user switched on, and not at all while the Network connection switch is off (per profile, off for every new
+// profile and install; like a Wi-Fi switch). Every download goes through Online.Download:
+//   - the network connection off, or the item's switch off: refused before any request is made;
 //   - an address outside the item's site (or plain http): refused the same way;
 //   - a program (emulator or core): asks every time and shows the address, even with the switch on;
 //   - every request is written to data\online-log.json (when, what for, the host, how it ended): each redirect
 //     hop is its own entry, refused attempts are written too. The log stays on this PC; Settings > Network >
 //     Network activity shows it and clears it.
 // Nothing else in Ionea goes online: no telemetry, no update or package check of its own. The Discord status
-// talks only to the Discord app on this PC (Discord.cs), and only with Offline mode off.
-// The source switches belong to the PC (the shared settings.json, Settings.OnlineUse); Offline mode is per
-// profile (Settings.Offline / ProfilePrefs.Offline).
+// talks only to the Discord app on this PC (Discord.cs), and only with the network connection on.
+// Launcher updates have no switch here: Settings > About and updates is where they are asked for (Check for
+// updates, Update notification, Auto update; Updater.cs), and they need the network connection on like the rest.
+// The source switches belong to the PC (the shared settings.json, Settings.OnlineUse); the network connection is
+// per profile, saved inverted as Settings.Offline / ProfilePrefs.Offline (true = off, the default).
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -37,6 +39,7 @@ public sealed class OnlineItem
     public string[] Hosts;   // the only places it may download from (and their subdomains); anything else is refused
     public string[] RedirectHosts;   // reached only when a host above sends the request on (GitHub's file storage), never first
     public bool Program;     // an emulator or core: asks every time, even with its switch on
+    public bool NoSwitch;    // no switch in Settings > Network: allowed whenever the network connection is on (asked for elsewhere)
 }
 
 public sealed class OnlineLogEntry
@@ -68,9 +71,10 @@ public static class Online
         new() { Id = "cores", LabelId = "settings.cores", Site = "buildbot.libretro.com", Hosts = new[] { "buildbot.libretro.com" }, Program = true },
         new() { Id = "definitions", LabelId = "settings.definition_updates", Site = "github.com", Hosts = new[] { "github.com", "githubusercontent.com" } },
         new() { Id = "steamgriddb", LabelId = "settings.covers_from_steamgriddb", Site = "steamgriddb.com", Hosts = new[] { "steamgriddb.com" } },   // needs the user's own key
-        // Updater.cs, repo kind only: the set repo's latest release, its SHA-256 list and zip, all asked of
-        // api.github.com/repos/<owner>/<repo>/ (Updater.RepoApi). GitHub sends the files on to its file storage.
-        new() { Id = "updates", LabelId = "settings.launcher_updates", Site = "github.com", Hosts = new[] { "api.github.com", "github.com" }, RedirectHosts = new[] { "githubusercontent.com" }, Program = true },
+        // Updater.cs: Ionea's own latest release, its SHA-256 list and zip, all asked of
+        // api.github.com/repos/<Owner>/<Name>/ (Updater.RepoApi). GitHub sends the files on to its file storage.
+        // No switch: the user asks for it in Settings > About and updates (a check, Update notification, Auto update).
+        new() { Id = "updates", LabelId = "settings.launcher_updates", Site = "github.com", Hosts = new[] { "api.github.com", "github.com" }, RedirectHosts = new[] { "githubusercontent.com" }, Program = true, NoSwitch = true },
     };
     const int Keep = 500;   // log entries kept
 
@@ -83,7 +87,7 @@ public static class Online
     public static OnlineResult? Last;    // how the latest download ended (tests)
     // A log line keeps the address without its query: a signed file address carries a one-time key there.
     static string Clean(string url) { int q = url?.IndexOfAny(new[] { '?', '#' }) ?? -1; return q < 0 ? url : url[..q]; }
-    public static event Action Changed;  // Offline mode or a switch changed (the Discord status follows)
+    public static event Action Changed;  // the network connection or a switch changed (the Discord status follows)
     static readonly object gate = new(); // the log is written from the download and Discord threads too
     static string[] emuHosts;
 
@@ -95,17 +99,20 @@ public static class Online
     }
 
     public static OnlineItem Find(string id) => Items.FirstOrDefault(i => i.Id == id);
+    public static IEnumerable<OnlineItem> Switches => Items.Where(i => !i.NoSwitch);   // what Settings > Network lists
     static Dictionary<string, bool> On => settings?.OnlineUse?.On ?? new();
-    // Offline mode: no online connection of any kind; the source switches keep their answers underneath.
+    // The network connection off (Offline): no online connection of any kind; the source switches keep their
+    // answers underneath.
     public static bool Offline => settings?.Offline ?? true;
     public static bool Switched(string id) => On.TryGetValue(id, out bool on) && on;   // the switch itself
-    public static bool Allowed(string id) => !Offline && Switched(id);                  // may go online now
+    public static bool Allowed(string id) => !Offline && (Find(id) is { NoSwitch: true } || Switched(id));   // may go online now
 
+    // on = the network connection off.
     public static void SetOffline(bool on)
     {
         if (settings == null || settings.Offline == on) return;
         settings.Offline = on; settings.Save();
-        Log.Write($"online: offline mode {(on ? "on" : "off")}");
+        Log.Write($"online: network connection {(on ? "off" : "on")}");
         Changed?.Invoke();
     }
 
@@ -129,7 +136,7 @@ public static class Online
     }
     public static string HostsText(OnlineItem it) => string.Join(", ", HostsOf(it)) + (it.RedirectHosts is { Length: > 0 } r ? T("settings.files_from", string.Join(", ", r)) : "");
     public static string Label(string id) => Find(id)?.Label ?? (id == "discord" ? T("settings.discord_status") : id);
-    public static bool AllAsked => Items.All(i => On.ContainsKey(i.Id));
+    public static bool AllAsked => Switches.All(i => On.ContainsKey(i.Id));
 
     public static void Set(string id, bool on)
     {
@@ -143,9 +150,9 @@ public static class Online
     public static void MarkAsked()
     {
         if (AllAsked) return;
-        foreach (var i in Items) On.TryAdd(i.Id, false);
+        foreach (var i in Switches) On.TryAdd(i.Id, false);
         settings.Save();
-        Log.Write("online: " + string.Join(", ", Items.Select(i => i.Id + " " + (Allowed(i.Id) ? "on" : "off"))));
+        Log.Write("online: " + string.Join(", ", Switches.Select(i => i.Id + " " + (Allowed(i.Id) ? "on" : "off"))));
     }
 
     // Tests: forget one answer, as if that item were new in this version.
@@ -227,12 +234,12 @@ public static class Online
             var it = Find(itemId);
             Uri.TryCreate(url, UriKind.Absolute, out Uri u);
             if (it == null) return Write(itemId, url, OnlineResult.Blocked, 0, "unknown kind of download");
-            if (Offline) return Write(it.Id, url, OnlineResult.Blocked, 0, "offline mode");
+            if (Offline) return Write(it.Id, url, OnlineResult.Blocked, 0, "network off");
             if (!Allowed(it.Id)) return Write(it.Id, url, OnlineResult.Blocked, 0, "switched off");
             if (Refuse(it, u) is string why) return Write(it.Id, url, OnlineResult.Blocked, 0, why);
             if (it.Program && !info && !await Ask(w, name ?? Path.GetFileNameWithoutExtension(dest), u.AbsoluteUri))
                 return Write(it.Id, url, OnlineResult.Cancelled, 0, null);
-            if (!Allowed(it.Id)) return Write(it.Id, url, OnlineResult.Blocked, 0, Offline ? "offline mode" : "switched off");   // changed while asking
+            if (!Allowed(it.Id)) return Write(it.Id, url, OnlineResult.Blocked, 0, Offline ? "network off" : "switched off");   // changed while asking
             var at = new string[] { u.AbsoluteUri };   // the address of the last request (after redirects)
             try { long n = await Fetch(it, u, dest, headers, at, status); return Write(it.Id, at[0], OnlineResult.Done, n, null); }
             catch (Exception e) { return Write(it.Id, at[0], OnlineResult.Failed, 0, e.Message); }
@@ -297,7 +304,7 @@ public static class Online
     public static string HostOf(string url) => Uri.TryCreate(url, UriKind.Absolute, out Uri u) ? (u.IsDefaultPort ? u.Host : u.Authority) : url;
 }
 
-// The first start's Network screen: Offline mode (on), then a switch per kind of use, all off, each with
+// The first start's Network screen: the network connection (off), then a switch per kind of use, all off, each with
 // its hosts. Closing it (Done or B) is the answer; what was not switched on stays off.
 public sealed class OnlineCard : MenuCard
 {
@@ -307,14 +314,14 @@ public sealed class OnlineCard : MenuCard
     public OnlineCard(MainWindow w, Action then = null) : base(w, T("settings.network"), 1180)
     {
         this.then = then;
-        // One press for everything: Offline mode off and every source on (programs still ask each time), or
-        // every source off again once all is on. Done has the focus, so pressing through first start leaves all off.
-        static bool AllOn() => !Online.Offline && Online.Items.All(i => Online.Switched(i.Id));
+        // One press for everything: the network connection on and every source on (programs still ask each time),
+        // or every source off again once all is on. Done has the focus, so pressing through first start leaves all off.
+        static bool AllOn() => !Online.Offline && Online.Switches.All(i => Online.Switched(i.Id));
         var all = WithIcon(AddRow(T("settings.turn_everything_on"), activate: () =>
         {
             bool off = AllOn();
             if (!off && Online.Offline) Online.SetOffline(false);
-            foreach (var i in Online.Items) if (Online.Switched(i.Id) == off) Online.Set(i.Id, !off);
+            foreach (var i in Online.Switches) if (Online.Switched(i.Id) == off) Online.Set(i.Id, !off);
             Sounds.Play("select");
             Refresh();
         }), "globe");
@@ -357,10 +364,10 @@ public sealed class OnlineLogCard : MenuCard
         AddRow(T("common.done"), activate: () => Close());
     }
 
-    // A refused attempt says why: Offline mode, its switch, or a host outside its source.
+    // A refused attempt says why: the network connection off, its switch, or a host outside its source.
     static string Status(string r, string note) => r == "blocked" ? note switch
     {
-        "offline mode" => T("settings.offline"), "switched off" => T("settings.switched_off"),
+        "network off" or "offline mode" => T("settings.offline"), "switched off" => T("settings.switched_off"),   // "offline mode": 1.0.3 and older
         string n when n.StartsWith("not ") => T("settings.other_host"), _ => T("settings.blocked"),
     } : r switch { "cancelled" => T("settings.cancelled"), "failed" => T("settings.failed"), "sent on" => T("settings.sent_on"), "connected" => T("settings.connected"), _ => r };
     static string When(DateTime t) => t.Date == DateTime.Today ? t.ToString("HH:mm") : t.ToString("d MMM HH:mm", System.Globalization.CultureInfo.InvariantCulture);
