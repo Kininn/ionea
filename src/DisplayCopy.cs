@@ -48,6 +48,7 @@ static unsafe class DisplayCopy
             if (CreateDXGIFactory1(IID_Factory1, out factory) < 0) { why = "no DXGI factory"; return null; }
             // The output (screen) holding the game's middle, and its adapter.
             int cx = x + wd / 2, cy = y + ht / 2; int ox = 0, oy = 0, ow = 0, oh = 0; IntPtr mon = 0;
+            byte* desc = stackalloc byte[96];   // DXGI_OUTPUT_DESC, filled again for each output
             for (uint a = 0; output == 0; a++)
             {
                 IntPtr ad;
@@ -56,7 +57,6 @@ static unsafe class DisplayCopy
                 {
                     IntPtr op;
                     if (((delegate* unmanaged<IntPtr, uint, IntPtr*, int>)Fn(ad, 7))(ad, o, &op) < 0) break;   // EnumOutputs
-                    byte* desc = stackalloc byte[96];   // DXGI_OUTPUT_DESC
                     ((delegate* unmanaged<IntPtr, byte*, int>)Fn(op, 7))(op, desc);   // GetDesc
                     int* rc = (int*)(desc + 64); int rot = *(int*)(desc + 84);
                     if (cx >= rc[0] && cx < rc[2] && cy >= rc[1] && cy < rc[3] && rot <= 1)

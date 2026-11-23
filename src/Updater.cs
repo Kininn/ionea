@@ -223,7 +223,7 @@ public static class Updater
             catch { return Array.Empty<string>(); }
         }
         foreach (var f in Files("src", "*.cs", false).Concat(Files("assets", "*", true)).Concat(Files("definitions", "*.json", true))
-            .Concat(new[] { T("settings.launcher_csproj"), "THIRD-PARTY.md" }.Select(n => Path.Combine(dir, n)).Where(File.Exists)))
+            .Concat(new[] { "Launcher.csproj", "THIRD-PARTY.md" }.Select(n => Path.Combine(dir, n)).Where(File.Exists)))
         {
             if (Path.GetFileName(f).Contains(".bak", StringComparison.OrdinalIgnoreCase)) continue;
             var t = File.GetLastWriteTime(f);
@@ -296,7 +296,7 @@ public static class Updater
             Kind = "repo", Version = ver, VersionText = vtext, Why = "a newer release", Changelog = string.IsNullOrWhiteSpace(notes) ? null : notes.Trim(),
             Tag = tag, AssetName = zname, AssetUrl = zurl, AssetApi = zapi, Sha256 = sha.ToLowerInvariant(), Size = size,
         };
-        return (UpdateState.Available, vtext + " ready", T("settings.release_is_newer_than_build", tag, zname, AppVersion.Number, AppVersion.BuildNo), offer);
+        return (UpdateState.Available, T("settings.version_ready", vtext), T("settings.release_is_newer_than_build", tag, zname, AppVersion.Number, AppVersion.BuildNo), offer);
     }
 
     static string Str(JsonElement e, string k) => e.ValueKind == JsonValueKind.Object && e.TryGetProperty(k, out var v) && v.ValueKind == JsonValueKind.String ? v.GetString() : null;
@@ -399,7 +399,7 @@ public static class Updater
                 string logFile = Path.Combine(WorkDir, "build.log");
                 var psi = new ProcessStartInfo(Path.Combine(Environment.SystemDirectory, @"WindowsPowerShell\v1.0\powershell.exe"))
                 { UseShellExecute = false, CreateNoWindow = true, RedirectStandardOutput = true, RedirectStandardError = true, WorkingDirectory = Folder };
-                foreach (var x in new[] { "-NoProfile", "-ExecutionPolicy", T("settings.bypass"), T("settings.file"), script, "-BuildOnly", staged }) psi.ArgumentList.Add(x);
+                foreach (var x in new[] { "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", script, "-BuildOnly", staged }) psi.ArgumentList.Add(x);
                 Log.Write($"update: building {Folder}");
                 using var p = Process.Start(psi);
                 var outT = p.StandardOutput.ReadToEndAsync(); var errT = p.StandardError.ReadToEndAsync();
@@ -462,7 +462,7 @@ public static class Updater
                 if (Directory.Exists(defs)) { Directory.Move(defs, pdefs); movedDefs = true; }
                 CopyTree(ndefs, defs);
             }
-            foreach (var f in new[] { "THIRD-PARTY.md", "CHANGELOG.md" })
+            foreach (var f in new[] { "LICENSE", "THIRD-PARTY.md", "CHANGELOG.md" })
                 if (File.Exists(Path.Combine(staged, f))) File.Copy(Path.Combine(staged, f), Path.Combine(InstallDir, f), true);
             Log.Write($"update: swapped in {nv}; {AppVersion.Full} kept as {Path.GetFileName(prev)}");
             Into = nv;

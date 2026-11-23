@@ -1,4 +1,4 @@
-# Third-party data in Ionea
+# Third-party data and components in Ionea
 
 Ionea ships no emulators, cores, firmware, BIOS files, keys, game files, DLC or updates.
 
@@ -19,6 +19,14 @@ The firmware MD5s in the hand-written `definitions\cores\mgba-core.json`, `melon
 
 Ionea does not ship libretro-database's `System.dat` (CC-BY-SA). If the user puts their own copy in
 `<data>\definitions\`, Ionea reads it on their PC to check BIOS files; nothing from it is copied into Ionea.
+
+## .NET
+
+`Launcher.exe` is published self-contained: it carries the .NET 10 runtime and the Windows Desktop runtime (WPF)
+inside it, so the PC it runs on needs no .NET install. Both are Microsoft's .NET, released under the MIT licence
+(below). Their own third-party notices are in
+[dotnet/runtime](https://github.com/dotnet/runtime/blob/main/THIRD-PARTY-NOTICES.TXT) and
+[dotnet/wpf](https://github.com/dotnet/wpf/blob/main/THIRD-PARTY-NOTICES.TXT).
 
 ## Licences
 
@@ -80,6 +88,34 @@ THE SOFTWARE.
 MIT License
 
 Copyright (c) 2019 The RetroArch team
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+### .NET
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

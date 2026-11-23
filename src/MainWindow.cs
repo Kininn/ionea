@@ -179,14 +179,16 @@ public sealed class MainWindow : Window
     // Every normal close (Quit, Alt+F4, the close button, a test script's quit) comes here first. With the
     // outro on, the close is held: a game open in the Home menu closes first behind its closing screen (its
     // saves written, as Close game does), then the outro plays and the window closes for real. A second close
-    // meanwhile waits for it. Windows shutdown / logoff never waits: it closes at once, as before.
+    // meanwhile waits for it. With the outro off, a close during a game is held the same way, without the outro.
+    // An emulator that is slow to close is never ended on a timer: the StillClosingCard asks. Windows shutdown /
+    // logoff never waits: it closes at once, as before.
     bool quitting, quitDone, sessionEnding;
     public bool Quitting => quitting;   // test scripts: "expect quitting"
     bool OutroOn => Opt.Outro ?? (Settings.Outro && string.IsNullOrEmpty(Opt.Script));
 
     protected override void OnClosing(CancelEventArgs e)
     {
-        if (!quitDone && !sessionEnding && (quitting || OutroOn))
+        if (!quitDone && !sessionEnding && (quitting || OutroOn || GameMenu?.Game != null))
         {
             e.Cancel = true;
             if (!quitting) BeginQuit();
@@ -206,6 +208,7 @@ public sealed class MainWindow : Window
         void Go()
         {
             if (sessionEnding || quitDone) return;
+            if (!OutroOn) { quitDone = true; Close(); return; }
             outro.Play(() => { if (quitDone) return; quitDone = true; Log.Write("outro: done"); Close(); });
         }
         var g = GameMenu?.Game;
@@ -218,7 +221,9 @@ public sealed class MainWindow : Window
         {
             double ms = (DateTime.Now - t0).TotalMilliseconds;
             bool gone = GameMenu.Game == null && Launch.ClosingName == null;
-            if (!gone && ms < 20000) { Ui.After(100, Wait); return; }
+            // A core gets 20 s. An emulator still closing is waited for as long as it runs: after a while the
+            // StillClosingCard asks the user whether to keep waiting or end it.
+            if (!gone && (ms < 20000 || GameMenu.EmulatorClosing)) { Ui.After(100, Wait); return; }
             if (!gone) Log.Write($"quit: \"{g.Name}\" still not closed after 20 s; closing anyway");
             else Log.Write($"quit: \"{g.Name}\" closed after {ms:0} ms");
             Go();

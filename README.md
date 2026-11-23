@@ -157,7 +157,7 @@ folder can't be written (for example under Program Files), it uses `%LOCALAPPDAT
 `--data <folder>` picks another one.
 
 Your own emulator and system definitions go in `data\definitions\` and win over the shipped ones in
-`definitions\`. Updates replace only the program, `definitions\`, `THIRD-PARTY.md` and `CHANGELOG.md`; the data
+`definitions\`. Updates replace only the program, `definitions\`, `LICENSE`, `THIRD-PARTY.md` and `CHANGELOG.md`; the data
 folder is never touched.
 
 </details>
@@ -201,6 +201,6 @@ with Inno Setup 6, when it is installed.
 
 ## Licence
 
-Ionea is released under the MIT License; see [LICENSE](LICENSE). The third-party data used in the definitions, and
-its licences, are listed in [THIRD-PARTY.md](THIRD-PARTY.md). Emulators, cores and other programs you use with
+Ionea is released under the MIT License; see [LICENSE](LICENSE). The third-party data used in the definitions, the
+.NET runtime built into the program, and their licences are listed in [THIRD-PARTY.md](THIRD-PARTY.md). Emulators, cores and other programs you use with
 Ionea keep their own licences.

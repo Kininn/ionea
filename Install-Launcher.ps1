@@ -5,7 +5,7 @@
 # changes its files;
 # the version itself (1.0.0) is VersionPrefix in Launcher.csproj. The installed exe before this one is kept as
 # Launcher.previous.exe (definitions.previous\), so Settings > About and updates > Go back to the previous version works.
-#   -BuildOnly <dir>   build into <dir> only (Launcher.exe, definitions\, THIRD-PARTY.md, CHANGELOG.md), install nothing.
+#   -BuildOnly <dir>   build into <dir> only (Launcher.exe, definitions\, LICENSE, THIRD-PARTY.md, CHANGELOG.md), install nothing.
 #                      Ionea's own Update now uses this, then swaps the exe itself and restarts (Updater.cs).
 #   -BuildNumber <n>   use this build number and leave both counters alone (tests).
 #   -Release           write the number to build.txt (Make-Release.ps1 does this; commit it).
@@ -14,7 +14,7 @@
 #   -FrameworkDependent  a small exe that needs the .NET 10 Desktop Runtime on the PC (the default carries its own).
 # The exe is self-contained: one Launcher.exe with the .NET runtime inside, ReadyToRun, not trimmed
 # (WPF and reflection), so the PC it runs on needs no .NET. The layout is unchanged: Launcher.exe, definitions\,
-# THIRD-PARTY.md, CHANGELOG.md.
+# LICENSE, THIRD-PARTY.md, CHANGELOG.md.
 # Building needs the .NET 10 SDK (dotnet) on PATH; nothing else on the PC is assumed.
 param([string]$Target = (Join-Path $env:SystemDrive 'Ionea\Launcher'), [switch]$NoShortcut, [string]$BuildOnly, [int]$BuildNumber = -1, [string]$Version, [switch]$FrameworkDependent, [switch]$Release)
 $ErrorActionPreference = 'Stop'
@@ -66,7 +66,7 @@ if ($BuildOnly) {
     $bdefs = Join-Path $BuildOnly 'definitions'
     if (Test-Path $bdefs) { Remove-Item $bdefs -Recurse -Force }
     Copy-Item (Join-Path $out 'definitions') $bdefs -Recurse
-    foreach ($f in 'THIRD-PARTY.md', 'CHANGELOG.md') { if (Test-Path (Join-Path $out $f)) { Copy-Item (Join-Path $out $f) (Join-Path $BuildOnly $f) -Force } }
+    foreach ($f in 'LICENSE', 'THIRD-PARTY.md', 'CHANGELOG.md') { if (Test-Path (Join-Path $out $f)) { Copy-Item (Join-Path $out $f) (Join-Path $BuildOnly $f) -Force } }
     Remove-Item $out -Recurse -Force -ErrorAction SilentlyContinue
     Write-Host "Staged in $BuildOnly"
     return
@@ -87,8 +87,8 @@ Write-Host "Installed $exe ($ver)"
 if (Test-Path $defs) { Remove-Item $defs -Recurse -Force }
 Copy-Item (Join-Path $out 'definitions') $defs -Recurse
 Copy-Item (Join-Path $out 'THIRD-PARTY.md') (Join-Path $Target 'THIRD-PARTY.md') -Force
-if (Test-Path (Join-Path $out 'CHANGELOG.md')) { Copy-Item (Join-Path $out 'CHANGELOG.md') (Join-Path $Target 'CHANGELOG.md') -Force }
-Write-Host "Installed $defs ($((Get-ChildItem $defs -Recurse -Filter *.json).Count) files) and THIRD-PARTY.md"
+foreach ($f in 'LICENSE', 'CHANGELOG.md') { if (Test-Path (Join-Path $out $f)) { Copy-Item (Join-Path $out $f) (Join-Path $Target $f) -Force } }
+Write-Host "Installed $defs ($((Get-ChildItem $defs -Recurse -Filter *.json).Count) files), LICENSE and THIRD-PARTY.md"
 
 if (-not $NoShortcut) {
     $desk = [Environment]::GetFolderPath('Desktop')

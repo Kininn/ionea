@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using static Ionea.Loc;
@@ -202,7 +203,7 @@ public static class Online
     {
         // Redirects are followed by hand so each new address is checked against the item's site first.
         var h = new SocketsHttpHandler { AllowAutoRedirect = false, UseCookies = false, ConnectTimeout = TimeSpan.FromSeconds(20) };
-        var c = new HttpClient(h) { Timeout = TimeSpan.FromMinutes(10) };
+        var c = new HttpClient(h) { Timeout = TimeSpan.FromMinutes(10) };   // until the headers; the body is watched by Stall
         c.DefaultRequestHeaders.UserAgent.ParseAdd("Ionea-launcher");
         return c;
     }
@@ -275,12 +276,35 @@ public static class Online
                 if (code < 200 || code >= 300) { status?.Invoke(code); throw new IOException($"{code} {res.ReasonPhrase}"); }
                 Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(dest)));
                 long n;
-                await using (var fs = File.Create(part)) { await res.Content.CopyToAsync(fs).ConfigureAwait(false); n = fs.Length; }
+                await using (var fs = File.Create(part))
+                await using (var body = await res.Content.ReadAsStreamAsync().ConfigureAwait(false))
+                    n = await CopyWatched(body, fs).ConfigureAwait(false);
                 File.Move(part, dest, true);
                 return n;
             }
         }
         catch { try { File.Delete(part); } catch { /* best-effort cleanup; the error is thrown on */ } throw; }
+    }
+
+    // A download that gets no bytes for this long is given up (Failed, its .part removed). A slow one that keeps
+    // coming is never ended: only a silent one.
+    internal static TimeSpan Stall = TimeSpan.FromSeconds(60);
+
+    internal static async Task<long> CopyWatched(Stream from, Stream to)
+    {
+        var buf = new byte[81920];
+        long n = 0;
+        using var idle = new CancellationTokenSource();
+        while (true)
+        {
+            idle.CancelAfter(Stall);   // starts the wait again for each read
+            int got;
+            try { got = await from.ReadAsync(buf, idle.Token).ConfigureAwait(false); }
+            catch (OperationCanceledException) when (idle.IsCancellationRequested) { throw new IOException($"no data for {Stall.TotalSeconds:0} seconds"); }
+            if (got == 0) return n;
+            await to.WriteAsync(buf.AsMemory(0, got)).ConfigureAwait(false);
+            n += got;
+        }
     }
 
     static Task<bool> Ask(MainWindow w, string name, string address)

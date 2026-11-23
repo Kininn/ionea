@@ -1748,6 +1748,46 @@ public sealed class QuitCard : MenuCard
     }
 }
 
+// An emulator asked to close is still running after a while (GameMenu.CloseGame). It may still be writing its
+// saves, so it is only ended when the user says so. Keep waiting (focused; Back too) asks again later. The card
+// goes away by itself once the game has ended. While the launcher quits it sits over the closing screen.
+public sealed class StillClosingCard : MenuCard
+{
+    readonly Action wait;
+    bool answered, shut;
+
+    public StillClosingCard(MainWindow w, string name, Action wait, Action end) : base(w, T("menu.is_still_closing", name), 900)
+    {
+        this.wait = wait;
+        Note(T("menu.still_closing_note"), 30, new Thickness(4, 0, 0, 26));
+        AddRow(T("menu.keep_waiting"), activate: () => Close());
+        AddRow(T("menu.end_it_now"), activate: () => { answered = true; Close(); end(); });
+    }
+
+    public override void Open()
+    {
+        base.Open();
+        if (w.Quitting) { w.CardLayer.Children.Remove(Root); w.LaunchLayer.Children.Add(Root); }
+    }
+
+    public override void Close(bool sound = true)
+    {
+        if (shut) return;
+        shut = true;
+        base.Close(sound);
+        Ui.After(200, () => w.LaunchLayer.Children.Remove(Root));
+        if (!answered) wait();
+    }
+
+    // The game ended meanwhile: nothing left to answer.
+    public void Gone()
+    {
+        if (shut) return;
+        answered = true;
+        Close(false);
+    }
+}
+
 // One-line text entry: Enter saves, Esc cancels.
 public sealed class TextCard : Card, IScreen
 {

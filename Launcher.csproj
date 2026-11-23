@@ -44,6 +44,7 @@
     <Resource Include="assets\icon\ionea-art-1024.png;assets\icon\ionea-eyes-1024.png" />   <!-- the intro and outro (Intro.cs, Outro.cs) -->
     <!-- Emulator and system definitions (EmuDefs.cs): next to the exe; Install-Launcher.ps1 copies them. -->
     <Content Include="definitions\**\*.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
+    <Content Include="LICENSE" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
     <Content Include="THIRD-PARTY.md" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
     <Content Include="CHANGELOG.md" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
   </ItemGroup>

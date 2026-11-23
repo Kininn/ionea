@@ -1,6 +1,6 @@
 ; Ionea's installer (Inno Setup 6, https://jrsoftware.org/isinfo.php). Built by tools\Make-Release.ps1 when ISCC.exe
 ; is found; by hand:
-;   ISCC.exe /DSourceDir=<folder with Launcher.exe, definitions\, THIRD-PARTY.md, CHANGELOG.md> [/DOutputDir=<dir>]
+;   ISCC.exe /DSourceDir=<folder with Launcher.exe, definitions\, LICENSE, THIRD-PARTY.md, CHANGELOG.md> [/DOutputDir=<dir>]
 ;            [/DAppVersion=<x.y.z.b>] installer\Ionea.iss
 ; Per user, no admin: %LOCALAPPDATA%\Programs\Ionea. Start menu shortcut, desktop shortcut if ticked.
 ; The data folder (<install>\data: profiles, settings, library, covers, saves, emulators) is never installed over;
@@ -55,6 +55,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 [Files]
 Source: "{#SourceDir}\Launcher.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourceDir}\definitions\*"; DestDir: "{app}\definitions"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#SourceDir}\LICENSE"; DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
 Source: "{#SourceDir}\THIRD-PARTY.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourceDir}\CHANGELOG.md"; DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
 
@@ -73,6 +74,8 @@ Type: filesandordirs; Name: "{app}\definitions"
 Type: filesandordirs; Name: "{app}\definitions.previous"
 Type: filesandordirs; Name: "{app}\definitions.swap"
 Type: filesandordirs; Name: "{app}\update"
+; an update from a version whose installer had no LICENSE adds it
+Type: files; Name: "{app}\LICENSE"
 
 [Code]
 // An install over an older one: that exe and its definitions become the previous version (Go back), and the

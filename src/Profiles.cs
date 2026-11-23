@@ -33,7 +33,8 @@ public sealed class ProfilesFile
     public string Owner { get; set; }       // the first profile: it took over the saves made before profiles
     public List<Profile> Profiles { get; set; } = new();
     // Standalone emulators that keep saves next to the game file: whose saves sit there now
-    // (ROM file name, lower case -> profile id). Missing = the owner's.
+    // (ROM full path, lower case -> profile id). Missing = the owner's. Older files used the file name alone;
+    // those entries are still read and are replaced by the full path the next time they change.
     public Dictionary<string, string> Beside { get; set; } = new();
 }
 
@@ -185,7 +186,7 @@ public sealed class Profiles
             if (WhoseBeside(g.Rom) != p.Id) continue;
             try { foreach (var f in ProfileSaves.BesideFiles(g.Rom)) MoveFile(f, Path.Combine(ProfileSaves.Stash(this, p.Id, g.Rom), Path.GetFileName(f))); }
             catch (Exception e) { return T("settings.couldn_t_take_s_save_for", p.Name, g.Name, e.Message); }
-            Data.Beside[ProfileSaves.Key(g.Rom)] = Nobody;   // nothing of anyone's is left there
+            SetBeside(g.Rom, Nobody);   // nothing of anyone's is left there
         }
         foreach (var k in Data.Beside.Where(kv => kv.Value == p.Id).Select(kv => kv.Key).ToList()) Data.Beside.Remove(k);
         string err = Directory.Exists(Folder(p)) ? Uninstall.Recycle(new List<string> { Folder(p) }) : null;
@@ -199,7 +200,33 @@ public sealed class Profiles
     }
 
     public const string Nobody = "nobody";
-    public string WhoseBeside(string rom) => Data.Beside.TryGetValue(ProfileSaves.Key(rom), out var id) ? id : Data.Owner;
+    public string WhoseBeside(string rom) =>
+        Data.Beside.TryGetValue(ProfileSaves.Key(rom), out var id) || Data.Beside.TryGetValue(ProfileSaves.OldKey(rom), out id) ? id : Data.Owner;
+
+    public void SetBeside(string rom, string id)
+    {
+        Data.Beside[ProfileSaves.Key(rom)] = id;
+        Data.Beside.Remove(ProfileSaves.OldKey(rom));   // an entry by file name alone could also mean another game
+    }
+
+    // A game file moved (its saves went with it): whose saves sit next to it, and every profile's stash for it,
+    // follow the new path.
+    public void RomMoved(string from, string to)
+    {
+        if (ProfileSaves.Key(from) == ProfileSaves.Key(to)) return;
+        bool known = Data.Beside.ContainsKey(ProfileSaves.Key(from)) || Data.Beside.ContainsKey(ProfileSaves.OldKey(from));
+        string whose = WhoseBeside(from);
+        Data.Beside.Remove(ProfileSaves.Key(from));
+        if (known) SetBeside(to, whose);
+        if (Directory.Exists(Root))
+            foreach (string dir in Directory.GetDirectories(Root))
+            {
+                string a = Path.Combine(dir, "saves", "beside", ProfileSaves.StashName(from)), b = Path.Combine(dir, "saves", "beside", ProfileSaves.StashName(to));
+                try { if (Directory.Exists(a) && !Directory.Exists(b)) Directory.Move(a, b); }
+                catch (Exception e) { Log.Write($"profile: moving the saves kept for {Path.GetFileName(from)}: {e.Message}"); }
+            }
+        Save();
+    }
 
     // The first profile takes the saves made before profiles: the cores' save folders are copied (the
     // originals stay as they are), save states are moved, and "last played" carries over for sorting.
@@ -417,8 +444,19 @@ public static class ProfileSaves
 
     public static bool Separates(Emulator e) => e.IsCore || SavesOf(e) is DefSaves s && (HasFolders(s) || s.Beside);
 
-    public static string Key(string rom) => Path.GetFileName(rom).ToLowerInvariant();
-    public static string Stash(Profiles pr, string id, string rom) => Path.Combine(pr.Root, id, "saves", "beside", Path.GetFileName(rom));
+    // Saves next to the game file are tracked per full path: two games with the same file name in different
+    // folders each have their own entry and their own stash.
+    public static string Key(string rom) => Path.GetFullPath(rom).ToLowerInvariant();
+    public static string OldKey(string rom) => Path.GetFileName(rom).ToLowerInvariant();   // before 1.0.6
+    public static string StashName(string rom) =>
+        Path.GetFileName(rom) + "-" + Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(Key(rom))))[..8].ToLowerInvariant();
+    public static string Stash(Profiles pr, string id, string rom) => Path.Combine(pr.Root, id, "saves", "beside", StashName(rom));
+    // Where a profile's own saves for this game wait: its stash, else one kept by file name alone (before 1.0.6).
+    static string StashToTake(Profiles pr, string id, string rom)
+    {
+        string now = Stash(pr, id, rom), old = Path.Combine(pr.Root, id, "saves", "beside", Path.GetFileName(rom));
+        return !Directory.Exists(now) && Directory.Exists(old) ? old : now;
+    }
 
     public static List<string> BesideFiles(string rom)
     {
@@ -527,18 +565,18 @@ public static class ProfileSaves
         if (!File.GetAttributes(link).HasFlag(FileAttributes.ReparsePoint)) throw new IOException("Couldn't link the save folder: " + err.Trim());
     }
 
-    static string Swap(Profiles pr, string rom)
+    internal static string Swap(Profiles pr, string rom)
     {
         string me = pr.Active.Id, cur = pr.WhoseBeside(rom);
-        if (cur == me) { pr.Data.Beside[Key(rom)] = me; pr.Save(); return null; }
+        if (cur == me) { pr.SetBeside(rom, me); pr.Save(); return null; }
         try
         {
             string theirs = Stash(pr, cur ?? Profiles.Nobody, rom);
             foreach (var f in BesideFiles(rom)) Profiles.MoveFile(f, Path.Combine(theirs, Path.GetFileName(f)));
-            string mine = Stash(pr, me, rom);
+            string mine = StashToTake(pr, me, rom);
             if (Directory.Exists(mine))
                 foreach (var f in Directory.GetFiles(mine)) File.Move(f, Path.Combine(Path.GetDirectoryName(rom), Path.GetFileName(f)));
-            pr.Data.Beside[Key(rom)] = me; pr.Save();
+            pr.SetBeside(rom, me); pr.Save();
             Log.Write($"profile: saves next to {Path.GetFileName(rom)} are now {pr.Active.Name}'s");
             return null;
         }

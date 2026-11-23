@@ -1,7 +1,7 @@
 # Makes a release of Ionea for GitHub (Settings > About and updates > Repo reads it).
 #   The build is self-contained (Install-Launcher.ps1): the PC it runs on needs no .NET.
 #   Ionea-<version>.zip         the portable copy and what the in-app updater downloads: only what an install needs,
-#                               at its top: Launcher.exe, definitions\, THIRD-PARTY.md, CHANGELOG.md. Never a data
+#                               at its top: Launcher.exe, definitions\, LICENSE, THIRD-PARTY.md, CHANGELOG.md. Never a data
 #                               folder, the previous version, update leftovers or backups.
 #   Ionea-<version>-setup.exe   the installer (installer\Ionea.iss), only when Inno Setup 6's ISCC.exe is found
 #                               (-Iscc, PATH, or its usual install folders); otherwise the script says so and goes on.
@@ -21,13 +21,13 @@ try {
         if (-not (Test-Path (Join-Path $From 'Launcher.exe'))) { throw "There is no Launcher.exe in $From." }
         Copy-Item (Join-Path $From 'Launcher.exe') $pack
         Copy-Item (Join-Path $From 'definitions') (Join-Path $pack 'definitions') -Recurse
-        foreach ($f in 'THIRD-PARTY.md', 'CHANGELOG.md') { if (Test-Path (Join-Path $From $f)) { Copy-Item (Join-Path $From $f) $pack } }
+        foreach ($f in 'LICENSE', 'THIRD-PARTY.md', 'CHANGELOG.md') { if (Test-Path (Join-Path $From $f)) { Copy-Item (Join-Path $From $f) $pack } }
     } else {
         & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot '..\Install-Launcher.ps1') -BuildOnly $pack -Release | Out-Host
         if ($LASTEXITCODE) { throw 'Build failed.' }
     }
-    # nothing but the four items, whatever the source folder held
-    Get-ChildItem $pack | Where-Object { $_.Name -notin 'Launcher.exe', 'definitions', 'THIRD-PARTY.md', 'CHANGELOG.md' } | Remove-Item -Recurse -Force
+    # nothing but the five items, whatever the source folder held
+    Get-ChildItem $pack | Where-Object { $_.Name -notin 'Launcher.exe', 'definitions', 'LICENSE', 'THIRD-PARTY.md', 'CHANGELOG.md' } | Remove-Item -Recurse -Force
     Get-ChildItem $pack -Recurse -File | Where-Object { $_.Name -like '*.bak*' } | Remove-Item -Force
     $ver = (Get-Item (Join-Path $pack 'Launcher.exe')).VersionInfo.FileVersion
     $made = @()

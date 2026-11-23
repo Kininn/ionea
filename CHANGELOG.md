@@ -2,6 +2,12 @@
 
 Newest first. Settings > About and updates shows this file from the update source.
 
+## Not released yet
+- Two games with the same file name in different folders no longer swap saves between profiles. Each has its own saves per profile; saves made by an earlier version are found and kept.
+- Close game no longer ends a slow emulator after a few seconds, which could cut off a save. If it is still closing after 15 seconds, Ionea asks: Keep waiting (the default) or End it now. Quitting Ionea during a game waits the same way.
+- A download that stops getting data for a minute is given up instead of waiting forever.
+- The release and the installed folder now include the LICENSE file, and THIRD-PARTY.md lists the .NET runtime built into Ionea and its licence.
+
 ## 1.0.5 (2026-11-23)
 - Moving a game to another folder on the same drive: if a file can't be moved part way (in use by another program), the files already moved go back to where they were. Before, they could be deleted.
 - Moving or uninstalling a multi-disc game (.m3u) now takes each disc's tracks too (the .bin files its .cue names), so the game still plays in its new folder. Dreamcast .gdi tracks whose names have spaces are found too.

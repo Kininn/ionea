@@ -374,6 +374,7 @@ public sealed class MoveCard : Card, IScreen
                 }, newRom => w.Dispatcher.Invoke(() =>
                 {
                     g.Rom = newRom; w.Lib.Save();
+                    w.Profiles.RomMoved(from, newRom);
                     Log.Write($"storage: moved \"{g.Name}\" {from} -> {newRom}");
                 }), cancel.Token);
                 moved++;

@@ -318,7 +318,10 @@ public sealed class GameMenu
         UpdateEsc();
     }
 
-    // Quitting the launcher during an emulator game closes the game first (it lives in the launcher's window).
+    // The window closing with an emulator game still open closes the game first (it lives in the launcher's window).
+    // A normal quit has already waited for the game (MainWindow.BeginQuit), so this is only reached when Windows
+    // shuts down or logs off, or after a crash. Nothing can wait then: the game gets 8 s, then it is ended (the
+    // job object would end it with the launcher anyway).
     void CloseOnQuit()
     {
         embWatch?.Stop();
@@ -556,7 +559,10 @@ public sealed class GameMenu
         return true;
     }
 
-    // Close the game the way its own close button would; kill it if it is still there after 6 s.
+    // Close the game the way its own close button would. An emulator can take a while to write its saves and
+    // caches, so it is never ended on a timer: still there after StillClosingAfter, the user is asked whether to
+    // keep waiting or end it (StillClosingCard).
+    public const int StillClosingAfter = 15000;
     public void CloseGame()
     {
         if (game == null) return;
@@ -576,15 +582,43 @@ public sealed class GameMenu
         Closing = true; Changed?.Invoke();
         if (emb != null && emb.Alive) { embWatch?.Stop(); HideStill(); emb.Close(true); }
         else try { p.Refresh(); if (!p.CloseMainWindow()) Log.Write("home menu: no main window to close"); } catch { /* already ended */ }
+        if (p != null) WatchClose(p, name);
+    }
+
+    // Waits for a closing emulator; after StillClosingAfter, asks. The question goes away by itself when it ends.
+    void WatchClose(Process p, string name)
+    {
         Task.Run(() =>
         {
             try
             {
-                if (!p.WaitForExit(6000)) { Log.Write($"home menu: \"{name}\" did not close in 6 s; ending it"); p.Kill(true); }
+                if (p.WaitForExit(StillClosingAfter)) return;
+                w.Dispatcher.BeginInvoke(() =>
+                {
+                    if (Ended(p)) return;
+                    Log.Write($"home menu: \"{name}\" has not closed in {StillClosingAfter / 1000} s; asking whether to wait or end it");
+                    var ask = new StillClosingCard(w, name, wait: () =>
+                    {
+                        Log.Write($"home menu: waiting longer for \"{name}\"");
+                        if (!Ended(p)) WatchClose(p, name);
+                    }, end: () =>
+                    {
+                        Log.Write($"home menu: ending \"{name}\" (asked)");
+                        try { p.Kill(true); } catch (Exception caught) { Log.Debug("home menu: end", caught); }
+                    });
+                    ask.Open();
+                    Task.Run(() => { try { p.WaitForExit(); } catch { /* gone */ } w.Dispatcher.BeginInvoke(ask.Gone); });
+                });
             }
             catch (Exception caught) { Log.Debug("home menu: close wait", caught); }
         });
     }
+
+    static bool Ended(Process p) { try { return p.HasExited; } catch { return true; } }
+
+    // An emulator asked to close is still running (MainWindow.BeginQuit waits for it, without a time limit: the
+    // StillClosingCard decides).
+    public bool EmulatorClosing => Closing && proc != null && !Ended(proc);
 
     // Switch games: the open game closes as Close game does, and once it has ended (its closing
     // screen gone too) the picked game starts, from the tile it was picked on. Every kind of game: a core, an
