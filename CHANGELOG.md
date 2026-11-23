@@ -2,7 +2,7 @@
 
 Newest first. Settings > About and updates shows this file from the update source.
 
-## Not released yet
+## 1.0.6 (2026-11-23)
 - Two games with the same file name in different folders no longer swap saves between profiles. Each has its own saves per profile; saves made by an earlier version are found and kept.
 - Close game no longer ends a slow emulator after a few seconds, which could cut off a save. If it is still closing after 15 seconds, Ionea asks: Keep waiting (the default) or End it now. Quitting Ionea during a game waits the same way.
 - A download that stops getting data for a minute is given up instead of waiting forever.
