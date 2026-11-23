@@ -1,0 +1,59 @@
+# The performance overlay over games inside Ionea that aren't cores. Run by
+# o4-overlay-embed.ps1: a fake Bloodborne port whose game program writes a bbport-style frame log
+# (logs\<time>.frames.csv beside bbport-run.exe) and a fake shadPS4 game, both copies of TestGame.exe drawing
+# a new frame every 20 ms. The port's frame rate comes from its log, shadPS4's from its window's frames
+# (Windows' window capture). Detailed for every game, at the top. Windowed, muted, second monitor, no real
+# input (the launcher counts as in front: pretendfront).
+wait 900
+type Tester
+key accept
+wait 900
+key accept
+wait 1500
+romgame BB Solo|T\esde\ROMs\ps4\Bloodborne [CUSA03173]\eboot.bin|Bloodborne (bbport)
+romgame Other Game|T\esde\ROMs\ps4\Other [CUSA99999]\eboot.bin|shadPS4
+overlaycard global
+expect screen OverlayCard
+overlayset Overlay|Detailed
+shot o4-card
+key back
+wait 600
+expect savedoverlay global|Mode|detailed
+pretendfront on
+
+# 1. the port: exact, from its frame log
+select BB Solo
+wait 400
+key accept
+waitshown 30
+wait 4000
+expect ingame BB Solo
+expect overlay detailed
+expect overlaycorner top
+expect overlaysource log
+expect overlayfpsany ok
+overlaylog
+screen o4-port
+closegame
+wait 3000
+expect ingame none
+expect overlay hidden
+
+# 2. an emulator: its window's frames
+select Other Game
+wait 400
+key accept
+waitshown 30
+wait 4000
+expect ingame Other Game
+expect overlay detailed
+expect overlaysource window
+expect overlayfpsany ok
+overlaylog
+screen o4-window
+closegame
+wait 3000
+expect ingame none
+expect overlay hidden
+pretendfront real
+quit

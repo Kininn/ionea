@@ -1,0 +1,47 @@
+{
+  "id": "vice_xscpu64-core",
+  "name": "VICE xscpu64 core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "vice_xscpu64_libretro.dll"
+    ],
+    "archive": "vice_xscpu64_libretro"
+  },
+  "systems": [
+    "c64"
+  ],
+  "extraExts": [
+    "./"
+  ],
+  "requiredFiles": [
+    {
+      "name": "JiffyDOS_C64.bin",
+      "path": "vice\\JiffyDOS_C64.bin",
+      "md5": "be09394f0576cf81fa8bacf634daf9a2",
+      "optional": true,
+      "desc": "vice/JiffyDOS_C64.bin (JiffyDOS C64 Kernal)"
+    },
+    {
+      "name": "JiffyDOS_1541-II.bin",
+      "path": "vice\\JiffyDOS_1541-II.bin",
+      "md5": "1b1e985ea5325a1f46eb7fd9681707bf",
+      "optional": true,
+      "desc": "vice/JiffyDOS_1541-II.bin (JiffyDOS 1541 drive BIOS)"
+    },
+    {
+      "name": "JiffyDOS_1571_repl310654.bin",
+      "path": "vice\\JiffyDOS_1571_repl310654.bin",
+      "md5": "41c6cc528e9515ffd0ed9b180f8467c0",
+      "optional": true,
+      "desc": "vice/JiffyDOS_1571_repl310654.bin (JiffyDOS 1571 drive BIOS)"
+    },
+    {
+      "name": "JiffyDOS_1581.bin",
+      "path": "vice\\JiffyDOS_1581.bin",
+      "md5": "20b6885c6dc2d42c38754a365b043d71",
+      "optional": true,
+      "desc": "vice/JiffyDOS_1581.bin (JiffyDOS 1581 drive BIOS)"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "id": "fceumm-core",
+  "name": "FCEUmm core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "fceumm_libretro.dll"
+    ],
+    "archive": "fceumm_libretro"
+  },
+  "systems": [
+    "nes"
+  ],
+  "extraExts": [
+    ".unif"
+  ],
+  "requiredFiles": [
+    {
+      "name": "disksys.rom",
+      "path": "disksys.rom",
+      "md5": "ca30b50f880eb660a320674ed365ef7a",
+      "optional": true,
+      "desc": "disksys.rom (Family Computer Disk System BIOS)"
+    },
+    {
+      "name": "nes.pal",
+      "path": "nes.pal",
+      "optional": true,
+      "desc": "nes.pal (custom NES Palette)"
+    },
+    {
+      "name": "gamegenie.nes",
+      "path": "gamegenie.nes",
+      "md5": "7f98d77d7a094ad7d069b74bd553ec98",
+      "optional": true,
+      "desc": "gamegenie.nes (Game Genie add-on cartridge)"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "id": "xenia_edge",
+  "name": "Xenia Edge",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^xenia_edge\\.exe$"
+    ],
+    "archive": "xenia_edge"
+  },
+  "start": {
+    "args": "\"{rom}\""
+  },
+  "systems": [
+    "xbox360"
+  ],
+  "extraExts": [
+    ".cci",
+    ".cxi",
+    ".elf",
+    ".<none>"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "id": "virtualxt-core",
+  "name": "virtualxt core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "virtualxt_libretro.dll"
+    ],
+    "archive": "virtualxt_libretro"
+  },
+  "systems": [
+    "dos",
+    "pc"
+  ]
+}

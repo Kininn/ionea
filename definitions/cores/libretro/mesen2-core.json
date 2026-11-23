@@ -1,0 +1,194 @@
+{
+  "id": "mesen2-core",
+  "name": "MesenCE core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "mesen2_libretro.dll"
+    ],
+    "archive": "mesen2_libretro"
+  },
+  "systems": [
+    "nes",
+    "gamegear",
+    "gb",
+    "gba",
+    "gbc",
+    "mark3",
+    "mastersystem",
+    "pcengine",
+    "pcenginecd",
+    "satellaview",
+    "snes",
+    "sgb",
+    "supergrafx",
+    "tg16",
+    "tg-cd",
+    "wonderswan",
+    "wonderswancolor"
+  ],
+  "extraExts": [
+    ".fc",
+    ".unif",
+    ".pcv2",
+    ".mv"
+  ],
+  "requiredFiles": [
+    {
+      "name": "dsp1.data.rom",
+      "path": "dsp1.data.rom",
+      "optional": true,
+      "desc": "dsp1.data.rom"
+    },
+    {
+      "name": "dsp1.program.rom",
+      "path": "dsp1.program.rom",
+      "optional": true,
+      "desc": "dsp1.program.rom"
+    },
+    {
+      "name": "dsp1b.data.rom",
+      "path": "dsp1b.data.rom",
+      "optional": true,
+      "desc": "dsp1b.data.rom"
+    },
+    {
+      "name": "dsp1b.program.rom",
+      "path": "dsp1b.program.rom",
+      "optional": true,
+      "desc": "dsp1b.program.rom"
+    },
+    {
+      "name": "dsp2.data.rom",
+      "path": "dsp2.data.rom",
+      "optional": true,
+      "desc": "dsp2.data.rom"
+    },
+    {
+      "name": "dsp2.program.rom",
+      "path": "dsp2.program.rom",
+      "optional": true,
+      "desc": "dsp2.program.rom"
+    },
+    {
+      "name": "dsp3.data.rom",
+      "path": "dsp3.data.rom",
+      "optional": true,
+      "desc": "dsp3.data.rom"
+    },
+    {
+      "name": "dsp3.program.rom",
+      "path": "dsp3.program.rom",
+      "optional": true,
+      "desc": "dsp3.program.rom"
+    },
+    {
+      "name": "dsp4.data.rom",
+      "path": "dsp4.data.rom",
+      "optional": true,
+      "desc": "dsp4.data.rom"
+    },
+    {
+      "name": "dsp4.program.rom",
+      "path": "dsp4.program.rom",
+      "optional": true,
+      "desc": "dsp4.program.rom"
+    },
+    {
+      "name": "st010.data.rom",
+      "path": "st010.data.rom",
+      "optional": true,
+      "desc": "st010.data.rom"
+    },
+    {
+      "name": "st010.program.rom",
+      "path": "st010.program.rom",
+      "optional": true,
+      "desc": "st010.program.rom"
+    },
+    {
+      "name": "st011.data.rom",
+      "path": "st011.data.rom",
+      "optional": true,
+      "desc": "st011.data.rom"
+    },
+    {
+      "name": "st011.program.rom",
+      "path": "st011.program.rom",
+      "optional": true,
+      "desc": "st011.program.rom"
+    },
+    {
+      "name": "dmg_boot.bin",
+      "path": "dmg_boot.bin",
+      "optional": true,
+      "desc": "dmg_boot.bin (GB Boot Image)"
+    },
+    {
+      "name": "cgb_boot.bin",
+      "path": "cgb_boot.bin",
+      "optional": true,
+      "desc": "cgb_boot.bin (GBC Boot Image)"
+    },
+    {
+      "name": "syscard3.pce",
+      "path": "syscard3.pce",
+      "optional": true,
+      "desc": "syscard3.pce (Super CD-ROM2 System V3.xx)"
+    },
+    {
+      "name": "syscard2.pce",
+      "path": "syscard2.pce",
+      "optional": true,
+      "desc": "syscard2.pce (CD-ROM System V2.xx)"
+    },
+    {
+      "name": "syscard1.pce",
+      "path": "syscard1.pce",
+      "optional": true,
+      "desc": "syscard1.pce (CD-ROM System V1.xx)"
+    },
+    {
+      "name": "gexpress.pce",
+      "path": "gexpress.pce",
+      "optional": true,
+      "desc": "gexpress.pce (Game Express CD Card)"
+    },
+    {
+      "name": "bios.sms",
+      "path": "bios.sms",
+      "optional": true,
+      "desc": "bios.sms (Master System BIOS)"
+    },
+    {
+      "name": "bios.gg",
+      "path": "bios.gg",
+      "optional": true,
+      "desc": "bios.gg (Game Gear BIOS)"
+    },
+    {
+      "name": "gba_bios.bin",
+      "path": "gba_bios.bin",
+      "optional": true,
+      "desc": "gba_bios.bin (Game Boy Advance BIOS)"
+    },
+    {
+      "name": "gb_bios.bin",
+      "path": "gb_bios.bin",
+      "optional": true,
+      "desc": "gb_bios.bin (Game Boy BIOS)"
+    },
+    {
+      "name": "gbc_bios.bin",
+      "path": "gbc_bios.bin",
+      "optional": true,
+      "desc": "gbc_bios.bin (Game Boy Color BIOS)"
+    },
+    {
+      "name": "sgb_bios.bin",
+      "path": "sgb_bios.bin",
+      "optional": true,
+      "desc": "sgb_bios.bin (Super Game Boy BIOS)"
+    }
+  ]
+}

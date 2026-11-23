@@ -1,0 +1,16 @@
+{
+  "id": "ares",
+  "name": "ares",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^ares\\.exe$"
+    ]
+  },
+  "start": {
+    "args": "--system \"Atari 2600\" \"{rom}\" --fullscreen"
+  },
+  "systems": [
+    "atari2600"
+  ]
+}

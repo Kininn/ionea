@@ -1,0 +1,18 @@
+{
+  "id": "jgenesis",
+  "name": "jgenesis",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^jgenesis-cli\\.exe$"
+    ],
+    "archive": "jgenesis"
+  },
+  "start": {
+    "args": "--hardware MasterSystem --fullscreen -f \"{rom}\""
+  },
+  "systems": [
+    "mastersystem",
+    "gamegear"
+  ]
+}

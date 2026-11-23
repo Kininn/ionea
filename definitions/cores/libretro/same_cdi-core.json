@@ -1,0 +1,36 @@
+{
+  "id": "same_cdi-core",
+  "name": "SAME CDi (Git) core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "same_cdi_libretro.dll"
+    ],
+    "archive": "same_cdi_libretro"
+  },
+  "systems": [
+    "cdimono1"
+  ],
+  "extraExts": [
+    ".m3u"
+  ],
+  "requiredFiles": [
+    {
+      "name": "cdimono1.zip",
+      "path": "same_cdi\\bios\\cdimono1.zip",
+      "desc": "same_cdi/bios/cdimono1.zip"
+    },
+    {
+      "name": "cdimono2.zip",
+      "path": "same_cdi\\bios\\cdimono2.zip",
+      "optional": true,
+      "desc": "same_cdi/bios/cdimono2.zip"
+    },
+    {
+      "name": "cdibios.zip",
+      "path": "same_cdi\\bios\\cdibios.zip",
+      "optional": true,
+      "desc": "same_cdi/bios/cdibios.zip"
+    }
+  ]
+}

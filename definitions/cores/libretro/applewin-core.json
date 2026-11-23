@@ -1,0 +1,26 @@
+{
+  "id": "applewin-core",
+  "name": "applewin core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "applewin_libretro.dll"
+    ],
+    "archive": "applewin_libretro"
+  },
+  "systems": [
+    "apple2"
+  ],
+  "extraExts": [
+    ".bin",
+    ".gz",
+    ".woz",
+    ".2mg",
+    ".2img",
+    ".iie",
+    ".apl",
+    ".hdv",
+    ".yaml",
+    ".m3u"
+  ]
+}

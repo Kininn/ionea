@@ -1,0 +1,41 @@
+{
+  "id": "o2em-core",
+  "name": "O2EM core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "o2em_libretro.dll"
+    ],
+    "archive": "o2em_libretro"
+  },
+  "systems": [
+    "odyssey2",
+    "videopac"
+  ],
+  "requiredFiles": [
+    {
+      "name": "o2rom.bin",
+      "path": "o2rom.bin",
+      "md5": "562d5ebf9e030a40d6fabfc2f33139fd",
+      "desc": "o2rom.bin (Odyssey2 BIOS - G7000 model)"
+    },
+    {
+      "name": "c52.bin",
+      "path": "c52.bin",
+      "md5": "f1071cdb0b6b10dde94d3bc8a6146387",
+      "desc": "c52.bin (Videopac French BIOS - G7000 model)"
+    },
+    {
+      "name": "g7400.bin",
+      "path": "g7400.bin",
+      "md5": "c500ff71236068e0dc0d0603d265ae76",
+      "desc": "g7400.bin (Videopac+ European BIOS - G7400 model)"
+    },
+    {
+      "name": "jopac.bin",
+      "path": "jopac.bin",
+      "md5": "279008e4a0db2dc5f1c048853b033828",
+      "desc": "jopac.bin (Videopac+ French BIOS - G7400 model)"
+    }
+  ]
+}

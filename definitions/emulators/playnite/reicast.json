@@ -1,0 +1,17 @@
+{
+  "id": "reicast",
+  "name": "Reicast",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^reicast.*\\.exe$"
+    ],
+    "archive": "reicast"
+  },
+  "start": {
+    "args": "\"{rom}\""
+  },
+  "systems": [
+    "dreamcast"
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "id": "bizhawk",
+  "name": "BizHawk",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^EmuHawk\\.exe$"
+    ],
+    "archive": "bizhawk"
+  },
+  "start": {
+    "args": "\"{rom}\" --fullscreen"
+  },
+  "systems": [
+    "apple2",
+    "atari2600",
+    "atari7800",
+    "atarijaguar",
+    "atarilynx",
+    "colecovision",
+    "c64",
+    "vectrex",
+    "odyssey2",
+    "intellivision",
+    "pcfx",
+    "pcengine",
+    "pcenginecd",
+    "nds",
+    "nes",
+    "gb",
+    "gbc",
+    "gba",
+    "virtualboy",
+    "3ds",
+    "n64",
+    "supergrafx",
+    "gamegear",
+    "sg-1000",
+    "genesis",
+    "sega32x",
+    "segacd",
+    "mastersystem",
+    "saturn",
+    "ngp",
+    "ngpc",
+    "psx",
+    "snes",
+    "uzebox",
+    "wonderswan",
+    "wonderswancolor",
+    "zxspectrum",
+    "tic80"
+  ],
+  "extraExts": [
+    ".rar",
+    ".o2",
+    ".nsf",
+    ".sgb",
+    ".sg1000",
+    ".xml",
+    ".pzx",
+    ".csw",
+    ".wav",
+    ".83g",
+    ".83l",
+    ".83p"
+  ]
+}

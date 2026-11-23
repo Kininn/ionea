@@ -1,0 +1,68 @@
+{
+  "id": "fuse-core",
+  "name": "Fuse core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "fuse_libretro.dll"
+    ],
+    "archive": "fuse_libretro"
+  },
+  "systems": [
+    "zxspectrum"
+  ],
+  "extraExts": [
+    ".dck",
+    ".ipf"
+  ],
+  "requiredFiles": [
+    {
+      "name": "128p-0.rom",
+      "path": "fuse\\128p-0.rom",
+      "optional": true,
+      "desc": "128p-0.rom (Pentagon machines)"
+    },
+    {
+      "name": "128p-1.rom",
+      "path": "fuse\\128p-1.rom",
+      "optional": true,
+      "desc": "128p-1.rom (Pentagon machines)"
+    },
+    {
+      "name": "trdos.rom",
+      "path": "fuse\\trdos.rom",
+      "optional": true,
+      "desc": "trdos.rom (Pentagon machines)"
+    },
+    {
+      "name": "gluck.rom",
+      "path": "fuse\\gluck.rom",
+      "optional": true,
+      "desc": "gluck.rom (Pentagon 512K / 1024)"
+    },
+    {
+      "name": "256s-0.rom",
+      "path": "fuse\\256s-0.rom",
+      "optional": true,
+      "desc": "256s-0.rom (Scorpion 256K)"
+    },
+    {
+      "name": "256s-1.rom",
+      "path": "fuse\\256s-1.rom",
+      "optional": true,
+      "desc": "256s-1.rom (Scorpion 256K)"
+    },
+    {
+      "name": "256s-2.rom",
+      "path": "fuse\\256s-2.rom",
+      "optional": true,
+      "desc": "256s-2.rom (Scorpion 256K)"
+    },
+    {
+      "name": "256s-3.rom",
+      "path": "fuse\\256s-3.rom",
+      "optional": true,
+      "desc": "256s-3.rom (Scorpion 256K)"
+    }
+  ]
+}

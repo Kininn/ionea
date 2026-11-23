@@ -1,0 +1,99 @@
+﻿# Sound and effects pass: the main events make their sounds, the new Sound settings work
+# and are kept in the profile's file, and each profile has its own. Run WITHOUT --mute:
+# --data <tmp> --no-import --dummies 12 --windowed --script test/s2-sound-fx.txt [--record-sound <tmp>\s2.pcm]
+wait 900
+type Sound Fx
+key accept
+wait 900
+key accept
+wait 1100
+expect screen HomeScreen
+expect soundopens 1
+expect soundtheme ionea
+expect reduce off|off
+folderfill Arcade|6
+# moving along the row, then past its start: the varied tick, then the soft edge bump
+soundmark
+key right 2
+key left 12
+expect heard scroll yes
+expect heard edge yes
+expect name folder:Arcade
+# a container opens (press, then unfold) and closes (fold)
+soundmark
+key accept
+wait 800
+expect view folder:Arcade
+expect heard press yes
+expect heard unfold yes
+soundmark
+key back
+wait 700
+expect heard fold yes
+# Settings > Look and layout: Reduce effects on (the switch clicks up). Settings > Sound: the Navigation
+# and Actions levels, past the top of a level (the edge), the Soft theme.
+settings look and layout
+key accept
+wait 300
+soundmark
+cardrow Reduce effects
+key accept
+expect reduce on|on
+expect heard toggleon yes
+key back
+wait 500
+settings sound
+key accept
+wait 300
+cardrow Navigation
+key left
+expect kind nav 90
+key right
+expect kind nav 100
+soundmark
+wait 300
+key right
+expect heard edge yes
+cardrow Actions
+key left 3
+expect kind act 70
+cardrow Sound theme
+key right
+wait 300
+expect soundtheme soft
+expect gain favorite 0.49
+expect savedsound soft 100 70 on 100
+key back 2
+wait 600
+expect screen HomeScreen
+# a pop-up's soft bell
+soundmark
+wait 400
+toast Hello
+wait 300
+expect heard toast yes
+# refused (an empty name): the error sound. Typing: the soft key tick. A new profile: its own chime
+# and its own (default) sound settings.
+soundmark
+newprofile
+key accept
+wait 300
+expect heard error yes
+type Two
+expect heard type yes
+key accept
+wait 900
+expect profile Two
+expect heard profile yes
+expect soundtheme ionea
+expect reduce off|off
+expect kind act 100
+# back to the first profile: its settings again
+switchprofile Sound Fx
+wait 800
+expect soundtheme soft
+expect reduce on|on
+expect kind act 70
+expect soundopens 1
+expect soundunderruns 0
+quit

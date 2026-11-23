@@ -1,0 +1,291 @@
+{
+  "id": "azahar",
+  "name": "Azahar",
+  "detect": {
+    "programs": [
+      "azahar.exe"
+    ],
+    "archive": "azahar",
+    "product": [
+      "Azahar"
+    ]
+  },
+  "start": {
+    "args": "-f \"{rom}\"",
+    "portable": [
+      "user\\"
+    ],
+    "seed": [
+      {
+        "file": "user\\config\\qt-config.ini",
+        "text": "[Miscellaneous]\ncheck_for_update_on_start\\default=false\ncheck_for_update_on_start=false\n[UI]\nconfirmClose\\default=false\nconfirmClose=false\n"
+      }
+    ]
+  },
+  "systems": [
+    "3ds"
+  ],
+  "saves": {
+    "folders": [
+      "user\\sdmc",
+      "user\\nand"
+    ]
+  },
+  "controls": {
+    "format": "citra",
+    "file": "user\\config\\qt-config.ini"
+  },
+  "video": {
+    "format": "ini",
+    "style": "qt",
+    "sep": "=",
+    "file": "user\\config\\qt-config.ini",
+    "perGame": "user\\config\\custom\\{gameid}.ini",
+    "gameId": "3ds-ncsd",
+    "noGameId": "Its program id wasn't found (.3ds and .cci show it; a .cia or encrypted game doesn't)",
+    "savesOnExit": true,
+    "summary": "resolution, upscaling, speed",
+    "settings": [
+      {
+        "key": "[Renderer]resolution_factor",
+        "shared": "resolution",
+        "values": [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10"
+        ],
+        "names": [
+          "Auto (window)",
+          "1x (native)",
+          "2x",
+          "3x",
+          "4x",
+          "5x",
+          "6x",
+          "7x",
+          "8x",
+          "9x",
+          "10x"
+        ],
+        "default": "1"
+      },
+      {
+        "key": "[Renderer]texture_filter",
+        "shared": "upscaling",
+        "values": [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+        ],
+        "names": [
+          "Off",
+          "Anime4K",
+          "Bicubic",
+          "ScaleForce",
+          "xBRZ",
+          "MMPX"
+        ],
+        "default": "0"
+      },
+      {
+        "key": "[Renderer]use_vsync",
+        "shared": "pacing",
+        "values": [
+          "true",
+          "false"
+        ],
+        "names": [
+          "V-Sync",
+          "Uncapped (may tear)"
+        ],
+        "default": "true"
+      },
+      {
+        "key": "[Renderer]texture_sampling",
+        "shared": "filtering",
+        "values": [
+          "0",
+          "1",
+          "2"
+        ],
+        "names": [
+          "Game decides",
+          "Nearest neighbor",
+          "Linear"
+        ],
+        "default": "0"
+      },
+      {
+        "key": "[Renderer]graphics_api",
+        "shared": "renderer",
+        "values": [
+          "2",
+          "1",
+          "0"
+        ],
+        "names": [
+          "Vulkan",
+          "OpenGL",
+          "Software"
+        ],
+        "default": "1"
+      },
+      {
+        "key": "[Renderer]use_disk_shader_cache",
+        "shared": "shadercache",
+        "values": [
+          "false",
+          "true"
+        ],
+        "names": [
+          "Off",
+          "On"
+        ],
+        "default": "true"
+      },
+      {
+        "key": "[Renderer]frame_limit",
+        "shared": "speed",
+        "values": [
+          "50",
+          "75",
+          "100",
+          "150",
+          "200",
+          "300"
+        ],
+        "names": [
+          "50%",
+          "75%",
+          "100%",
+          "150%",
+          "200%",
+          "300%"
+        ],
+        "default": "100"
+      },
+      {
+        "key": "[Renderer]async_shader_compilation",
+        "label": "Shaders in the background",
+        "values": [
+          "false",
+          "true"
+        ],
+        "names": [
+          "Off",
+          "On"
+        ],
+        "default": "false"
+      },
+      {
+        "key": "[Renderer]use_hw_shader",
+        "label": "GPU shaders",
+        "values": [
+          "false",
+          "true"
+        ],
+        "names": [
+          "Off",
+          "On"
+        ],
+        "default": "true"
+      },
+      {
+        "key": "[Renderer]shaders_accurate_mul",
+        "label": "Accurate shader maths",
+        "values": [
+          "false",
+          "true"
+        ],
+        "names": [
+          "Off",
+          "On"
+        ],
+        "default": "true"
+      },
+      {
+        "key": "[Layout]filter_mode",
+        "label": "Screen filter",
+        "values": [
+          "true",
+          "false"
+        ],
+        "names": [
+          "Smooth",
+          "Sharp"
+        ],
+        "default": "true"
+      },
+      {
+        "key": "[Core]cpu_clock_percentage",
+        "label": "CPU speed",
+        "values": [
+          "50",
+          "75",
+          "100",
+          "125",
+          "150",
+          "200"
+        ],
+        "names": [
+          "50%",
+          "75%",
+          "100%",
+          "125%",
+          "150%",
+          "200%"
+        ],
+        "default": "100"
+      }
+    ]
+  },
+  "gameData": {
+    "read": "3ds-tmd",
+    "update": [
+      "user\\sdmc\\Nintendo 3DS\\00000000000000000000000000000000\\00000000000000000000000000000000\\title\\0004000e\\{low}"
+    ],
+    "addons": [
+      "user\\sdmc\\Nintendo 3DS\\00000000000000000000000000000000\\00000000000000000000000000000000\\title\\0004008c\\{low}"
+    ]
+  },
+  "gameFolders": [
+    {
+      "file": "{exe}\\user\\config\\qt-config.ini",
+      "match": "(?m)^Paths\\\\gamedirs\\\\\\d+\\\\path\\s*=\\s*(.+?)\\s*$"
+    },
+    {
+      "file": "{appdata}\\Azahar\\config\\qt-config.ini",
+      "match": "(?m)^Paths\\\\gamedirs\\\\\\d+\\\\path\\s*=\\s*(.+?)\\s*$"
+    }
+  ],
+  "release": {
+    "github": "azahar-emu/azahar",
+    "asset": "^azahar-windows-msvc-[0-9.]+\\.zip$"
+  },
+  "quiet": {
+    "files": {
+      "user\\config\\qt-config.ini": {
+        "format": "ini",
+        "style": "qt",
+        "sep": "=",
+        "set": {
+          "[UI]showStatusBar": "false",
+          "[UI]show_advanced_frametime_info": "false",
+          "[UI]Shortcuts\\Main%20Window\\Toggle%20Status%20Bar\\KeySeq": "",
+          "[UI]pauseWhenInBackground": "false"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "id": "mednafen_saturn-core",
+  "name": "Beetle Saturn core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "mednafen_saturn_libretro.dll"
+    ],
+    "archive": "mednafen_saturn_libretro"
+  },
+  "systems": [
+    "saturn",
+    "saturnjp"
+  ],
+  "requiredFiles": [
+    {
+      "name": "sega_101.bin",
+      "path": "sega_101.bin",
+      "md5": "85ec9ca47d8f6807718151cbcca8b964",
+      "desc": "sega_101.bin (Saturn JP BIOS)"
+    },
+    {
+      "name": "mpr-17933.bin",
+      "path": "mpr-17933.bin",
+      "md5": "3240872c70984b6cbfda1586cab68dbe",
+      "desc": "mpr-17933.bin (Saturn US/EU BIOS)"
+    },
+    {
+      "name": "mpr-18811-mx.ic1",
+      "path": "mpr-18811-mx.ic1",
+      "md5": "255113ba943c92a54facd25a10fd780c",
+      "optional": true,
+      "desc": "mpr-18811-mx.ic1 (The King of Fighters '95 ROM Cartridge)"
+    },
+    {
+      "name": "mpr-19367-mx.ic1",
+      "path": "mpr-19367-mx.ic1",
+      "md5": "1cd19988d1d72a3e7caa0b73234c96b4",
+      "optional": true,
+      "desc": "mpr-19367-mx.ic1 (Ultraman: Hikari no Kyojin Densetsu ROM Cartridge)"
+    }
+  ]
+}

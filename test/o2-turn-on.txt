@@ -1,0 +1,33 @@
+# Going online in one press: the first start's Network screen, "Turn everything on" (Online.cs OnlineCard).
+#   Launcher.exe --data <empty dir> --no-import --windowed --mute --online-prompt --online-test-host localhost:47899 --script o2-turn-on.txt
+wait 900
+type Tester
+key accept
+wait 1100
+expect screen StartScreen
+key accept
+wait 2200
+expect screen OnlineCard
+expect rowvalue Offline mode|On
+expect rowvalue Covers|Off
+expect cardfocus Turn everything on
+key accept
+wait 300
+expect rowvalue Offline mode|Off
+expect rowvalue Covers|On
+expect rowvalue Game names database|On
+expect rowvalue Emulator installs|On
+expect rowvalue Cores|On
+expect rowvalue Definition updates|On
+expect rowvalue Covers from SteamGridDB|On
+expect rowvalue Launcher updates|On
+expect online covers|on
+expect online emulators|on
+expect online steamgriddb|on
+expect cardfocus Turn everything on
+key back
+wait 600
+expect screen HomeScreen
+expect onlineasked yes
+expect online definitions|on
+quit

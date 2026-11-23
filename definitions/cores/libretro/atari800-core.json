@@ -1,0 +1,71 @@
+{
+  "id": "atari800-core",
+  "name": "Atari800 core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "atari800_libretro.dll"
+    ],
+    "archive": "atari800_libretro"
+  },
+  "systems": [
+    "atari5200",
+    "atari800",
+    "atarixe"
+  ],
+  "extraExts": [
+    ".dcm",
+    ".m3u"
+  ],
+  "requiredFiles": [
+    {
+      "name": "5200.rom",
+      "path": "5200.rom",
+      "md5": "281f20ea4320404ec820fb7ec0693b38",
+      "optional": true,
+      "desc": "5200.rom (Atari 5200 BIOS)"
+    },
+    {
+      "name": "ATARIBAS.ROM",
+      "path": "ATARIBAS.ROM",
+      "md5": "0bac0c6a50104045d902df4503a4c30b",
+      "optional": true,
+      "desc": "ATARIBAS.ROM (Atari BASIC)"
+    },
+    {
+      "name": "ATARIOSA.ROM",
+      "path": "ATARIOSA.ROM",
+      "md5": "eb1f32f5d9f382db1bbfb8d7f9cb343a",
+      "optional": true,
+      "desc": "ATARIOSA.ROM (Atari 400/800 OS A)"
+    },
+    {
+      "name": "ATARIOSB.ROM",
+      "path": "ATARIOSB.ROM",
+      "md5": "4177f386a3bac989a981d3fe3388cb6c",
+      "optional": true,
+      "desc": "ATARIOSB.ROM (Atari 400/800 OS B)"
+    },
+    {
+      "name": "ATARIXL.ROM",
+      "path": "ATARIXL.ROM",
+      "md5": "06daac977823773a3eea3422fd26a703",
+      "optional": true,
+      "desc": "ATARIXL.ROM (Atari XL/XE OS)"
+    },
+    {
+      "name": "BB01R4_OS.ROM",
+      "path": "BB01R4_OS.ROM",
+      "md5": "b7a2a04677d34f069eeb643d5238bf86",
+      "optional": true,
+      "desc": "BB01R4_OS.ROM (Atari XL/XE/XEGS OS v4)"
+    },
+    {
+      "name": "XEGAME.ROM",
+      "path": "XEGAME.ROM",
+      "md5": "d7eb37aec6960cba36bc500e0e5d00bc",
+      "optional": true,
+      "desc": "XEGAME.ROM (Atari XEGS Missile Command)"
+    }
+  ]
+}

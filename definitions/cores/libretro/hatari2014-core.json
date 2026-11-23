@@ -1,0 +1,27 @@
+{
+  "id": "hatari2014-core",
+  "name": "Hatari2014 core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "hatari2014_libretro.dll"
+    ],
+    "archive": "hatari2014_libretro"
+  },
+  "systems": [
+    "atarist"
+  ],
+  "extraExts": [
+    ".vhd",
+    ".gem",
+    ".ide"
+  ],
+  "requiredFiles": [
+    {
+      "name": "tos.img",
+      "path": "tos.img",
+      "md5": "c1c57ce48e8ee4135885cee9e63a68a2",
+      "desc": "tos.img (TOS 1.02 US aka Mega TOS)"
+    }
+  ]
+}

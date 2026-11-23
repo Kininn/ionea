@@ -1,0 +1,26 @@
+{
+  "id": "minivmac-core",
+  "name": "MinivmacII core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "minivmac_libretro.dll"
+    ],
+    "archive": "minivmac_libretro"
+  },
+  "systems": [
+    "macintosh"
+  ],
+  "extraExts": [
+    ".zip",
+    ".hvf"
+  ],
+  "requiredFiles": [
+    {
+      "name": "MacII.ROM",
+      "path": "MacII.ROM",
+      "md5": "66223be1497460f1e60885eeb35e03cc",
+      "desc": "MacII.ROM"
+    }
+  ]
+}

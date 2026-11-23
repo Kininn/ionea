@@ -1,0 +1,23 @@
+{
+  "id": "fs-uae",
+  "name": "FS-UAE",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^fs-uae\\.exe$"
+    ],
+    "archive": "fs-uae"
+  },
+  "start": {
+    "args": "\"{rom}\""
+  },
+  "systems": [
+    "amiga",
+    "amigacd32"
+  ],
+  "extraExts": [
+    ".gz",
+    ".scp",
+    ".lzx"
+  ]
+}

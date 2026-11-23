@@ -1,0 +1,50 @@
+{
+  "id": "picodrive-core",
+  "name": "PicoDrive core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "picodrive_libretro.dll"
+    ],
+    "archive": "picodrive_libretro"
+  },
+  "systems": [
+    "gamegear",
+    "genesis",
+    "mark3",
+    "mastersystem",
+    "megacd",
+    "megacdjp",
+    "sega32x",
+    "sega32xjp",
+    "sega32xna",
+    "segacd"
+  ],
+  "extraExts": [
+    ".sc",
+    ".pco"
+  ],
+  "requiredFiles": [
+    {
+      "name": "bios_CD_E.bin",
+      "path": "bios_CD_E.bin",
+      "md5": "e66fa1dc5820d254611fdcdba0662372",
+      "optional": true,
+      "desc": "bios_CD_E.bin (MegaCD EU BIOS)"
+    },
+    {
+      "name": "bios_CD_U.bin",
+      "path": "bios_CD_U.bin",
+      "md5": "2efd74e3232ff260e371b99f84024f7f",
+      "optional": true,
+      "desc": "bios_CD_U.bin (SegaCD US BIOS)"
+    },
+    {
+      "name": "bios_CD_J.bin",
+      "path": "bios_CD_J.bin",
+      "md5": "278a9397d192149e84e820ac621a8edd",
+      "optional": true,
+      "desc": "bios_CD_J.bin (MegaCD JP BIOS)"
+    }
+  ]
+}

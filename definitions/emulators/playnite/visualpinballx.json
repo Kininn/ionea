@@ -1,0 +1,20 @@
+{
+  "id": "visualpinballx",
+  "name": "Visual Pinball X",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^VPinballX64\\.exe$"
+    ],
+    "archive": "visualpinballx"
+  },
+  "start": {
+    "args": "-Minimized -Play \"{rom}\""
+  },
+  "systems": [
+    "arcade"
+  ],
+  "extraExts": [
+    ".vpx"
+  ]
+}

@@ -1,0 +1,20 @@
+# Add-ons (DLC) for a native port. Run by w3-addons.ps1 (a fake shadPS4 with made-up add-on folders in
+# user\addcont\CUSA00900, a fake bbport, one made-up Bloodborne folder). No game is started.
+#   first sync:  DLCA and DLCB linked in the profile's bbport user\addcont\CUSA00900, the real folder OWN there is kept
+#   then w3-addons.ps1 removes DLCB and adds DLCC on the shadPS4 side (between "mark first" and the second sync)
+#   second sync: the DLCB link removed (its folder in shadPS4 is gone), DLCC linked, DLCA left as it is
+wait 900
+type Tester
+key accept
+wait 900
+key accept
+wait 1500
+romgame Bloodborne|T\esde\ROMs\ps4\Bloodborne [CUSA00900]\eboot.bin|shadPS4
+profilewrite saves\bloodborne-bbport\user\addcont\CUSA00900\OWN\own.txt|own folder|0
+syncaddons Bloodborne
+profilelog
+log mark first
+wait 6000
+syncaddons Bloodborne
+log mark second
+quit

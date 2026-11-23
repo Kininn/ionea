@@ -1,0 +1,49 @@
+{
+  "id": "mame-core",
+  "name": "MAME core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "mame_libretro.dll"
+    ],
+    "archive": "mame_libretro"
+  },
+  "systems": [
+    "apple2",
+    "apple2gs",
+    "arcade",
+    "arcadia",
+    "astrocde",
+    "atari7800",
+    "channelf",
+    "consolearcade",
+    "cps",
+    "cps1",
+    "cps2",
+    "cps3",
+    "crvision",
+    "daphne",
+    "fmtowns",
+    "gamate",
+    "gameandwatch",
+    "gamecom",
+    "gmaster",
+    "intellivision",
+    "laserdisc",
+    "lcdgames",
+    "mame",
+    "megaduck",
+    "model2",
+    "model3",
+    "neogeo",
+    "odyssey2",
+    "pv1000",
+    "scv",
+    "stv",
+    "supervision",
+    "supracan",
+    "vectrex",
+    "videopac",
+    "vsmile"
+  ]
+}

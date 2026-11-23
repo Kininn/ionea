@@ -1,0 +1,17 @@
+{
+  "id": "81-core",
+  "name": "81 core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "81_libretro.dll"
+    ],
+    "archive": "81_libretro"
+  },
+  "systems": [
+    "zx81"
+  ],
+  "extraExts": [
+    ".t81"
+  ]
+}

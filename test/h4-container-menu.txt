@@ -1,0 +1,133 @@
+# Hold A / Enter or right-click on a container: its quick menu (Open, Rename, Remove container).
+# Rename refuses another container's name, Remove asks first (Cancel focused) and its games go back
+# to the home row. A short press still opens the container. 12 dummies: 3 in Box, 2 in Shelf.
+# Run: --data <tmp> --no-import --dummies 12 --windowed --mute --script test\h4-container-menu.txt
+wait 900
+type Living Room
+key accept
+wait 900
+key accept
+wait 1100
+folderfill Box|3
+folderfill Shelf|2
+expect count 10
+# right-click on the Box tile
+mousetile right 0
+wait 300
+expect name folder:Box
+expect screen HoldMenu
+expect holdrows open,rename,remove
+expect holdfocus open
+shot launcher-h4-container-menu
+key down 5
+expect holdfocus remove
+key back
+wait 400
+expect screen HomeScreen
+# held down: the same menu, Open opens it
+hold 750
+expect screen HoldMenu
+key accept
+wait 800
+expect view folder:Box
+key back
+wait 700
+expect view home
+# a short press still opens it
+expect name folder:Box
+hold 150
+wait 800
+expect view folder:Box
+key back
+wait 700
+# Rename: a name another container has is refused, a new one renames it
+hold 750
+key down
+expect holdfocus rename
+key accept
+wait 400
+expect screen TextCard
+type shelf
+key accept
+wait 300
+expect screen TextCard
+type Retro
+key accept
+wait 600
+expect screen HomeScreen
+expect name folder:Retro
+expect count 10
+# A game in a container: Move offers Back to the home row first
+key accept
+wait 800
+expect view folder:Retro
+expect count 4
+hold 750
+expect screen HoldMenu
+key down 2
+expect holdfocus move
+key accept
+wait 400
+expect screen FolderPickCard
+expect cardrows Back to the home row | Shelf | New container… | Cancel
+expect cardfocus Back to the home row
+key accept
+wait 600
+expect screen HomeScreen
+expect view folder:Retro
+expect count 3
+expect toast Moved to the home row | Crystal Quest
+key back
+wait 700
+expect view home
+expect count 11
+expect name folder:Retro
+# Remove container: Cancel first keeps it, then remove sends its 2 games home
+hold 750
+key down 2
+expect holdfocus remove
+key accept
+wait 400
+expect screen RemoveContainerCard
+expect cardrows Cancel | Remove container
+expect cardfocus Cancel
+key accept
+wait 400
+expect screen HomeScreen
+expect count 11
+hold 750
+key down 2
+key accept
+wait 400
+key down
+expect cardfocus Remove container
+key accept
+wait 600
+expect screen HomeScreen
+expect count 12
+expect toast Container removed | Its games are back on the home row
+# the last game out of an open container goes back to the home row view
+mousetile move 0
+expect name folder:Shelf
+key accept
+wait 800
+expect view folder:Shelf
+expect count 3
+hold 750
+key down 2
+key accept
+wait 400
+key accept
+wait 600
+expect view folder:Shelf
+expect count 2
+hold 750
+key down 2
+key accept
+wait 400
+expect cardrows Back to the home row | New container… | Cancel
+key accept
+wait 900
+expect view home
+expect count 13
+quit

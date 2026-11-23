@@ -1,0 +1,52 @@
+{
+  "id": "pcsx2",
+  "name": "PCSX2",
+  "detect": {
+    "programs": [
+      "pcsx2-qt.exe",
+      "pcsx2.exe"
+    ],
+    "archive": "pcsx2",
+    "product": [
+      "PCSX2"
+    ]
+  },
+  "start": {
+    "args": "-batch -fullscreen -- \"{rom}\"",
+    "portable": [
+      "portable.ini"
+    ]
+  },
+  "systems": [
+    "ps2"
+  ],
+  "saves": {
+    "folders": [
+      "memcards",
+      "sstates"
+    ]
+  },
+  "requiredFiles": [
+    {
+      "name": "PS2 BIOS",
+      "path": "bios\\",
+      "check": "ps2-bios",
+      "share": "ps2-bios",
+      "dat": "Sony - PlayStation 2"
+    }
+  ],
+  "gameFolders": [
+    {
+      "file": "{exe}\\inis\\PCSX2.ini",
+      "match": "(?m)^(?:Recursive)?Paths\\s*=\\s*(.+?)\\s*$"
+    },
+    {
+      "file": "{documents}\\PCSX2\\inis\\PCSX2.ini",
+      "match": "(?m)^(?:Recursive)?Paths\\s*=\\s*(.+?)\\s*$"
+    }
+  ],
+  "release": {
+    "github": "PCSX2/pcsx2",
+    "asset": "windows-x64-Qt\\.7z$"
+  }
+}

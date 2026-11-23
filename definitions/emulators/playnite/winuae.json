@@ -1,0 +1,21 @@
+{
+  "id": "winuae",
+  "name": "WinUAE",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^winuae.*\\.exe$"
+    ],
+    "archive": "winuae"
+  },
+  "start": {
+    "args": "-s use_gui=no -s gfx_fullscreen_amiga=true -0 \"{rom}\""
+  },
+  "systems": [
+    "amiga"
+  ],
+  "extraExts": [
+    ".gz",
+    ".scp"
+  ]
+}

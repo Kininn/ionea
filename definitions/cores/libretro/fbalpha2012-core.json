@@ -1,0 +1,20 @@
+{
+  "id": "fbalpha2012-core",
+  "name": "FB Alpha 2012 core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "fbalpha2012_libretro.dll"
+    ],
+    "archive": "fbalpha2012_libretro"
+  },
+  "systems": [
+    "arcade",
+    "cps",
+    "cps1",
+    "cps2",
+    "cps3",
+    "fba",
+    "mame"
+  ]
+}

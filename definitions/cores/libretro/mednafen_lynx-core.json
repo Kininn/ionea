@@ -1,0 +1,25 @@
+{
+  "id": "mednafen_lynx-core",
+  "name": "Beetle Lynx core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "mednafen_lynx_libretro.dll"
+    ],
+    "archive": "mednafen_lynx_libretro"
+  },
+  "systems": [
+    "atarilynx"
+  ],
+  "extraExts": [
+    ".bll"
+  ],
+  "requiredFiles": [
+    {
+      "name": "lynxboot.img",
+      "path": "lynxboot.img",
+      "md5": "fcd403db69f54290b51035d82f835e7b",
+      "desc": "lynxboot.img (Lynx Boot Image)"
+    }
+  ]
+}

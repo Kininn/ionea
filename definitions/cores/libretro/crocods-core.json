@@ -1,0 +1,15 @@
+{
+  "id": "crocods-core",
+  "name": "CrocoDS core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "crocods_libretro.dll"
+    ],
+    "archive": "crocods_libretro"
+  },
+  "systems": [
+    "amstradcpc",
+    "gx4000"
+  ]
+}

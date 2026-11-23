@@ -1,0 +1,23 @@
+{
+  "id": "xenia-2",
+  "name": "Xenia (xenia_canary.exe)",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^xenia_canary\\.exe$"
+    ],
+    "archive": "xenia"
+  },
+  "start": {
+    "args": "\"{rom}\""
+  },
+  "systems": [
+    "xbox360"
+  ],
+  "extraExts": [
+    ".cci",
+    ".cxi",
+    ".elf",
+    ".<none>"
+  ]
+}

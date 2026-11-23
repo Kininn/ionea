@@ -1,0 +1,16 @@
+{
+  "id": "xemu",
+  "name": "Xemu",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^xemu\\.exe$"
+    ]
+  },
+  "start": {
+    "args": "-dvd_path \"{rom}\" -full-screen"
+  },
+  "systems": [
+    "xbox"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "id": "redream",
+  "name": "redream",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^redream\\.exe$"
+    ],
+    "archive": "redream"
+  },
+  "start": {
+    "args": "\"{rom}\""
+  },
+  "systems": [
+    "dreamcast"
+  ],
+  "extraExts": [
+    ".cue"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "id": "vice_xvic-core",
+  "name": "VICE xvic core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "vice_xvic_libretro.dll"
+    ],
+    "archive": "vice_xvic_libretro"
+  },
+  "systems": [
+    "vic20"
+  ],
+  "extraExts": [
+    ".20",
+    ".40",
+    ".60",
+    "./"
+  ]
+}

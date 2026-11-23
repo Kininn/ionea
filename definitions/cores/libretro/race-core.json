@@ -1,0 +1,15 @@
+{
+  "id": "race-core",
+  "name": "RACE core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "race_libretro.dll"
+    ],
+    "archive": "race_libretro"
+  },
+  "systems": [
+    "ngp",
+    "ngpc"
+  ]
+}

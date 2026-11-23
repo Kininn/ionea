@@ -1,0 +1,47 @@
+# A core game's tweaks for real: melonDS DS lists its settings only once a game is loaded, so the first start
+# fills the catalog. In game, changing a tweak asks Restart now / Apply on next launch, and Restart now starts
+# the game again with it. Setup: copy a DS game to <root>\roms\Tweak Test.nds (a name with no real save), set
+# IONEA_TESTROOT=<root>, then --data <tmp> --no-import --windowed --mute --script test\k2-core-tweaks-live.txt
+wait 900
+type Core Test
+key accept
+wait 900
+key accept
+wait 1100
+addrom T\roms\Tweak Test.nds
+wait 5000
+expect screen EmuChoiceCard
+key accept
+wait 1500
+expect screen AddRomCard
+key accept
+wait 2500
+setemu Tweak Test|melonDS DS core
+select Tweak Test
+expect name Tweak Test
+expect emu melonDS DS core
+key accept
+waitshown 30
+wait 6000
+expect ingame Tweak Test
+homebutton
+wait 800
+expect screen HomeMenuCard
+gametweaks Tweak Test
+expect screen TweaksCard
+tweakset melonds_jit_enable|disabled
+wait 300
+shot launcher-core-tweaks-ingame
+key back
+wait 500
+expect screen RestartAskCard
+shot launcher-restart-ask
+key accept
+waitshown 40
+wait 6000
+expect ingame Tweak Test
+expect gametweak Tweak Test|melonds_jit_enable|disabled
+closegame
+wait 3000
+expect ingame none
+quit

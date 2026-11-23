@@ -1,0 +1,17 @@
+{
+  "id": "frodo-core",
+  "name": "Frodo core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "frodo_libretro.dll"
+    ],
+    "archive": "frodo_libretro"
+  },
+  "systems": [
+    "c64"
+  ],
+  "extraExts": [
+    ".lyx"
+  ]
+}

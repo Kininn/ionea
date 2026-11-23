@@ -1,0 +1,32 @@
+{
+  "id": "snes9x-core",
+  "name": "Snes9x core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "snes9x_libretro.dll"
+    ],
+    "archive": "snes9x_libretro"
+  },
+  "systems": [
+    "satellaview",
+    "snes",
+    "sufami"
+  ],
+  "requiredFiles": [
+    {
+      "name": "BS-X.bin",
+      "path": "BS-X.bin",
+      "md5": "fed4d8242cfbed61343d53d48432aced",
+      "optional": true,
+      "desc": "BS-X.bin (BS-X - Sore wa Namae o Nusumareta Machi no Monogatari (Japan) (Rev 1))"
+    },
+    {
+      "name": "STBIOS.bin",
+      "path": "STBIOS.bin",
+      "md5": "d3a44ba7d42a74d3ac58cb9c14c6a5ca",
+      "optional": true,
+      "desc": "STBIOS.bin (Sufami Turbo (Japan))"
+    }
+  ]
+}

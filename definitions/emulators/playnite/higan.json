@@ -1,0 +1,32 @@
+{
+  "id": "higan",
+  "name": "higan",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^higan.*\\.exe$"
+    ],
+    "archive": "higan"
+  },
+  "start": {
+    "args": "\"{rom}\""
+  },
+  "systems": [
+    "nes",
+    "snes",
+    "gb",
+    "gbc",
+    "gba",
+    "mastersystem",
+    "genesis",
+    "gamegear",
+    "pcengine",
+    "pcenginecd",
+    "supergrafx",
+    "wonderswan",
+    "wonderswancolor"
+  ],
+  "extraExts": [
+    ".bs"
+  ]
+}

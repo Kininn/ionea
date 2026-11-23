@@ -1,0 +1,21 @@
+{
+  "id": "nestopia",
+  "name": "Nestopia",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^nestopia\\.exe$"
+    ],
+    "archive": "nestopia"
+  },
+  "start": {
+    "args": "\"{rom}\""
+  },
+  "systems": [
+    "nes"
+  ],
+  "extraExts": [
+    ".nsf",
+    ".zip"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "id": "bluemsx",
+  "name": "blueMSX",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^blueMSX\\.exe$"
+    ],
+    "archive": "bluemsx"
+  },
+  "start": {
+    "args": "/rom1 \"{rom}\" /fullscreen /machine \"MSX2+\""
+  },
+  "systems": [
+    "msx",
+    "msx2"
+  ]
+}

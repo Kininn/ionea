@@ -1,0 +1,16 @@
+{
+  "id": "4do",
+  "name": "4DO",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^4do\\.exe$"
+    ]
+  },
+  "start": {
+    "args": "-StartLoadFile \"{rom}\" --StartFullScreen"
+  },
+  "systems": [
+    "3do"
+  ]
+}

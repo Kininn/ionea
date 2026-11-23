@@ -1,0 +1,19 @@
+{
+  "id": "mame2000-core",
+  "name": "MAME 2000 (0.37b5) core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "mame2000_libretro.dll"
+    ],
+    "archive": "mame2000_libretro"
+  },
+  "systems": [
+    "arcade",
+    "cps",
+    "cps1",
+    "cps2",
+    "cps3",
+    "mame"
+  ]
+}

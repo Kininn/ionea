@@ -1,0 +1,15 @@
+{
+  "id": "mednafen_ngp-core",
+  "name": "Beetle NeoPop core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "mednafen_ngp_libretro.dll"
+    ],
+    "archive": "mednafen_ngp_libretro"
+  },
+  "systems": [
+    "ngp",
+    "ngpc"
+  ]
+}

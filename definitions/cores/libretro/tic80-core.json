@@ -1,0 +1,14 @@
+{
+  "id": "tic80-core",
+  "name": "TIC-80 core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "tic80_libretro.dll"
+    ],
+    "archive": "tic80_libretro"
+  },
+  "systems": [
+    "tic80"
+  ]
+}

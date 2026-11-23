@@ -1,0 +1,15 @@
+{
+  "id": "theodore-core",
+  "name": "theodore core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "theodore_libretro.dll"
+    ],
+    "archive": "theodore_libretro"
+  },
+  "systems": [
+    "moto",
+    "to8"
+  ]
+}

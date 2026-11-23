@@ -1,0 +1,17 @@
+{
+  "id": "stella",
+  "name": "Stella",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^Stella\\.exe$"
+    ],
+    "archive": "stella"
+  },
+  "start": {
+    "args": "-fullscreen 1 \"{rom}\""
+  },
+  "systems": [
+    "atari2600"
+  ]
+}

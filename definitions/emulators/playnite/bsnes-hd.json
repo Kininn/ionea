@@ -1,0 +1,20 @@
+{
+  "id": "bsnes-hd",
+  "name": "bsnes-hd",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^bsnes_hd\\.exe$"
+    ],
+    "archive": "bsnes-hd"
+  },
+  "start": {
+    "args": "--fullscreen \"{rom}\""
+  },
+  "systems": [
+    "snes"
+  ],
+  "extraExts": [
+    ".zip"
+  ]
+}

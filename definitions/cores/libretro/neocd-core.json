@@ -1,0 +1,89 @@
+{
+  "id": "neocd-core",
+  "name": "NeoCD core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "neocd_libretro.dll"
+    ],
+    "archive": "neocd_libretro"
+  },
+  "systems": [
+    "neogeocd",
+    "neogeocdjp"
+  ],
+  "requiredFiles": [
+    {
+      "name": "neocd_f.rom",
+      "path": "neocd\\neocd_f.rom",
+      "optional": true,
+      "desc": "neocd/neocd_f.rom (Front Loader BIOS)"
+    },
+    {
+      "name": "neocd_sf.rom",
+      "path": "neocd\\neocd_sf.rom",
+      "optional": true,
+      "desc": "neocd/neocd_sf.rom (Front Loader BIOS (SMKDAN))"
+    },
+    {
+      "name": "front-sp1.bin",
+      "path": "neocd\\front-sp1.bin",
+      "optional": true,
+      "desc": "neocd/front-sp1.bin (Front Loader BIOS (MAME))"
+    },
+    {
+      "name": "neocd_t.rom",
+      "path": "neocd\\neocd_t.rom",
+      "optional": true,
+      "desc": "neocd/neocd_t.rom (Top Loader BIOS))"
+    },
+    {
+      "name": "neocd_st.rom",
+      "path": "neocd\\neocd_st.rom",
+      "optional": true,
+      "desc": "neocd/neocd_st.rom (Top Loader BIOS (SMKDAN))"
+    },
+    {
+      "name": "top-sp1.bin",
+      "path": "neocd\\top-sp1.bin",
+      "optional": true,
+      "desc": "neocd/top-sp1.bin (Top Loader BIOS (MAME))"
+    },
+    {
+      "name": "neocd_z.rom",
+      "path": "neocd\\neocd_z.rom",
+      "optional": true,
+      "desc": "neocd/neocd_z.rom (CDZ BIOS)"
+    },
+    {
+      "name": "neocd_sz.rom",
+      "path": "neocd\\neocd_sz.rom",
+      "optional": true,
+      "desc": "neocd/neocd_sz.rom (CDZ BIOS (SMKDAN))"
+    },
+    {
+      "name": "neocd.bin",
+      "path": "neocd\\neocd.bin",
+      "optional": true,
+      "desc": "neocd/neocd.bin (CDZ BIOS (MAME))"
+    },
+    {
+      "name": "ng-lo.rom",
+      "path": "neocd\\ng-lo.rom",
+      "optional": true,
+      "desc": "neocd/ng-lo.rom (Y-ZOOM ROM)"
+    },
+    {
+      "name": "000-lo.lo",
+      "path": "neocd\\000-lo.lo",
+      "optional": true,
+      "desc": "neocd/000-lo.lo (Y-ZOOM ROM (MAME))"
+    },
+    {
+      "name": "uni-bioscd.rom",
+      "path": "neocd\\uni-bioscd.rom",
+      "optional": true,
+      "desc": "neocd/uni-bioscd.rom (Universe BIOS 3.2)"
+    }
+  ]
+}

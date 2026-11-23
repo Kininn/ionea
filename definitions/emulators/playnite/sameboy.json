@@ -1,0 +1,18 @@
+{
+  "id": "sameboy",
+  "name": "SameBoy",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^sameboy\\.exe$"
+    ],
+    "archive": "sameboy"
+  },
+  "start": {
+    "args": "\"{rom}\""
+  },
+  "systems": [
+    "gb",
+    "gbc"
+  ]
+}

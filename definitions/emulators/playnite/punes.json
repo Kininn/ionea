@@ -1,0 +1,26 @@
+{
+  "id": "punes",
+  "name": "puNES",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^punes64\\.exe$"
+    ],
+    "archive": "punes"
+  },
+  "start": {
+    "args": "\"{rom}\""
+  },
+  "systems": [
+    "nes"
+  ],
+  "extraExts": [
+    ".7zip",
+    ".rar",
+    ".unif",
+    ".nsf",
+    ".nfse",
+    ".fm2",
+    ".zip"
+  ]
+}

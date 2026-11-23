@@ -1,0 +1,17 @@
+{
+  "id": "yabuse",
+  "name": "Yabause",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^yabause.*\\.exe$"
+    ],
+    "archive": "yabuse"
+  },
+  "start": {
+    "args": "--iso=\"{rom}\""
+  },
+  "systems": [
+    "saturn"
+  ]
+}

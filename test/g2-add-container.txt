@@ -1,0 +1,121 @@
+# 12 dummies. "+" on Home opens Add (Game, Emulator, Container). Container asks for a name, then which games
+# go in it (keys, typing to narrow the list, a click), and the new container is selected on Home.
+wait 900
+type Living Room
+key accept
+wait 900
+key accept
+wait 1100
+expect count 13
+key right 50
+expect name +
+shot launcher-g2-add-tile
+key accept
+wait 400
+expect screen AddMenuCard
+expect cardrows Game | Emulator | Container | Cancel
+shot launcher-g2-add-menu
+key down
+expect cardfocus Container
+key accept
+wait 400
+expect screen TextCard
+# no name: refused
+key accept
+expect screen TextCard
+type Racing
+key accept
+wait 500
+expect screen ContainerPickCard
+expect pickcount 12
+expect picked 0
+# nothing ticked: Make container is refused
+key menu
+expect screen ContainerPickCard
+# Enter ticks and unticks the focused game
+key accept
+expect picked 1
+key accept
+expect picked 0
+key accept
+expect picked 1
+# typing narrows the list, ticks stay
+type Lunar
+wait 200
+expect pickcount 1
+expect pickfocus Lunar Rally
+key accept
+expect picked 2
+type Neon
+wait 200
+expect pickfocus Neon Drift
+mousepick move 0
+mousepick down 0
+expect picked 3
+shot launcher-g2-pick
+# down past the list is the button
+key down
+expect pickfocus done
+mousepick down done
+wait 600
+expect screen HomeScreen
+expect name folder:Racing
+expect folderof Lunar Rally|Racing
+expect folderof Neon Drift|Racing
+expect count 11
+expect folderlook Racing: 3 of 3
+shot launcher-g2-made
+# inside a container "+" adds a game straight away
+key accept
+wait 700
+expect view folder:Racing
+expect count 4
+key down
+expect name +
+key accept
+wait 400
+expect screen AddChoiceCard
+key back
+wait 400
+key back
+wait 600
+expect view home
+# a name already used is refused
+key right 50
+key accept
+wait 400
+key down
+key accept
+wait 400
+type racing
+key accept
+wait 300
+expect screen TextCard
+shot launcher-g2-name-taken
+key back
+wait 400
+expect screen HomeScreen
+# backing out of the game list makes nothing
+key accept
+wait 400
+key down
+key accept
+wait 400
+type Empty
+key accept
+wait 500
+expect screen ContainerPickCard
+key accept
+expect picked 1
+key back
+wait 400
+expect screen HomeScreen
+expect count 11
+theme dark
+wait 500
+key accept
+wait 400
+shot launcher-g2-add-menu-dark
+key back
+wait 400
+quit

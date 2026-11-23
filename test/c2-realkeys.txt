@@ -1,0 +1,41 @@
+# Real key events (keybd_event) reach the text boxes. Run against the real Steam install (read-only):
+# --data <empty dir> --no-import --windowed --mute (no --steam). Lists the real Steam games in the log.
+wait 1200
+realkeys den
+logtext
+key accept
+wait 900
+key accept
+wait 1100
+steamlist
+search
+realkeys neo
+expect text neo
+key back
+wait 500
+key accept
+wait 400
+expect screen AddMenuCard
+expect cardrows Game | Emulator | Container | Cancel
+key accept
+wait 400
+expect screen AddChoiceCard
+key accept
+wait 1500
+expect screen SteamPickCard
+realkeys apex
+wait 300
+expect text apex
+expect steamcount 1
+shot launcher-c-real-apex
+key back
+wait 500
+addgame HERE\bin\TestGame.exe
+wait 800
+expect screen AddGameCard
+logtext
+realkeys xy
+logtext
+key back
+wait 400
+quit

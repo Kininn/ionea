@@ -1,0 +1,43 @@
+{
+  "id": "mednafen",
+  "name": "Mednafen",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^mednafen\\.exe$"
+    ],
+    "archive": "mednafen"
+  },
+  "start": {
+    "args": "\"{rom}\""
+  },
+  "systems": [
+    "apple2",
+    "atarilynx",
+    "pcengine",
+    "pcenginecd",
+    "pcfx",
+    "nes",
+    "gb",
+    "gbc",
+    "gba",
+    "virtualboy",
+    "supergrafx",
+    "gamegear",
+    "genesis",
+    "mastersystem",
+    "saturn",
+    "ngp",
+    "ngpc",
+    "psx",
+    "snes",
+    "wonderswan",
+    "wonderswancolor"
+  ],
+  "extraExts": [
+    ".d13",
+    ".sk",
+    ".woz",
+    ".sgg"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "id": "irogb-core",
+  "name": "IroGB core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "irogb_libretro.dll"
+    ],
+    "archive": "irogb_libretro"
+  },
+  "systems": [
+    "gb",
+    "gbc"
+  ],
+  "extraExts": [
+    ".dmg",
+    ".cgb"
+  ],
+  "requiredFiles": [
+    {
+      "name": "dmg_boot.bin",
+      "path": "dmg_boot.bin",
+      "optional": true,
+      "desc": "dmg_boot.bin (DMG-BIOS)"
+    },
+    {
+      "name": "cgb_bios.bin",
+      "path": "cgb_bios.bin",
+      "optional": true,
+      "desc": "cgb_bios.bin (CGB-BIOS)"
+    }
+  ]
+}

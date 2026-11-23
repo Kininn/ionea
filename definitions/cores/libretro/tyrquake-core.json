@@ -1,0 +1,14 @@
+{
+  "id": "tyrquake-core",
+  "name": "TyrQuake core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "tyrquake_libretro.dll"
+    ],
+    "archive": "tyrquake_libretro"
+  },
+  "systems": [
+    "quake"
+  ]
+}

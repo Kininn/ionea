@@ -1,0 +1,21 @@
+{
+  "id": "winvice-1",
+  "name": "WinVice (x128.exe)",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^x128\\.exe$"
+    ],
+    "archive": "winvice"
+  },
+  "start": {
+    "args": "\"{rom}\""
+  },
+  "systems": [
+    "c64"
+  ],
+  "extraExts": [
+    ".d1m",
+    ".p64"
+  ]
+}

@@ -1,0 +1,231 @@
+{
+  "id": "melonds",
+  "name": "melonDS",
+  "tested": {
+    "min": "1.1",
+    "max": "1.1.*"
+  },
+  "detect": {
+    "programs": [
+      "melonDS.exe"
+    ],
+    "archive": "melonds",
+    "product": [
+      "melonDS"
+    ]
+  },
+  "start": {
+    "args": "-f \"{rom}\""
+  },
+  "systems": [
+    "nds"
+  ],
+  "extraExts": [
+    ".zip",
+    ".7z"
+  ],
+  "saves": {
+    "beside": true
+  },
+  "controls": {
+    "format": "melonds",
+    "file": "melonDS.toml"
+  },
+  "video": {
+    "format": "ini",
+    "sep": " = ",
+    "file": "melonDS.toml",
+    "ioneaApplies": true,
+    "savesOnExit": true,
+    "summary": "resolution, renderer, speed",
+    "settings": [
+      {
+        "key": "[3D.GL]ScaleFactor",
+        "shared": "resolution",
+        "values": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8"
+        ],
+        "names": [
+          "1x (native)",
+          "2x",
+          "3x",
+          "4x",
+          "5x",
+          "6x",
+          "7x",
+          "8x"
+        ],
+        "default": "1"
+      },
+      {
+        "key": "[Instance0.Window0]ScreenAspectTop",
+        "shared": "aspect",
+        "values": [
+          "0",
+          "4",
+          "5",
+          "3"
+        ],
+        "names": [
+          "4:3 (native)",
+          "16:9",
+          "21:9",
+          "Fit to window"
+        ],
+        "default": "0"
+      },
+      {
+        "key": "[Screen]VSync",
+        "shared": "pacing",
+        "values": [
+          "false",
+          "true"
+        ],
+        "names": [
+          "Uncapped",
+          "V-Sync"
+        ],
+        "default": "false"
+      },
+      {
+        "key": "[Instance0.Window0]ScreenFilter",
+        "shared": "filtering",
+        "values": [
+          "true",
+          "false"
+        ],
+        "names": [
+          "Smooth",
+          "Sharp"
+        ],
+        "default": "true"
+      },
+      {
+        "key": "[3D]Renderer",
+        "shared": "renderer",
+        "values": [
+          "0",
+          "1",
+          "2"
+        ],
+        "names": [
+          "Software",
+          "OpenGL",
+          "OpenGL (compute)"
+        ],
+        "default": "0"
+      },
+      {
+        "key": "TargetFPS",
+        "shared": "speed",
+        "values": [
+          "30.0",
+          "45.0",
+          "60.0",
+          "90.0",
+          "120.0"
+        ],
+        "names": [
+          "50%",
+          "75%",
+          "100%",
+          "150%",
+          "200%"
+        ],
+        "default": "60.0"
+      },
+      {
+        "key": "LimitFPS",
+        "label": "Limit speed",
+        "values": [
+          "false",
+          "true"
+        ],
+        "names": [
+          "Off",
+          "On"
+        ],
+        "default": "true"
+      },
+      {
+        "key": "[3D.GL]BetterPolygons",
+        "label": "Better polygons",
+        "values": [
+          "false",
+          "true"
+        ],
+        "names": [
+          "Off",
+          "On"
+        ],
+        "default": "false"
+      },
+      {
+        "key": "[3D.Soft]Threaded",
+        "label": "Threaded 3D",
+        "values": [
+          "false",
+          "true"
+        ],
+        "names": [
+          "Off",
+          "On"
+        ],
+        "default": "true"
+      },
+      {
+        "key": "[Instance0.Window0]IntegerScaling",
+        "label": "Integer scaling",
+        "values": [
+          "false",
+          "true"
+        ],
+        "names": [
+          "Off",
+          "On"
+        ],
+        "default": "false"
+      },
+      {
+        "key": "[Instance0.Window0]ScreenAspectBot",
+        "label": "Bottom screen aspect",
+        "values": [
+          "0",
+          "4",
+          "5",
+          "3"
+        ],
+        "names": [
+          "4:3 (native)",
+          "16:9",
+          "21:9",
+          "Fit to window"
+        ],
+        "default": "0"
+      }
+    ]
+  },
+  "release": {
+    "github": "melonDS-emu/melonDS",
+    "asset": "windows-x86_64\\.zip$"
+  },
+  "quiet": {
+    "files": {
+      "melonDS.toml": {
+        "format": "ini",
+        "sep": " = ",
+        "set": {
+          "[Instance0.Window0]ShowOSD": "false",
+          "PauseLostFocus": "false"
+        }
+      }
+    }
+  }
+}

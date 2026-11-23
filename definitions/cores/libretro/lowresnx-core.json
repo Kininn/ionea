@@ -1,0 +1,14 @@
+{
+  "id": "lowresnx-core",
+  "name": "lowresnx core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "lowresnx_libretro.dll"
+    ],
+    "archive": "lowresnx_libretro"
+  },
+  "systems": [
+    "lowresnx"
+  ]
+}

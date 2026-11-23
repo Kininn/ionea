@@ -1,0 +1,20 @@
+{
+  "id": "blastem",
+  "name": "BlastEm",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^blastem\\.exe$"
+    ],
+    "archive": "blastem"
+  },
+  "start": {
+    "args": "-fullscreen \"{rom}\""
+  },
+  "systems": [
+    "genesis"
+  ],
+  "extraExts": [
+    ".zip"
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "id": "azahar-core",
+  "name": "Azahar core",
+  "detect": {
+    "programs": [
+      "azahar_libretro.dll"
+    ],
+    "archive": "azahar_libretro"
+  },
+  "release": {
+    "url": "https://buildbot.libretro.com/nightly/windows/x86_64/latest/azahar_libretro.dll.zip"
+  },
+  "systems": [
+    "3ds"
+  ],
+  "video": {
+    "format": "core",
+    "summary": "resolution, upscaling, renderer",
+    "settings": [
+      {
+        "key": "citra_resolution_factor",
+        "shared": "resolution"
+      },
+      {
+        "key": "citra_texture_filter",
+        "shared": "upscaling"
+      },
+      {
+        "key": "citra_texture_sampling",
+        "shared": "filtering"
+      },
+      {
+        "key": "citra_graphics_api",
+        "shared": "renderer"
+      },
+      {
+        "key": "citra_use_hw_shader",
+        "label": "GPU shaders"
+      },
+      {
+        "key": "citra_shaders_accurate_mul",
+        "label": "Accurate shader maths"
+      },
+      {
+        "key": "citra_use_disk_shader_cache",
+        "shared": "shadercache"
+      },
+      {
+        "key": "citra_cpu_clock_percentage",
+        "label": "CPU speed"
+      }
+    ]
+  },
+  "gameData": {
+    "read": "3ds-tmd",
+    "update": [
+      "saves\\Azahar\\sdmc\\Nintendo 3DS\\00000000000000000000000000000000\\00000000000000000000000000000000\\title\\0004000e\\{low}"
+    ],
+    "addons": [
+      "saves\\Azahar\\sdmc\\Nintendo 3DS\\00000000000000000000000000000000\\00000000000000000000000000000000\\title\\0004008c\\{low}"
+    ]
+  }
+}

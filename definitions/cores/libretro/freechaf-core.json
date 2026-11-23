@@ -1,0 +1,34 @@
+{
+  "id": "freechaf-core",
+  "name": "FreeChaF core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "freechaf_libretro.dll"
+    ],
+    "archive": "freechaf_libretro"
+  },
+  "systems": [
+    "channelf"
+  ],
+  "requiredFiles": [
+    {
+      "name": "sl31253.bin",
+      "path": "sl31253.bin",
+      "md5": "ac9804d4c0e9d07e33472e3726ed15c3",
+      "desc": "sl31253.bin"
+    },
+    {
+      "name": "sl31254.bin",
+      "path": "sl31254.bin",
+      "md5": "da98f4bb3242ab80d76629021bb27585",
+      "desc": "sl31254.bin"
+    },
+    {
+      "name": "sl90025.bin",
+      "path": "sl90025.bin",
+      "md5": "95d339631d867c8f1d15a5f2ec26069d",
+      "desc": "sl90025.bin"
+    }
+  ]
+}

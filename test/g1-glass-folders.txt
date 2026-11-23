@@ -1,0 +1,118 @@
+# 12 dummies, 11 of them in one folder: a glass tile with nine covers, then the open folder's
+# 3 x 3 pages (keys, LB / RB, the wheel, a mouse swipe), and a click beside it closes it
+wait 900
+type Living Room
+key accept
+wait 900
+key accept
+wait 1100
+zoom medium
+folderfill Arcade|11
+expect folderlook Arcade: 9 of 11
+expect count 3
+key left 3
+expect name folder:Arcade
+expect folderpage 0/0
+shot launcher-g-folder-tile
+zoom large
+shot launcher-g-folder-tile-large
+key accept
+wait 700
+expect view folder:Arcade
+expect count 12
+expect folderpage 1/2
+expect sel 0
+shot launcher-g-open
+# across a row, then past the side of the page to the next one
+key right 2
+expect sel 2
+key right
+expect sel 9
+expect folderpage 2/2
+wait 500
+shot launcher-g-page2
+key right 2
+expect sel 11
+expect name +
+key right
+expect sel 11
+# back across: the third column of the first page, same row
+key left 3
+expect sel 2
+expect folderpage 1/2
+key down 2
+expect sel 8
+key down
+expect bar 0
+key up
+expect sel 8
+# LB / RB: a whole page, same place (or the last game)
+key pageright
+expect sel 11
+expect folderpage 2/2
+key pageleft
+expect sel 2
+key pageleft
+expect sel 2
+# the wheel turns pages too
+mouse wheeldown 960 500
+wait 400
+expect folderpage 2/2
+mouse wheelup 960 500
+wait 400
+expect folderpage 1/2
+# a swipe left: next page (the press on a game neither starts nor holds it)
+mouse down 960 500
+mouse move 800 500
+mouse move 700 500
+mouse up 700 500
+wait 500
+expect folderpage 2/2
+expect screen HomeScreen
+# a short drag springs back
+mouse down 960 300
+mouse move 1010 300
+mouse up 1010 300
+wait 400
+expect folderpage 2/2
+# a swipe right: back to the first page
+mouse down 960 300
+mouse move 1100 300
+mouse move 1200 300
+mouse up 1200 300
+wait 500
+expect folderpage 1/2
+expect screen HomeScreen
+theme dark
+wait 500
+shot launcher-g-open-dark
+theme light
+wait 500
+# a click beside the glass closes the folder
+mouse down 200 500
+mouse up 200 500
+wait 600
+expect view home
+expect name folder:Arcade
+expect folderpage 0/0
+key accept
+wait 700
+expect view folder:Arcade
+key back
+wait 600
+expect view home
+expect name folder:Arcade
+# glass 2: the tile and the open folder in the dark theme, opened in dark
+theme dark
+wait 500
+shot launcher-g-folder-tile-dark
+key accept
+wait 700
+expect view folder:Arcade
+shot launcher-g-open-dark2
+key back
+wait 600
+expect view home
+theme light
+wait 500
+quit

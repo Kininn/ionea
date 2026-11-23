@@ -1,0 +1,30 @@
+{
+  "id": "smsplus-core",
+  "name": "SMS Plus GX core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "smsplus_libretro.dll"
+    ],
+    "archive": "smsplus_libretro"
+  },
+  "systems": [
+    "gamegear",
+    "mark3",
+    "mastersystem"
+  ],
+  "requiredFiles": [
+    {
+      "name": "bios.sms",
+      "path": "bios.sms",
+      "optional": true,
+      "desc": "bios.sms (Master System BIOS)"
+    },
+    {
+      "name": "BIOS.col",
+      "path": "BIOS.col",
+      "optional": true,
+      "desc": "BIOS.col (Colecovision BIOS)"
+    }
+  ]
+}

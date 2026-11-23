@@ -1,0 +1,22 @@
+{
+  "id": "rosaliesmupengui",
+  "name": "Rosalie's Mupen GUI",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^RMG\\.exe$"
+    ],
+    "archive": "rosaliesmupengui"
+  },
+  "start": {
+    "args": "--fullscreen --quit-after-emulation \"{rom}\""
+  },
+  "systems": [
+    "n64"
+  ],
+  "extraExts": [
+    ".ndd",
+    ".d64",
+    ".zip"
+  ]
+}

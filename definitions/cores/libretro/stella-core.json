@@ -1,0 +1,14 @@
+{
+  "id": "stella-core",
+  "name": "Stella core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "stella_libretro.dll"
+    ],
+    "archive": "stella_libretro"
+  },
+  "systems": [
+    "atari2600"
+  ]
+}

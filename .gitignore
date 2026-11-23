@@ -1,0 +1,86 @@
+# Ionea: only the launcher's source, tests, build scripts, definitions and docs are kept here.
+# Everything at the top level is left out unless it is listed below.
+/*
+!/.gitignore
+!/.gitattributes
+!/src/
+!/assets/
+!/definitions/
+!/test/
+!/tools/
+!/installer/
+!/Launcher.csproj
+!/Install-Launcher.ps1
+!/build.txt
+!/README.md
+!/AGENTS.md
+!/CHANGELOG.md
+!/THIRD-PARTY.md
+!/LICENSE
+
+# backups and staging
+*.bak*
+*.orig
+*.tmp
+*.part
+staged/
+staging/
+Staging/
+
+# build output
+bin/
+obj/
+publish/
+*.zip
+*.sha256
+
+# user data, never shipped: settings, profiles, saves, covers, logs
+data/
+data.*/
+update/
+saves/
+covers/
+*.log
+online-log.json
+settings.json
+
+# emulators, games, firmware and keys
+emulators/
+Emulators/
+# ...but the emulator definitions ship with the launcher
+!/definitions/emulators/
+ROMs/
+roms/
+*.exe
+*.dll
+*.iso
+*.cso
+*.chd
+*.nsp
+*.xci
+*.nup
+*.pkg
+*.rpx
+*.wua
+*.3ds
+*.cia
+*.gba
+*.nds
+*.bin
+*.cue
+*.keys
+prod.keys
+title.keys
+*.key
+
+# test output: pictures a test run takes (the cover picture a test picks is kept)
+/test/*.png
+!/test/g7-portrait.png
+
+# screenshots, reports and local tooling folders
+screenshots/
+reports/
+lab/
+agent/
+*.png.tmp
+tools/demo/

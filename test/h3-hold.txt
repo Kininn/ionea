@@ -1,0 +1,61 @@
+# Hold A / Enter on a game: the quick menu (Launch, Game info, Game settings, Move, Transfer files, Remove, Uninstall). Move
+# puts it in a container. A test game can't have its files transferred, tweaked or uninstalled, so those
+# are greyed and skipped. A short press still starts the game.
+# Run: --data <tmp> --no-import --dummies 6 --windowed --mute --script test\h3-hold.txt
+wait 900
+type Hold Test
+key accept
+wait 900
+key accept
+wait 1100
+key right 2
+wait 400
+expect sel 2
+hold 750
+expect screen HoldMenu
+expect holdrows launch,info,-tweaks,move,-transfer,remove,-uninstall
+expect holdfocus launch
+wait 300
+shot launcher-hold-menu
+key up
+expect holdfocus launch
+key down
+expect holdfocus info
+key down
+expect holdfocus move
+key down
+expect holdfocus remove
+key down
+expect holdfocus remove
+key up
+expect holdfocus move
+# Move: which container (the ones there are, or a new one)
+key accept
+wait 500
+expect screen FolderPickCard
+key back
+wait 400
+expect screen HomeScreen
+hold 750
+expect screen HoldMenu
+key back
+wait 400
+expect screen HomeScreen
+expect sel 2
+# Let go early: no menu, the game starts as from a press.
+hold 150
+waitlaunch 10
+expect screen MessageCard
+key back
+wait 400
+expect screen HomeScreen
+# Held again: Remove hides the game.
+hold 750
+expect screen HoldMenu
+key down 3
+expect holdfocus remove
+key accept
+wait 600
+expect removed 1
+expect screen HomeScreen
+quit

@@ -1,0 +1,57 @@
+# The on-screen keyboard (Osk.cs) on the first start's name box, with a controller only. Plain run:
+#   Launcher.exe --data <empty dir> --no-import --windowed --mute --script osk1-keyboard.txt
+wait 900
+expect screen NewProfileScreen
+devices none
+fakedevice pad on Test Pad
+expect keyboard closed
+# A on the name box opens the keyboard on q
+pad accept
+wait 200
+expect keyboard open
+expect oskfocus q
+shot osk1-open
+# B on an empty box closes it, A opens it again
+pad back
+expect keyboard closed
+pad accept
+expect keyboard open
+# right twice: e, the first letter is upper case
+pad right 2
+expect oskfocus e
+pad accept
+expect text E
+# down: d (roughly the same place), X is a space, the letter after a space is upper case
+pad down
+expect oskfocus d
+pad accept
+pad option
+oskkey b
+expect text Ed B
+# B deletes, Y on shift then a letter types one capital
+pad back 2
+expect text Ed
+oskkey shift
+oskkey x
+expect text EdX
+oskkey back
+# LB moves the caret left, a letter goes in there
+pad pageleft
+oskkey a
+expect text Ead
+pad pageright
+# up keeps roughly the same place, left from the first key wraps to the last of the row
+pad up
+expect oskfocus q
+pad up
+expect oskfocus 1
+pad left
+expect oskfocus -
+shot osk1-typed
+# Start is Done: the keyboard closes and the name is taken as Enter would
+pad menu
+wait 1000
+expect keyboard closed
+expect setting Ead
+expect screen StartScreen
+quit

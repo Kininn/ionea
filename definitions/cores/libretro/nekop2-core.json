@@ -1,0 +1,14 @@
+{
+  "id": "nekop2-core",
+  "name": "Neko Project II core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "nekop2_libretro.dll"
+    ],
+    "archive": "nekop2_libretro"
+  },
+  "systems": [
+    "pc98"
+  ]
+}

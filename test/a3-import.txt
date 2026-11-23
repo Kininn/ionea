@@ -1,0 +1,25 @@
+# ES-DE import (copies only), add-game checks with a real icon and the Inbox rule. Never starts a game.
+# Run with --inbox <Inbox folder> (INBOX... is IONEA_INBOX, else that folder).
+wait 900
+type Living Room
+key accept
+wait 900
+key accept
+wait 1100
+expect count 2
+expect name Genshin Impact
+shot launcher-a-import
+addgame C:\Windows\notepad.exe
+wait 700
+expect screen AddGameCard
+shot launcher-a-addgame-icon
+key back
+wait 400
+addgame INBOX\ES-DE_3.5.0-x64_Portable.zip
+wait 600
+expect screen MessageCard
+shot launcher-a-addgame-inbox
+key accept
+wait 400
+expect games 1
+quit

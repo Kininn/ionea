@@ -1,0 +1,74 @@
+# Demo video tour: start screen, zoom layouts, ring across the games, hold menu, search,
+# settings, dark look, profile card. Run through tools\demo\Record-Demo.ps1 (a copy of the real data,
+# --windowed, sound recorded from the launcher's own mixer).
+# Never a short accept on a game here: with real data that would start it.
+wait 2300
+key accept
+wait 1300
+zoom medium
+wait 1000
+zoom large
+wait 1100
+key right
+wait 500
+key right
+wait 500
+key right
+wait 500
+key right
+wait 500
+key right
+wait 700
+key left
+wait 450
+key left
+wait 800
+hold 750
+wait 600
+key down
+wait 400
+key down
+wait 500
+key back
+wait 700
+search
+wait 350
+type P
+wait 220
+type Po
+wait 220
+type Pok
+wait 220
+type Poke
+wait 1200
+key back
+wait 700
+key down
+wait 400
+key right
+wait 300
+key right
+wait 300
+key right
+wait 300
+key right
+wait 400
+key accept
+wait 800
+key down
+wait 350
+key down
+wait 350
+key down
+wait 600
+key back
+wait 600
+theme dark
+wait 1300
+profilecard
+wait 1700
+key back
+wait 600
+theme light
+wait 900
+quit

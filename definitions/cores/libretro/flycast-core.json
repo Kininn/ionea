@@ -1,0 +1,77 @@
+{
+  "id": "flycast-core",
+  "name": "Flycast core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "flycast_libretro.dll"
+    ],
+    "archive": "flycast_libretro"
+  },
+  "systems": [
+    "arcade",
+    "atomiswave",
+    "consolearcade",
+    "dreamcast",
+    "mame",
+    "naomi",
+    "naomi2",
+    "naomigd"
+  ],
+  "extraExts": [
+    ".cue",
+    ".rar",
+    ".m3u"
+  ],
+  "requiredFiles": [
+    {
+      "name": "dc_boot.bin",
+      "path": "dc\\dc_boot.bin",
+      "md5": "e10c53c2f8b90bab96ead2d368858623",
+      "optional": true,
+      "desc": "dc/dc_boot.bin (Dreamcast BIOS)"
+    },
+    {
+      "name": "naomi.zip",
+      "path": "dc\\naomi.zip",
+      "optional": true,
+      "desc": "dc/naomi.zip (Naomi Bios from MAME)"
+    },
+    {
+      "name": "naomi2.zip",
+      "path": "dc\\naomi2.zip",
+      "optional": true,
+      "desc": "dc/naomi2.zip (Naomi2 Bios from MAME)"
+    },
+    {
+      "name": "hod2bios.zip",
+      "path": "dc\\hod2bios.zip",
+      "optional": true,
+      "desc": "dc/hod2bios.zip (Naomi The House of the Dead 2 Bios from MAME)"
+    },
+    {
+      "name": "f355dlx.zip",
+      "path": "dc\\f355dlx.zip",
+      "optional": true,
+      "desc": "dc/f355dlx.zip (Naomi Ferrari F355 Challenge deluxe Bios from MAME)"
+    },
+    {
+      "name": "f355bios.zip",
+      "path": "dc\\f355bios.zip",
+      "optional": true,
+      "desc": "dc/f355bios.zip (Naomi Ferrari F355 Challenge twin/deluxe Bios from MAME)"
+    },
+    {
+      "name": "airlbios.zip",
+      "path": "dc\\airlbios.zip",
+      "optional": true,
+      "desc": "dc/airlbios.zip (Naomi Airline Pilots deluxe Bios from MAME)"
+    },
+    {
+      "name": "awbios.zip",
+      "path": "dc\\awbios.zip",
+      "optional": true,
+      "desc": "dc/awbios.zip (Atomiswave BIOS from MAME)"
+    }
+  ]
+}

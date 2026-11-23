@@ -1,0 +1,14 @@
+# What each core lists as its settings (loaded for a moment, no game), and the tweaks shown for it.
+# Run: --data <tmp> --no-import --windowed --mute --esde <ES-DE folder> --script test\k1-core-tweaks.txt
+#   (uses ES-DE's real Emulators\Cores folder: ESDE\... is IONEA_ESDE, else the --esde folder)
+wait 900
+type Core Test
+key accept
+wait 900
+key accept
+wait 1100
+probecore ESDE\Emulators\Cores\azahar_libretro.dll
+probecore ESDE\Emulators\Cores\dolphin_libretro.dll
+probecore ESDE\Emulators\Cores\melondsds_libretro.dll
+probecore ESDE\Emulators\Cores\mgba_libretro.dll
+quit

@@ -1,0 +1,20 @@
+{
+  "id": "nanoboyadvance",
+  "name": "NanoboyAdvance",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^NanoboyAdvance\\.exe$"
+    ],
+    "archive": "nanoboyadvance"
+  },
+  "start": {
+    "args": "\"{rom}\""
+  },
+  "systems": [
+    "gba"
+  ],
+  "extraExts": [
+    ".zip"
+  ]
+}

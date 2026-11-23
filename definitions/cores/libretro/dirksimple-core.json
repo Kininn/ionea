@@ -1,0 +1,15 @@
+{
+  "id": "dirksimple-core",
+  "name": "DirkSimple core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "dirksimple_libretro.dll"
+    ],
+    "archive": "dirksimple_libretro"
+  },
+  "systems": [
+    "daphne",
+    "laserdisc"
+  ]
+}

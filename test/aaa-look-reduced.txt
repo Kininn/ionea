@@ -1,0 +1,34 @@
+﻿# AAA look pass: Home in light and dark, three sizes, the options bar. Screenshots only.
+wait 900
+type Living Room
+key accept
+reduce on
+wait 900
+key accept
+wait 1800
+key right
+wait 300
+key right
+wait 700
+shot aaar-light-large
+key down
+wait 600
+shot aaar-light-bar
+key up
+wait 400
+zoom medium
+wait 900
+shot aaar-light-medium
+zoom large
+wait 900
+theme dark
+wait 1200
+shot aaar-dark-large
+key right
+wait 700
+shot aaar-dark-large2
+zoom small
+wait 900
+shot aaar-dark-small
+zoom large
+quit

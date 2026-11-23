@@ -1,0 +1,16 @@
+{
+  "id": "flycast",
+  "name": "Flycast",
+  "detect": {
+    "programs": [
+      "flycast.exe"
+    ],
+    "archive": "flycast"
+  },
+  "start": {
+    "args": "\"{rom}\""
+  },
+  "systems": [
+    "dreamcast"
+  ]
+}

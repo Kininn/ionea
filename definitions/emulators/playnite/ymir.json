@@ -1,0 +1,19 @@
+{
+  "id": "ymir",
+  "name": "Ymir",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^ymir-sdl3\\.exe$"
+    ]
+  },
+  "start": {
+    "args": "-d \"{rom}\" -f"
+  },
+  "systems": [
+    "saturn"
+  ],
+  "extraExts": [
+    ".mdf"
+  ]
+}

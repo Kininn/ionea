@@ -1,0 +1,14 @@
+{
+  "id": "vitaquake2-zaero-core",
+  "name": "vitaQuake 2 [Zaero] core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "vitaquake2-zaero_libretro.dll"
+    ],
+    "archive": "vitaquake2-zaero_libretro"
+  },
+  "systems": [
+    "quake"
+  ]
+}

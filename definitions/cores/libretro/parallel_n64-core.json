@@ -1,0 +1,24 @@
+{
+  "id": "parallel_n64-core",
+  "name": "ParaLLEl N64 core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "parallel_n64_libretro.dll"
+    ],
+    "archive": "parallel_n64_libretro"
+  },
+  "systems": [
+    "n64",
+    "n64dd"
+  ],
+  "requiredFiles": [
+    {
+      "name": "64DD_IPL.bin",
+      "path": "64DD_IPL.bin",
+      "md5": "8d3d9f294b6e174bc7b1d2fd1c727530",
+      "optional": true,
+      "desc": "64DD_IPL.bin (64DD IPL ROM)"
+    }
+  ]
+}

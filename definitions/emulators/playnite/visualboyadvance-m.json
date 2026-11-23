@@ -1,0 +1,31 @@
+{
+  "id": "visualboyadvance-m",
+  "name": "VisualBoyAdvance-M",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^visualboyadvance-m\\.exe$"
+    ],
+    "archive": "visualboyadvance-m"
+  },
+  "start": {
+    "args": "\"{rom}\""
+  },
+  "systems": [
+    "gb",
+    "gbc",
+    "gba"
+  ],
+  "extraExts": [
+    ".zip",
+    ".7z",
+    ".rar",
+    ".bin",
+    ".elf",
+    ".mb",
+    ".agb",
+    ".dmg",
+    ".cgb",
+    ".sgb"
+  ]
+}

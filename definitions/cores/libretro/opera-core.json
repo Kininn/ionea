@@ -1,0 +1,107 @@
+{
+  "id": "opera-core",
+  "name": "Opera core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "opera_libretro.dll"
+    ],
+    "archive": "opera_libretro"
+  },
+  "systems": [
+    "3do"
+  ],
+  "requiredFiles": [
+    {
+      "name": "panafz1.bin",
+      "path": "panafz1.bin",
+      "md5": "f47264dd47fe30f73ab3c010015c155b",
+      "optional": true,
+      "desc": "panafz1.bin (Panasonic FZ-1 BIOS)"
+    },
+    {
+      "name": "panafz10.bin",
+      "path": "panafz10.bin",
+      "md5": "51f2f43ae2f3508a14d9f56597e2d3ce",
+      "optional": true,
+      "desc": "panafz10.bin (Panasonic FZ-10 BIOS)"
+    },
+    {
+      "name": "panafz10-norsa.bin",
+      "path": "panafz10-norsa.bin",
+      "md5": "1477bda80dc33731a65468c1f5bcbee9",
+      "optional": true,
+      "desc": "panafz10-norsa.bin (Panasonic FZ-10 BIOS [Encryption Check Disabled])"
+    },
+    {
+      "name": "panafz10e-anvil.bin",
+      "path": "panafz10e-anvil.bin",
+      "md5": "a48e6746bd7edec0f40cff078f0bb19f",
+      "optional": true,
+      "desc": "panafz10e-anvil.bin (Panasonic FZ-10E ANVIL BIOS)"
+    },
+    {
+      "name": "panafz10e-anvil-norsa.bin",
+      "path": "panafz10e-anvil-norsa.bin",
+      "md5": "cf11bbb5a16d7af9875cca9de9a15e09",
+      "optional": true,
+      "desc": "panafz10e-anvil-norsa.bin (Panasonic FZ-10E ANVIL BIOS [Encryption Check Disabled])"
+    },
+    {
+      "name": "goldstar.bin",
+      "path": "goldstar.bin",
+      "md5": "8639fd5e549bd6238cfee79e3e749114",
+      "optional": true,
+      "desc": "goldstar.bin (Goldstar GDO-101M BIOS)"
+    },
+    {
+      "name": "sanyotry.bin",
+      "path": "sanyotry.bin",
+      "md5": "35fa1a1ebaaeea286dc5cd15487c13ea",
+      "optional": true,
+      "desc": "sanyotry.bin (Sanyo Try IMP-21J BIOS)"
+    },
+    {
+      "name": "3do_arcade_saot.bin",
+      "path": "3do_arcade_saot.bin",
+      "md5": "8970fc987ab89a7f64da9f8a8c4333ff",
+      "optional": true,
+      "desc": "3do_arcade_saot.bin (Shootout At Old Tucson BIOS)"
+    },
+    {
+      "name": "panafz1-kanji.bin",
+      "path": "panafz1-kanji.bin",
+      "md5": "b8dc97f778a6245c58e064b0312e8281",
+      "optional": true,
+      "desc": "panafz1-kanji.bin (Panasonic FZ-1 Kanji Font ROM)"
+    },
+    {
+      "name": "panafz10ja-anvil-kanji.bin",
+      "path": "panafz10ja-anvil-kanji.bin",
+      "md5": "428577250f43edc902ea239c50d2240d",
+      "optional": true,
+      "desc": "panafz10ja-anvil-kanji.bin (Panasonic FZ-10JA Kanji Font ROM)"
+    },
+    {
+      "name": "panafz1j.bin",
+      "path": "panafz1j.bin",
+      "md5": "a496cfdded3da562759be3561317b605",
+      "optional": true,
+      "desc": "panafz1j.bin (Panasonic FZ-1J BIOS)"
+    },
+    {
+      "name": "panafz1j-norsa.bin",
+      "path": "panafz1j-norsa.bin",
+      "md5": "f6c71de7470d16abe4f71b1444883dc8",
+      "optional": true,
+      "desc": "panafz1j-norsa.bin (Panasonic FZ-1J BIOS [Encryption Check Disabled])"
+    },
+    {
+      "name": "panafz1j-kanji.bin",
+      "path": "panafz1j-kanji.bin",
+      "md5": "c23fb5d5e6bb1c240d02cf968972be37",
+      "optional": true,
+      "desc": "panafz1j-kanji.bin (Panasonic FZ-1J Kanji Font ROM)"
+    }
+  ]
+}

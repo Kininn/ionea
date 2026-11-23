@@ -1,0 +1,25 @@
+{
+  "id": "project64",
+  "name": "Project64",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^Project64\\.exe$"
+    ],
+    "archive": "project64"
+  },
+  "start": {
+    "args": "\"{rom}\""
+  },
+  "systems": [
+    "n64"
+  ],
+  "extraExts": [
+    ".rom",
+    ".jap",
+    ".pal",
+    ".usa",
+    ".zip",
+    ".7z"
+  ]
+}

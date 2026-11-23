@@ -1,0 +1,18 @@
+{
+  "id": "hbmame-core",
+  "name": "HBMAME (Git) core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "hbmame_libretro.dll"
+    ],
+    "archive": "hbmame_libretro"
+  },
+  "systems": [
+    "arcade",
+    "mame"
+  ],
+  "extraExts": [
+    ".chd"
+  ]
+}

@@ -1,0 +1,250 @@
+{
+  "id": "scummvm-core",
+  "name": "ScummVM core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "scummvm_libretro.dll"
+    ],
+    "archive": "scummvm_libretro"
+  },
+  "systems": [
+    "scummvm"
+  ],
+  "requiredFiles": [
+    {
+      "name": "scummclassic.zip",
+      "path": "scummvm\\theme\\scummclassic.zip",
+      "optional": true,
+      "desc": "scummclassic.zip"
+    },
+    {
+      "name": "scummmodern.zip",
+      "path": "scummvm\\theme\\scummmodern.zip",
+      "optional": true,
+      "desc": "scummmodern.zip"
+    },
+    {
+      "name": "scummremastered.zip",
+      "path": "scummvm\\theme\\scummremastered.zip",
+      "optional": true,
+      "desc": "scummremastered.zip"
+    },
+    {
+      "name": "residualvm.zip",
+      "path": "scummvm\\theme\\residualvm.zip",
+      "optional": true,
+      "desc": "residualvm.zip"
+    },
+    {
+      "name": "gui-icons.dat",
+      "path": "scummvm\\theme\\gui-icons.dat",
+      "optional": true,
+      "desc": "gui-icons.dat"
+    },
+    {
+      "name": "shaders.dat",
+      "path": "scummvm\\theme\\shaders.dat",
+      "optional": true,
+      "desc": "shaders.dat"
+    },
+    {
+      "name": "translations.dat",
+      "path": "scummvm\\theme\\translations.dat",
+      "optional": true,
+      "desc": "translations.dat"
+    },
+    {
+      "name": "achievements.dat",
+      "path": "scummvm\\extra\\achievements.dat",
+      "optional": true,
+      "desc": "achievements.dat"
+    },
+    {
+      "name": "encoding.dat",
+      "path": "scummvm\\extra\\encoding.dat",
+      "optional": true,
+      "desc": "encoding.dat"
+    },
+    {
+      "name": "freescape.dat",
+      "path": "scummvm\\extra\\freescape.dat",
+      "optional": true,
+      "desc": "freescape.dat"
+    },
+    {
+      "name": "grim-patch.lab",
+      "path": "scummvm\\extra\\grim-patch.lab",
+      "optional": true,
+      "desc": "grim-patch.lab"
+    },
+    {
+      "name": "monkey4-patch.m4b",
+      "path": "scummvm\\extra\\monkey4-patch.m4b",
+      "optional": true,
+      "desc": "monkey4-patch.m4b"
+    },
+    {
+      "name": "myst3.dat",
+      "path": "scummvm\\extra\\myst3.dat",
+      "optional": true,
+      "desc": "myst3.dat"
+    },
+    {
+      "name": "fonts.dat",
+      "path": "scummvm\\extra\\fonts.dat",
+      "optional": true,
+      "desc": "fonts.dat"
+    },
+    {
+      "name": "macgui.dat",
+      "path": "scummvm\\extra\\macgui.dat",
+      "optional": true,
+      "desc": "macgui.dat"
+    },
+    {
+      "name": "access.dat",
+      "path": "scummvm\\extra\\access.dat",
+      "optional": true,
+      "desc": "access.dat"
+    },
+    {
+      "name": "cryo.dat",
+      "path": "scummvm\\extra\\cryo.dat",
+      "optional": true,
+      "desc": "cryo.dat"
+    },
+    {
+      "name": "cryomni3d.dat",
+      "path": "scummvm\\extra\\cryomni3d.dat",
+      "optional": true,
+      "desc": "cryomni3d.dat"
+    },
+    {
+      "name": "drascula.dat",
+      "path": "scummvm\\extra\\drascula.dat",
+      "optional": true,
+      "desc": "drascula.dat"
+    },
+    {
+      "name": "hadesch_translations.dat",
+      "path": "scummvm\\extra\\hadesch_translations.dat",
+      "optional": true,
+      "desc": "hadesch_translations.dat"
+    },
+    {
+      "name": "hugo.dat",
+      "path": "scummvm\\extra\\hugo.dat",
+      "optional": true,
+      "desc": "hugo.dat"
+    },
+    {
+      "name": "kyra.dat",
+      "path": "scummvm\\extra\\kyra.dat",
+      "optional": true,
+      "desc": "kyra.dat"
+    },
+    {
+      "name": "lure.dat",
+      "path": "scummvm\\extra\\lure.dat",
+      "optional": true,
+      "desc": "lure.dat"
+    },
+    {
+      "name": "macventure.dat",
+      "path": "scummvm\\extra\\macventure.dat",
+      "optional": true,
+      "desc": "macventure.dat"
+    },
+    {
+      "name": "mort.dat",
+      "path": "scummvm\\extra\\mort.dat",
+      "optional": true,
+      "desc": "mort.dat"
+    },
+    {
+      "name": "nancy.dat",
+      "path": "scummvm\\extra\\nancy.dat",
+      "optional": true,
+      "desc": "nancy.dat"
+    },
+    {
+      "name": "neverhood.dat",
+      "path": "scummvm\\extra\\neverhood.dat",
+      "optional": true,
+      "desc": "neverhood.dat"
+    },
+    {
+      "name": "queen.tbl",
+      "path": "scummvm\\extra\\queen.tbl",
+      "optional": true,
+      "desc": "queen.tbl"
+    },
+    {
+      "name": "sky.cpt",
+      "path": "scummvm\\extra\\sky.cpt",
+      "optional": true,
+      "desc": "sky.cpt"
+    },
+    {
+      "name": "supernova.dat",
+      "path": "scummvm\\extra\\supernova.dat",
+      "optional": true,
+      "desc": "supernova.dat"
+    },
+    {
+      "name": "teenagent.dat",
+      "path": "scummvm\\extra\\teenagent.dat",
+      "optional": true,
+      "desc": "teenagent.dat"
+    },
+    {
+      "name": "titanic.dat",
+      "path": "scummvm\\extra\\titanic.dat",
+      "optional": true,
+      "desc": "titanic.dat"
+    },
+    {
+      "name": "tony.dat",
+      "path": "scummvm\\extra\\tony.dat",
+      "optional": true,
+      "desc": "tony.dat"
+    },
+    {
+      "name": "toon.dat",
+      "path": "scummvm\\extra\\toon.dat",
+      "optional": true,
+      "desc": "toon.dat"
+    },
+    {
+      "name": "ultima.dat",
+      "path": "scummvm\\extra\\ultima.dat",
+      "optional": true,
+      "desc": "ultima.dat"
+    },
+    {
+      "name": "wintermute.zip",
+      "path": "scummvm\\extra\\wintermute.zip",
+      "optional": true,
+      "desc": "wintermute.zip"
+    },
+    {
+      "name": "mm.dat",
+      "path": "scummvm\\extra\\mm.dat",
+      "optional": true,
+      "desc": "mm.dat"
+    },
+    {
+      "name": "vkeybd_default.zip",
+      "path": "scummvm\\extra\\vkeybd_default.zip",
+      "optional": true,
+      "desc": "vkeybd_default.zip"
+    },
+    {
+      "name": "Roland_SC-55.sf2",
+      "path": "scummvm\\extra\\Roland_SC-55.sf2",
+      "optional": true,
+      "desc": "Roland_SC-55.sf2"
+    }
+  ]
+}

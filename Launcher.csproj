@@ -1,0 +1,50 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Ionea launcher (own home screen). WPF on .NET 10 (installed SDK + Windows Desktop runtime; builds offline). -->
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>   <!-- libretro cores hand over raw picture and sound memory -->
+    <AssemblyName>Launcher</AssemblyName>
+    <RootNamespace>Ionea</RootNamespace>
+    <Product>Ionea</Product>
+    <AssemblyTitle>Ionea</AssemblyTitle>
+    <ApplicationIcon>assets\icon\ionea.ico</ApplicationIcon>   <!-- the exe keeps the file name Launcher.exe (Task Manager grouping with shadPS4) -->
+    <Company></Company>
+    <!-- Version (Updater.cs): VersionPrefix is raised by hand for a release; the build number and date
+         are stamped by Install-Launcher.ps1 (build.txt counts up). A plain `dotnet build` is build 0. -->
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <IoneaBuild Condition="'$(IoneaBuild)' == ''">0</IoneaBuild>
+    <IoneaBuilt Condition="'$(IoneaBuilt)' == ''">$([System.DateTime]::Now.ToString('yyyy-MM-ddTHH:mm:ss'))</IoneaBuilt>
+    <AssemblyVersion>$(VersionPrefix).$(IoneaBuild)</AssemblyVersion>
+    <FileVersion>$(VersionPrefix).$(IoneaBuild)</FileVersion>
+    <InformationalVersion>$(VersionPrefix)</InformationalVersion>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <!-- No local path in a build: no PDB (so no PDB path in the exe), source paths mapped to a neutral root -->
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <Deterministic>true</Deterministic>
+    <PathMap>$(MSBuildProjectDirectory)\=/_/</PathMap>
+  </PropertyGroup>
+  <ItemGroup>
+    <AssemblyMetadata Include="IoneaBuilt" Value="$(IoneaBuilt)" />   <!-- when this exe was built (Updater.cs: source changes after it count as newer) -->
+    <InternalsVisibleTo Include="Ionea.Tests" />   <!-- test\unit: the logic tests -->
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="test\**;bin\**;obj\**;tools\**" />
+    <EmbeddedResource Include="assets\sounds\*.wav" LogicalName="sounds.%(Filename)" />
+    <EmbeddedResource Include="assets\lang\*.json" LogicalName="lang.%(Filename)" />   <!-- UI text by id (Loc.cs) -->
+    <EmbeddedResource Include="assets\sounds\soft\*.wav" LogicalName="sounds.soft.%(Filename)" />   <!-- sound theme Soft (tools\make_ui_sounds.py) -->
+    <Resource Include="assets\icon\ionea.ico" />
+    <Resource Include="assets\icon\ionea-art-1024.png;assets\icon\ionea-eyes-1024.png" />   <!-- the intro and outro (Intro.cs, Outro.cs) -->
+    <!-- Emulator and system definitions (EmuDefs.cs): next to the exe; Install-Launcher.ps1 copies them. -->
+    <Content Include="definitions\**\*.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
+    <Content Include="THIRD-PARTY.md" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
+    <Content Include="CHANGELOG.md" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
+  </ItemGroup>
+</Project>

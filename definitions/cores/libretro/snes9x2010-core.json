@@ -1,0 +1,22 @@
+{
+  "id": "snes9x2010-core",
+  "name": "Snes9x 2010 core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "snes9x2010_libretro.dll"
+    ],
+    "archive": "snes9x2010_libretro"
+  },
+  "systems": [
+    "satellaview",
+    "snes",
+    "sufami"
+  ],
+  "extraExts": [
+    ".gd3",
+    ".gd7",
+    ".dx2",
+    ".bsx"
+  ]
+}

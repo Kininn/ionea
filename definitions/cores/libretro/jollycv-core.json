@@ -1,0 +1,29 @@
+{
+  "id": "jollycv-core",
+  "name": "JollyCV core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "jollycv_libretro.dll"
+    ],
+    "archive": "jollycv_libretro"
+  },
+  "systems": [
+    "colecovision",
+    "crvision"
+  ],
+  "requiredFiles": [
+    {
+      "name": "coleco.rom",
+      "path": "coleco.rom",
+      "optional": true,
+      "desc": "coleco.rom (ColecoVision BIOS)"
+    },
+    {
+      "name": "bioscv.rom",
+      "path": "bioscv.rom",
+      "optional": true,
+      "desc": "bioscv.rom (CreatiVision BIOS)"
+    }
+  ]
+}

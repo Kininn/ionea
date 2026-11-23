@@ -1,0 +1,14 @@
+{
+  "id": "quicknes-core",
+  "name": "QuickNES core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "quicknes_libretro.dll"
+    ],
+    "archive": "quicknes_libretro"
+  },
+  "systems": [
+    "nes"
+  ]
+}

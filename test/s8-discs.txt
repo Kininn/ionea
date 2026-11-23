@@ -1,0 +1,25 @@
+# The scan with discs: a playlist (.m3u) is one game for all its discs, a cue sheet stands for its .bin,
+# game folders are looked into three levels deep, and save / media folders are skipped. Run by s8-discs.ps1.
+wait 900
+type Tester
+key accept
+wait 900
+key accept
+wait 2200
+expect screen HomeScreen
+scan
+waitscan 30
+scanlog
+expect screen ScanCard
+expect scanhas DuckStation=Add
+expect scanhas 5 games=Add
+shot s8-results
+scanconfirm
+wait 800
+expect screen HomeScreen
+expect games 5
+expect gamesystem Saga|psx
+expect gamesystem Solo|psx
+expect gamesystem Deep Find|psx
+expect gamesystem Twin (Disc 2)|psx
+quit

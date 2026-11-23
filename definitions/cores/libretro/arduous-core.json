@@ -1,0 +1,14 @@
+{
+  "id": "arduous-core",
+  "name": "Arduous core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "arduous_libretro.dll"
+    ],
+    "archive": "arduous_libretro"
+  },
+  "systems": [
+    "arduboy"
+  ]
+}

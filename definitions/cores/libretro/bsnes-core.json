@@ -1,0 +1,143 @@
+{
+  "id": "bsnes-core",
+  "name": "bsnes core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "bsnes_libretro.dll"
+    ],
+    "archive": "bsnes_libretro"
+  },
+  "systems": [
+    "gb",
+    "gbc",
+    "satellaview",
+    "snes",
+    "sufami"
+  ],
+  "requiredFiles": [
+    {
+      "name": "dsp1.data.rom",
+      "path": "dsp1.data.rom",
+      "optional": true,
+      "desc": "dsp1.data.rom"
+    },
+    {
+      "name": "dsp1.program.rom",
+      "path": "dsp1.program.rom",
+      "optional": true,
+      "desc": "dsp1.program.rom"
+    },
+    {
+      "name": "dsp1b.data.rom",
+      "path": "dsp1b.data.rom",
+      "optional": true,
+      "desc": "dsp1b.data.rom"
+    },
+    {
+      "name": "dsp1b.program.rom",
+      "path": "dsp1b.program.rom",
+      "optional": true,
+      "desc": "dsp1b.program.rom"
+    },
+    {
+      "name": "dsp2.data.rom",
+      "path": "dsp2.data.rom",
+      "optional": true,
+      "desc": "dsp2.data.rom"
+    },
+    {
+      "name": "dsp2.program.rom",
+      "path": "dsp2.program.rom",
+      "optional": true,
+      "desc": "dsp2.program.rom"
+    },
+    {
+      "name": "dsp3.data.rom",
+      "path": "dsp3.data.rom",
+      "optional": true,
+      "desc": "dsp3.data.rom"
+    },
+    {
+      "name": "dsp3.program.rom",
+      "path": "dsp3.program.rom",
+      "optional": true,
+      "desc": "dsp3.program.rom"
+    },
+    {
+      "name": "dsp4.data.rom",
+      "path": "dsp4.data.rom",
+      "optional": true,
+      "desc": "dsp4.data.rom"
+    },
+    {
+      "name": "dsp4.program.rom",
+      "path": "dsp4.program.rom",
+      "optional": true,
+      "desc": "dsp4.program.rom"
+    },
+    {
+      "name": "cx4.data.rom",
+      "path": "cx4.data.rom",
+      "optional": true,
+      "desc": "cx4.data.rom"
+    },
+    {
+      "name": "st010.data.rom",
+      "path": "st010.data.rom",
+      "optional": true,
+      "desc": "st010.data.rom"
+    },
+    {
+      "name": "st010.program.rom",
+      "path": "st010.program.rom",
+      "optional": true,
+      "desc": "st010.program.rom"
+    },
+    {
+      "name": "st011.data.rom",
+      "path": "st011.data.rom",
+      "optional": true,
+      "desc": "st011.data.rom"
+    },
+    {
+      "name": "st011.program.rom",
+      "path": "st011.program.rom",
+      "optional": true,
+      "desc": "st011.program.rom"
+    },
+    {
+      "name": "st018.data.rom",
+      "path": "st018.data.rom",
+      "optional": true,
+      "desc": "st018.data.rom"
+    },
+    {
+      "name": "st018.program.rom",
+      "path": "st018.program.rom",
+      "optional": true,
+      "desc": "st018.program.rom"
+    },
+    {
+      "name": "SGB1.sfc",
+      "path": "SGB1.sfc",
+      "md5": "b15ddb15721c657d82c5bab6db982ee9",
+      "optional": true,
+      "desc": "SGB1.sfc (SGB Boot Image)"
+    },
+    {
+      "name": "SGB2.sfc",
+      "path": "SGB2.sfc",
+      "md5": "8ecd73eb4edf7ed7e81aef1be80031d5",
+      "optional": true,
+      "desc": "SGB2.sfc (SGB Boot Image)"
+    },
+    {
+      "name": "BS-X.bin",
+      "path": "BS-X.bin",
+      "md5": "fed4d8242cfbed61343d53d48432aced",
+      "optional": true,
+      "desc": "BS-X.bin (BS-X - Sore wa Namae o Nusumareta Machi no Monogatari (Japan) (Rev 1))"
+    }
+  ]
+}

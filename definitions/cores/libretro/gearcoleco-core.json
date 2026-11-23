@@ -1,0 +1,39 @@
+{
+  "id": "gearcoleco-core",
+  "name": "Gearcoleco core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "gearcoleco_libretro.dll"
+    ],
+    "archive": "gearcoleco_libretro"
+  },
+  "systems": [
+    "colecovision"
+  ],
+  "extraExts": [
+    ".ddp"
+  ],
+  "requiredFiles": [
+    {
+      "name": "colecovision.rom",
+      "path": "colecovision.rom",
+      "md5": "2c66f5911e5b42b8ebe113403548eee7",
+      "desc": "colecovision.rom (ColecoVision / ADAM OS-7 BIOS)"
+    },
+    {
+      "name": "eos.rom",
+      "path": "eos.rom",
+      "md5": "01df3140909f09aa9aac4f88890f676c",
+      "optional": true,
+      "desc": "eos.rom (required for ADAM)"
+    },
+    {
+      "name": "writer.rom",
+      "path": "writer.rom",
+      "md5": "4fe4f6800076ea3d897d4285653447bd",
+      "optional": true,
+      "desc": "writer.rom (required for ADAM)"
+    }
+  ]
+}

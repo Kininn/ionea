@@ -1,0 +1,36 @@
+{
+  "id": "mesen",
+  "name": "Mesen",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^Mesen\\.exe$"
+    ],
+    "archive": "mesen"
+  },
+  "start": {
+    "args": "/fullscreen \"{rom}\""
+  },
+  "systems": [
+    "nes",
+    "gb",
+    "gbc",
+    "pcengine",
+    "pcenginecd",
+    "supergrafx",
+    "snes"
+  ],
+  "extraExts": [
+    ".nsf",
+    ".nsfe",
+    ".ips",
+    ".bps",
+    ".ups",
+    ".gbs",
+    ".unif",
+    ".studybox",
+    ".hes",
+    ".fig",
+    ".spc"
+  ]
+}

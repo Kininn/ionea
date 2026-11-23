@@ -1,0 +1,14 @@
+{
+  "id": "mojozork-core",
+  "name": "mojozork core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "mojozork_libretro.dll"
+    ],
+    "archive": "mojozork_libretro"
+  },
+  "systems": [
+    "zmachine"
+  ]
+}

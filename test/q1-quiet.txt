@@ -1,0 +1,81 @@
+# q1: no emulator overlays. Fake programs and configs under IONEA_TESTROOT only, nothing starts.
+wait 1500
+# Lichii (family Eden): perf overlay forced off with \default=false, its own keys merged in, shortcuts blanked
+writefile T\lichii\lichii.exe|x
+writefile T\lichii\user\config\qt-config.ini|[UI]
+iniset T\lichii\user\config\qt-config.ini|[UI]UIGameList\show_perf_overlay\default|true
+iniset T\lichii\user\config\qt-config.ini|[UI]UIGameList\show_perf_overlay|false
+# Esc (Exit Fullscreen) and F11 / Home+B (Fullscreen) blanked, so no key shows its menu bar
+iniset T\lichii\user\config\qt-config.ini|[UI]Shortcuts\Main%20Window\Exit%20Fullscreen\KeySeq|Esc
+iniset T\lichii\user\config\qt-config.ini|[UI]Shortcuts\Main%20Window\Fullscreen\KeySeq|F11
+iniset T\lichii\user\config\qt-config.ini|[UI]Shortcuts\Main%20Window\Fullscreen\Controller_KeySeq|Home+B
+# Home and Screenshot on no key (-1, never code 0, which a Home menu Alt tap gave), no Save as
+# dialog for a screenshot, the Capture button unbound
+iniset T\lichii\user\config\qt-config.ini|[Controls]player_0_button_home|"engine:keyboard,code:0,toggle:0"
+iniset T\lichii\user\config\qt-config.ini|[Controls]player_0_button_screenshot|"engine:keyboard,code:0,toggle:0"
+iniset T\lichii\user\config\qt-config.ini|[Controls]player_8_button_home|"engine:keyboard,code:0,toggle:0"
+iniset T\lichii\user\config\qt-config.ini|[Controls]player_8_button_screenshot|"engine:keyboard,code:0,toggle:0"
+iniset T\lichii\user\config\qt-config.ini|[UI]Screenshots\enable_screenshot_save_as|true
+iniset T\lichii\user\config\qt-config.ini|[UI]Shortcuts\Main%20Window\Capture%20Screenshot\Controller_KeySeq|Screenshot
+quiet lichii|T\lichii\lichii.exe|-f -g "game.nsp"
+expect filelacks T\lichii\user\config\qt-config.ini|code:0,
+expect filehas T\lichii\user\config\qt-config.ini|player_0_button_home="engine:keyboard,code:-1,toggle:0"
+expect filehas T\lichii\user\config\qt-config.ini|player_0_button_screenshot="engine:keyboard,code:-1,toggle:0"
+expect filehas T\lichii\user\config\qt-config.ini|player_8_button_home="engine:keyboard,code:-1,toggle:0"
+expect filehas T\lichii\user\config\qt-config.ini|player_8_button_screenshot="engine:keyboard,code:-1,toggle:0"
+expect filehas T\lichii\user\config\qt-config.ini|enable_screenshot_save_as=false
+expect filelacks T\lichii\user\config\qt-config.ini|Controller_KeySeq=Screenshot
+expect filelacks T\lichii\user\config\qt-config.ini|KeySeq=Esc
+expect filelacks T\lichii\user\config\qt-config.ini|KeySeq=F11
+expect filelacks T\lichii\user\config\qt-config.ini|KeySeq=Home+B
+expect filehas T\lichii\user\config\qt-config.ini|Exit%20Fullscreen\KeySeq\default=false
+expect filehas T\lichii\user\config\qt-config.ini|Fullscreen\Controller_KeySeq\default=false
+expect filehas T\lichii\user\config\qt-config.ini|UIGameList\show_perf_overlay\default=false
+expect filehas T\lichii\user\config\qt-config.ini|showStatusBar=false
+expect filehas T\lichii\user\config\qt-config.ini|show_whats_new=false
+expect filehas T\lichii\user\config\qt-config.ini|Toggle%20Performance%20Overlay\KeySeq=
+# No pause of its own when Ionea takes the front (a paused Qt emulator shows its menu bar)
+expect filehas T\lichii\user\config\qt-config.ini|pauseWhenInBackground=false
+expect quiethas args: -f -g "game.nsp" env:
+# bbport: shader box off through its environment, FPS off in bbport.ini
+writefile T\bb\bbport-run.exe|x
+writefile T\bb\bbport.ini|# bbport settings
+quiet bloodborne-bbport|T\bb\bbport-run.exe|--play
+expect filehas T\bb\bbport.ini|show_fps=0
+expect quiethas BB_SHADER_PROGRESS=0
+# shadPS4: its JSON
+writefile T\sh\shadPS4.exe|x
+writefile T\sh\user\config.json|{"General":{"show_fps_counter":true,"trophy_popup_disabled":false}}
+quiet shadps4|T\sh\shadPS4.exe|-g "x"
+expect filehas T\sh\user\config.json|"trophy_popup_disabled": true
+expect filehas T\sh\user\config.json|"show_fps_counter": false
+# Dolphin: GFX.ini filled, Dolphin.ini made in its existing folder
+writefile T\dol\Dolphin.exe|x
+writefile T\dol\User\Config\GFX.ini|[Settings]
+quiet dolphin|T\dol\Dolphin.exe|-b -e "x"
+expect filehas T\dol\User\Config\GFX.ini|ShowFPS = False
+expect filehas T\dol\User\Config\Dolphin.ini|OnScreenDisplayMessages = False
+expect filehas T\dol\User\Config\Dolphin.ini|PauseOnFocusLost = False
+# melonDS: its toml
+writefile T\mel\melonDS.toml|[Instance0.Window0]
+writefile T\mel\melonDS.exe|x
+quiet melonds|T\mel\melonDS.exe|-f "x"
+expect filehas T\mel\melonDS.toml|ShowOSD = false
+expect filehas T\mel\melonDS.toml|PauseLostFocus = false
+# mGBA: its own pause on focus lost off (paused in full screen it shows File, Edit...)
+writefile T\mg\mGBA.exe|x
+writefile T\mg\config.ini|[ports.qt]
+iniset T\mg\config.ini|[ports.qt]pauseOnFocusLost|1
+quiet mgba|T\mg\mGBA.exe|-f "x"
+expect filehas T\mg\config.ini|pauseOnFocusLost=0
+expect filelacks T\mg\config.ini|pauseOnFocusLost=1
+# KytyPS5: its command-line switches
+writefile T\ky\kyty_emulator.exe|x
+quiet kytyps5|T\ky\kyty_emulator.exe|"x"
+expect quiethas args: "x" --no-splash --no-trophy-notifications
+# a libretro core: its message options
+quiet melondsds-core|T\c\melondsds_libretro.dll|
+expect quiethas melonds_show_bios_warnings=disabled
+quiet dolphin-core|T\c\dolphin_libretro.dll|
+expect quiethas dolphin_osd_enabled=disabled
+quit

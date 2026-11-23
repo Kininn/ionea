@@ -1,0 +1,22 @@
+{
+  "id": "mednafen_pcfx-core",
+  "name": "Beetle PC-FX core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "mednafen_pcfx_libretro.dll"
+    ],
+    "archive": "mednafen_pcfx_libretro"
+  },
+  "systems": [
+    "pcfx"
+  ],
+  "requiredFiles": [
+    {
+      "name": "pcfx.rom",
+      "path": "pcfx.rom",
+      "md5": "08e36edbea28a017f79f8d4f7ff9b6d7",
+      "desc": "pcfx.rom (PC-FX BIOS v1.00 - 2 Sep 1994)"
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "id": "skyemu-core",
+  "name": "SkyEmu core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "skyemu_libretro.dll"
+    ],
+    "archive": "skyemu_libretro"
+  },
+  "systems": [
+    "gb",
+    "gba",
+    "gbc",
+    "nds"
+  ],
+  "extraExts": [
+    ".gbx"
+  ],
+  "requiredFiles": [
+    {
+      "name": "cgb_boot.bin",
+      "path": "cgb_boot.bin",
+      "optional": true,
+      "desc": "cgb_boot.bin (GBC BIOS)"
+    },
+    {
+      "name": "gbc_bios.bin",
+      "path": "gbc_bios.bin",
+      "optional": true,
+      "desc": "gbc_bios.bin (GBC BIOS)"
+    },
+    {
+      "name": "cgb0_boot.bin",
+      "path": "cgb0_boot.bin",
+      "optional": true,
+      "desc": "cgb0_boot.bin (GBC BIOS)"
+    },
+    {
+      "name": "cgb_agb_boot.bin",
+      "path": "cgb_agb_boot.bin",
+      "optional": true,
+      "desc": "cgb_agb_boot.bin (GBC BIOS)"
+    },
+    {
+      "name": "dmg_rom.bin",
+      "path": "dmg_rom.bin",
+      "optional": true,
+      "desc": "dmg_rom.bin (DMG BIOS)"
+    },
+    {
+      "name": "dmg0_rom.bin",
+      "path": "dmg0_rom.bin",
+      "optional": true,
+      "desc": "dmg0_rom.bin (DMG BIOS)"
+    },
+    {
+      "name": "gba_bios.bin",
+      "path": "gba_bios.bin",
+      "optional": true,
+      "desc": "gba_bios.bin (GBA BIOS)"
+    },
+    {
+      "name": "nds7.bin",
+      "path": "nds7.bin",
+      "optional": true,
+      "desc": "nds7.bin (NDS ARM7 BIOS)"
+    },
+    {
+      "name": "nds9.bin",
+      "path": "nds9.bin",
+      "optional": true,
+      "desc": "nds9.bin (NDS ARM9 BIOS)"
+    },
+    {
+      "name": "firmware.bin",
+      "path": "firmware.bin",
+      "optional": true,
+      "desc": "firmware.bin (NDS FIRMWARE)"
+    }
+  ]
+}

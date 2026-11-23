@@ -1,0 +1,21 @@
+{
+  "id": "winvice-5",
+  "name": "WinVice (xvic.exe)",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^xvic\\.exe$"
+    ],
+    "archive": "winvice"
+  },
+  "start": {
+    "args": "\"{rom}\""
+  },
+  "systems": [
+    "vic20"
+  ],
+  "extraExts": [
+    ".d1m",
+    ".p64"
+  ]
+}

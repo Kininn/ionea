@@ -1,0 +1,48 @@
+{
+  "id": "mu-core",
+  "name": "Mu core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "mu_libretro.dll"
+    ],
+    "archive": "mu_libretro"
+  },
+  "systems": [
+    "palm"
+  ],
+  "extraExts": [
+    ".pdb"
+  ],
+  "requiredFiles": [
+    {
+      "name": "palmos40-en-m500.rom",
+      "path": "palmos40-en-m500.rom",
+      "optional": true,
+      "desc": "palmos40-en-m500.rom (Palm OS 4.0)"
+    },
+    {
+      "name": "palmos41-en-m515.rom",
+      "path": "palmos41-en-m515.rom",
+      "desc": "palmos41-en-m515.rom (Palm OS 4.1)"
+    },
+    {
+      "name": "palmos52-en-t3.rom",
+      "path": "palmos52-en-t3.rom",
+      "optional": true,
+      "desc": "palmos52-en-t3.rom (Palm OS 5.2.1)"
+    },
+    {
+      "name": "palmos60-en-t3.rom",
+      "path": "palmos60-en-t3.rom",
+      "optional": true,
+      "desc": "palmos60-en-t3.rom (Palm OS 6.0)"
+    },
+    {
+      "name": "bootloader-dbvz.rom",
+      "path": "bootloader-dbvz.rom",
+      "optional": true,
+      "desc": "bootloader-dbvz.rom (MC68VZ328 UART Bootloader)"
+    }
+  ]
+}

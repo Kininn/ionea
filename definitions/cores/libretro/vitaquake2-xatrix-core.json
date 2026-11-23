@@ -1,0 +1,14 @@
+{
+  "id": "vitaquake2-xatrix-core",
+  "name": "vitaQuake 2 [Xatrix] core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "vitaquake2-xatrix_libretro.dll"
+    ],
+    "archive": "vitaquake2-xatrix_libretro"
+  },
+  "systems": [
+    "quake"
+  ]
+}

@@ -1,0 +1,101 @@
+# Look, effects and sound: whole colour presets, stained glass, Reduce effects hides effects
+# and shows plain colours, the sleep dim, one pop-up sound per burst, and the system list (it threw before).
+# Setup: test\w4-look-sound.ps1 (12 dummies, fake emulators at <root>, --windowed --mute, off screen).
+# No semicolons in comments: they split lines.
+wait 900
+type Tester
+key accept
+wait 900
+key accept
+wait 2200
+zoom medium
+folderfill Arcade|5
+# 1. Colours: whole palettes only, Default first, a one-colour id saved before becomes its nearest palette
+settings look and layout
+key accept
+cardrow Colours
+expect rowvalue Colours|Default
+key right
+expect rowvalue Colours|Aurora
+key accept
+wait 500
+shot w4-colours-list
+key back 3
+wait 700
+colours blossom
+wait 500
+shot w4-blossom-light
+colours red
+wait 300
+settings look and layout
+key accept
+cardrow Colours
+expect rowvalue Colours|Sunset
+key back 2
+wait 600
+colours ionea
+# 2. glass: stained white in the light look, stained near-black in the dark
+expect glass #B3F3FDFE
+key left 12
+expect name folder:Arcade
+key accept
+wait 900
+shot w4-glass-light
+key back
+wait 700
+theme dark
+wait 600
+expect glass #C214282E
+shot w4-home-dark
+key left 12
+key accept
+wait 900
+shot w4-glass-dark
+key back
+wait 700
+# 3. Reduce effects: the glows and running lights are hidden, the ring is one colour
+expect effects shown
+expect ringplain no
+reduce on
+wait 500
+expect effects hidden
+expect ringplain yes
+shot w4-reduced-dark
+reduce off
+wait 500
+expect effects shown
+expect ringplain no
+theme light
+wait 600
+# 4. sleep: the dim fades in, then out
+sleep on
+wait 250
+shot w4-sleep-fading
+wait 1000
+expect asleep yes|1.0
+shot w4-sleep
+sleep off
+wait 800
+expect asleep no|0.0
+# 5. pop-ups: three in a row make one sound, one after a pause makes its own
+wait 4500
+toastmark
+toast One
+toast Two
+toast Three
+wait 9500
+expect toastsounds 1 sounded, 2 quiet
+wait 4500
+toast Four
+wait 500
+expect toastsounds 2 sounded, 2 quiet
+wait 3000
+# 0. the systems list of a new emulator opens and scrolls to its end (it threw before)
+addemu T\custom\MyEmu.exe
+wait 600
+expect screen SystemPickCard
+key down 40
+wait 300
+expect cardfocus Other systems
+shot w4-systempick
+quit

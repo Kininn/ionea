@@ -1,0 +1,26 @@
+{
+  "id": "kegafusion",
+  "name": "Kega Fusion",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^Fusion\\.exe$"
+    ],
+    "archive": "kegafusion"
+  },
+  "start": {
+    "args": "\"{rom}\" -auto -fullscreen"
+  },
+  "systems": [
+    "genesis",
+    "sega32x",
+    "segacd",
+    "mastersystem",
+    "gamegear"
+  ],
+  "extraExts": [
+    ".raw",
+    ".sc",
+    ".mv"
+  ]
+}

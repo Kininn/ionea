@@ -1,0 +1,22 @@
+{
+  "id": "simple64",
+  "name": "simple64",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^simple64-gui\\.exe$"
+    ],
+    "archive": "simple64"
+  },
+  "start": {
+    "args": "--nogui \"{rom}\""
+  },
+  "systems": [
+    "n64"
+  ],
+  "extraExts": [
+    ".rom",
+    ".zip",
+    ".7z"
+  ]
+}

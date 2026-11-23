@@ -1,0 +1,15 @@
+{
+  "id": "gw-core",
+  "name": "GW core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "gw_libretro.dll"
+    ],
+    "archive": "gw_libretro"
+  },
+  "systems": [
+    "gameandwatch",
+    "lcdgames"
+  ]
+}

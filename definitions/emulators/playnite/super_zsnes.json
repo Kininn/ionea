@@ -1,0 +1,22 @@
+{
+  "id": "super_zsnes",
+  "name": "SUPER ZSNES",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^SUPERZSNES\\.exe$"
+    ],
+    "archive": "super_zsnes"
+  },
+  "start": {
+    "args": "\"{rom}\""
+  },
+  "systems": [
+    "snes"
+  ],
+  "extraExts": [
+    ".zip",
+    ".swc",
+    ".ufo"
+  ]
+}

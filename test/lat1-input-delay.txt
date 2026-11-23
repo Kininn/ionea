@@ -1,0 +1,23 @@
+# How long a press takes to show in a hosted game's picture and sound (lat1-input-delay.ps1 sets it up).
+# The test program turns the screen white and plays a tone while A is held. The presses come from the script.
+wait 900
+type Latency Test
+key accept
+wait 900
+key accept
+wait 1100
+addrom T\roms\Latency Test.gba
+wait 3000
+expect screen AddRomCard
+key accept
+wait 2500
+select Latency Test
+key accept
+waitshown 30
+wait 4500
+expect ingame Latency Test
+latency 40
+closegame
+wait 3000
+expect ingame none
+quit

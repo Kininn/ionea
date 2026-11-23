@@ -1,0 +1,292 @@
+﻿# Input: devices and their pop-ups, the Input button (straight to the device screen), device tabs, the console drop-down, binding keys and controller
+# buttons, the mouse screen, and the mouse on home, menus and cards. No real input is used: fake
+# devices, "rawkey" and "mouse" call the launcher directly.
+# Run: --data <tmp> --no-import --dummies 6 --windowed --mute --script test\i1-input.txt
+wait 900
+type Input Test
+key accept
+wait 900
+# a click on the start screen continues
+mouse down 900 500
+wait 1100
+expect screen HomeScreen
+devices none
+expect inputcaption 
+fakedevice keyboard on Test Keyboard
+expect toast Keyboard connected | Test Keyboard
+expect inputcaption keyboard
+fakedevice mouse on Test Mouse
+expect toast Mouse connected | Test Mouse
+expect inputcaption keyboard/mouse
+fakedevice pad on Test Pad
+expect toast Controller connected | Test Pad
+expect inputcaption keyboard/pad/mouse
+wait 700
+mousebar move 2
+expect bar 2
+wait 500
+shot input-bar-three
+fakedevice pad off Test Pad
+expect toast Controller disconnected | Test Pad
+expect inputcaption keyboard/mouse
+expect devstatus pad|Test Pad: not connected
+# The launch pop-up: what will work in the game, the controller greyed.
+launchtoast
+expect toast Detected your keyboard and mouse | keyboard:Test Keyboard, pad:Test Pad (not connected), mouse:Test Mouse
+wait 700
+shot input-launch-toast
+wait 3500
+# Pop-ups off for the mouse only, then for everything.
+inputset MousePopups false
+launchtoast
+expect toast Detected your keyboard | keyboard:Test Keyboard, pad:Test Pad (not connected)
+wait 3800
+fakedevice mouse off Test Mouse
+expect toast Detected your keyboard | keyboard:Test Keyboard, pad:Test Pad (not connected)
+fakedevice mouse on Test Mouse
+inputset MousePopups true
+inputset Popups false
+fakedevice keyboard off Test Keyboard
+fakedevice keyboard on Test Keyboard
+expect toast Detected your keyboard | keyboard:Test Keyboard, pad:Test Pad (not connected)
+launchtoast
+expect toast Detected your keyboard | keyboard:Test Keyboard, pad:Test Pad (not connected)
+inputset Popups true
+# The Input button opens the keyboard screen straight away (no controller in use).
+mousebar down 2
+wait 500
+expect screen KeyboardScreen
+expect devfocus east
+expect devtitle Game Boy Advance
+expect devitems dev:keyboard,dev:mouse,dev:pad,console,on,reset,east,south,l1,r1,start,select,up,down,left,right
+shot input-keyboard
+# Up from the left column's top is this device's tab, Down from a column's end is Reset.
+key up
+expect devfocus dev:keyboard
+key down
+expect devfocus east
+focusitem select
+key down
+expect devfocus reset
+key up
+expect devfocus select
+focusitem east
+# Keyboard screen: bind, refuse, swap, cancel.
+key accept
+expect capturing yes
+rawkey F1
+expect capturing yes
+expect devmsg F1 can't be used for a game button. Pick another key, or Esc.
+rawkey Z
+expect capturing no
+expect binding east Z
+focusitem south
+key accept
+rawkey Z
+expect binding south Z
+expect binding east Space
+key accept
+rawkey Escape
+wait 600
+expect capturing no
+expect binding south Z
+# a mouse button can be a game button, Delete leaves one with none
+focusitem l1
+key accept
+mousebind Right
+expect capturing no
+expect binding l1 MouseRight
+key accept
+rawkey Delete
+expect binding l1 none
+# The console drop-down: every console. A picks one, B or a click outside closes it.
+focusitem console
+key accept
+expect devdrop gba,nds,3ds,gc,ps4
+wait 300
+shot input-console-drop
+key down
+key accept
+expect devdrop closed
+expect devtitle Nintendo DS
+expect devfocus console
+key accept
+key down
+key accept
+expect devtitle Nintendo 3DS
+focusitem ls_up
+wait 300
+shot input-keyboard-stick
+focusitem console
+key accept
+key down 2
+key accept
+expect devtitle PlayStation 4
+wait 300
+shot input-keyboard-ps4
+key accept
+key back
+expect devdrop closed
+expect devtitle PlayStation 4
+key accept
+mouse down 5 5
+expect devdrop closed
+expect screen KeyboardScreen
+# a real click on the chip (down, then up) leaves the drop-down open
+mouseitem click console
+expect devdrop gba,nds,3ds,gc,ps4
+key back
+expect devdrop closed
+key accept
+key up 4
+key accept
+expect devtitle Game Boy Advance
+# The keyboard can only go off while a controller can take over, with none left it comes back on.
+focusitem on
+key accept
+expect inputpref KeyboardOn true
+fakedevice pad on Test Pad
+key accept
+expect inputpref KeyboardOn false
+expect kbon no
+fakedevice pad off Test Pad
+expect inputpref KeyboardOn true
+expect toast Keyboard turned back on | No controller is plugged in
+expect kbon yes
+focusitem reset
+key accept
+expect binding south Space
+expect binding east E
+expect binding l1 Q
+# Controller tab: greyed with no controller (a message, no screen), with one the controller screen in its place, same console.
+focusitem dev:pad
+key accept
+wait 400
+expect screen KeyboardScreen
+expect devmsg Connect a controller
+fakedevice pad on Test Pad
+key accept
+wait 400
+expect screen ControllerScreen
+fakedevice pad off Test Pad
+expect devfocus dev:pad
+expect devtitle Game Boy Advance
+expect devitems dev:keyboard,dev:mouse,dev:pad,console,nintendo,on,reset,l1,select,up,down,left,right,r1,start,east,south
+# Controller screen: with no controller, A steps through the buttons, with one, the next press is used.
+focusitem l1
+key accept
+expect padbinding l1 rb
+expect padbinding r1 lb
+fakedevice pad on Test Pad
+focusitem south
+key accept
+expect capturing yes
+padpress b
+expect capturing no
+expect padbinding south b
+expect padbinding east a
+wait 300
+shot input-controller
+focusitem nintendo
+key accept
+expect nintendo yes
+key accept
+expect nintendo no
+focusitem reset
+key accept
+expect padbinding south a
+expect padbinding l1 lb
+focusitem console
+key accept
+key down
+key accept
+expect devtitle Nintendo DS
+# Mouse tab.
+focusitem dev:mouse
+key accept
+wait 400
+expect screen MouseScreen
+expect devfocus dev:mouse
+expect devitems dev:keyboard,dev:mouse,dev:pad,on,left,right,wheel,size,hover,touch,mousecam,mousespeed
+# Mouse camera and its sensitivity: every console that has it at once
+expect mousecams ps4:on:5,switch:on:5,switch2:on:5,gc:on:5
+focusitem mousecam
+key accept
+expect mousecams ps4:off:5,switch:off:5,switch2:off:5,gc:off:5
+key accept
+expect mousecams ps4:on:5,switch:on:5,switch2:on:5,gc:on:5
+focusitem mousespeed
+key right
+expect mousecams ps4:on:6,switch:on:6,switch2:on:6,gc:on:6
+key left
+expect mousecams ps4:on:5,switch:on:5,switch2:on:5,gc:on:5
+# the Controller tab from the mouse screen: greyed too
+fakedevice pad off Test Pad
+focusitem dev:pad
+key accept
+expect screen MouseScreen
+expect devmsg Connect a controller
+fakedevice pad on Test Pad
+focusitem size
+key accept
+expect inputpref CursorSize 2
+key accept
+key accept
+expect inputpref CursorSize 1
+focusitem hover
+key accept
+expect inputpref HoverSounds false
+key accept
+expect inputpref HoverSounds true
+wait 300
+shot input-mouse
+focusitem on
+key accept
+expect inputpref MouseOn false
+expect cursor windows
+key accept
+expect inputpref MouseOn true
+expect cursor hidden
+# back to the keyboard: the console it was on
+focusitem dev:keyboard
+key accept
+wait 400
+expect screen KeyboardScreen
+expect devtitle Nintendo DS
+# one Back leaves the screens (the tabs swap in place)
+key back
+wait 400
+expect screen HomeScreen
+# The mouse on home: point = select, right click = quick menu, click outside = close, hold = quick menu.
+mousetile move 3
+expect sel 3
+mouse wheeldown 960 540
+expect mouseroute WheelDown HomeScreen used
+mousetile right 2
+wait 400
+expect screen HoldMenu
+expect sel 2
+mouse down 5 5
+wait 400
+expect screen HomeScreen
+mousehold 2 750
+expect screen HoldMenu
+mouse right 5 5
+wait 400
+expect screen HomeScreen
+# A click on the settings button, the wheel in the card, a click outside closes it.
+mousebar down 3
+wait 400
+expect screen SettingsCard
+mouse wheeldown 960 540
+mouse down 5 5
+wait 400
+expect screen HomeScreen
+# A click on a game starts it (dummy games have no shortcut: a message), a right click closes that.
+mousetile down 1
+waitlaunch 10
+expect screen MessageCard
+mouse right 5 5
+wait 400
+expect screen HomeScreen
+quit

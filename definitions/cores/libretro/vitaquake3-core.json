@@ -1,0 +1,14 @@
+{
+  "id": "vitaquake3-core",
+  "name": "vitaQuake 3 core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "vitaquake3_libretro.dll"
+    ],
+    "archive": "vitaquake3_libretro"
+  },
+  "systems": [
+    "quake"
+  ]
+}

@@ -1,0 +1,71 @@
+# One press opens a tile: a rebuild of the row while a click is held or its press plays, a
+# click on tiles made a moment ago (before a layout pass), a click right after closing a container, a
+# click on a tile while the profile chip has focus, and two quick presses still open only one thing.
+# No game is started: the dummies have no target, so a press that reaches the start shows "Can't start this game".
+# Run: --data <tmp> --no-import --dummies 12 --windowed --mute --script test\y1-one-press.txt
+wait 900
+type One Press
+key accept
+wait 900
+key accept
+wait 1100
+order name
+folderfill Box|3
+key left 15
+wait 400
+expect name folder:Box
+# a rebuild while the press on a game plays
+key right 2
+wait 400
+expect sel 2
+rebuildin 150
+mousetile down 2
+wait 400
+expect screen MessageCard
+key back
+wait 500
+expect screen HomeScreen
+# a rebuild while the button is still held (before the press starts)
+rebuildin 25
+mousetile down 3
+wait 400
+expect screen MessageCard
+key back
+wait 500
+# a click on tiles made a moment ago (the row rebuilt as the launcher comes back to the front)
+mousetilefresh 4
+wait 400
+expect screen MessageCard
+key back
+wait 500
+# a container: rebuilt while its press plays, then closed and a game clicked at once
+rebuildin 150
+mousetile down 0
+wait 500
+expect view folder:Box
+key back
+mousetile down 1
+wait 400
+expect view home
+expect screen MessageCard
+key back
+wait 500
+# the profile chip has focus (Up from the row) and a tile is clicked without moving the mouse
+key up
+wait 300
+expect chip yes
+mousetile down 2
+wait 400
+expect screen MessageCard
+expect chip no
+key back
+wait 500
+# the guard against double presses still holds: two quick presses open one card
+tap accept
+tap accept
+wait 700
+expect screen MessageCard
+key back
+wait 500
+expect screen HomeScreen
+quit

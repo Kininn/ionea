@@ -1,0 +1,17 @@
+{
+  "id": "pcsxr-pgxp",
+  "name": "PCSXR-PGXP",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^pcsxr-pgxp\\.exe$"
+    ],
+    "archive": "pcsxr-pgxp"
+  },
+  "start": {
+    "args": "-cdfile \"{rom}\" -nogui -slowboot"
+  },
+  "systems": [
+    "psx"
+  ]
+}

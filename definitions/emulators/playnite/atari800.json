@@ -1,0 +1,18 @@
+{
+  "id": "atari800",
+  "name": "Atari800",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^atari800\\.exe$"
+    ],
+    "archive": "atari800"
+  },
+  "start": {
+    "args": "\"{rom}\""
+  },
+  "systems": [
+    "atari800",
+    "atari5200"
+  ]
+}

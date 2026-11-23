@@ -1,0 +1,18 @@
+{
+  "id": "mednafen_wswan-core",
+  "name": "Beetle WonderSwan core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "mednafen_wswan_libretro.dll"
+    ],
+    "archive": "mednafen_wswan_libretro"
+  },
+  "systems": [
+    "wonderswan",
+    "wonderswancolor"
+  ],
+  "extraExts": [
+    ".pcv2"
+  ]
+}

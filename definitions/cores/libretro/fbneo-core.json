@@ -1,0 +1,166 @@
+{
+  "id": "fbneo-core",
+  "name": "FinalBurn Neo core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "fbneo_libretro.dll"
+    ],
+    "archive": "fbneo_libretro"
+  },
+  "systems": [
+    "arcade",
+    "cps",
+    "cps1",
+    "cps2",
+    "cps3",
+    "fbneo",
+    "mame",
+    "neogeo",
+    "neogeocd",
+    "neogeocdjp"
+  ],
+  "extraExts": [
+    ".ccd"
+  ],
+  "requiredFiles": [
+    {
+      "name": "neogeo.zip",
+      "path": "fbneo\\neogeo.zip",
+      "optional": true,
+      "desc": "fbneo/neogeo.zip (Neo Geo BIOS)"
+    },
+    {
+      "name": "neocdz.zip",
+      "path": "fbneo\\neocdz.zip",
+      "optional": true,
+      "desc": "fbneo/neocdz.zip (Neo Geo CDZ System BIOS)"
+    },
+    {
+      "name": "decocass.zip",
+      "path": "fbneo\\decocass.zip",
+      "optional": true,
+      "desc": "fbneo/decocass.zip (DECO Cassette System BIOS)"
+    },
+    {
+      "name": "isgsm.zip",
+      "path": "fbneo\\isgsm.zip",
+      "optional": true,
+      "desc": "fbneo/isgsm.zip (ISG Selection Master Type 2006 System BIOS)"
+    },
+    {
+      "name": "midssio.zip",
+      "path": "fbneo\\midssio.zip",
+      "optional": true,
+      "desc": "fbneo/midssio.zip (Midway SSIO Sound Board Internal ROM)"
+    },
+    {
+      "name": "nmk004.zip",
+      "path": "fbneo\\nmk004.zip",
+      "optional": true,
+      "desc": "fbneo/nmk004.zip (NMK004 Internal ROM)"
+    },
+    {
+      "name": "pgm.zip",
+      "path": "fbneo\\pgm.zip",
+      "optional": true,
+      "desc": "fbneo/pgm.zip (PGM System BIOS)"
+    },
+    {
+      "name": "skns.zip",
+      "path": "fbneo\\skns.zip",
+      "optional": true,
+      "desc": "fbneo/skns.zip (Super Kaneko Nova System BIOS)"
+    },
+    {
+      "name": "ym2608.zip",
+      "path": "fbneo\\ym2608.zip",
+      "optional": true,
+      "desc": "fbneo/ym2608.zip (YM2608 Internal ROM)"
+    },
+    {
+      "name": "cchip.zip",
+      "path": "fbneo\\cchip.zip",
+      "optional": true,
+      "desc": "fbneo/cchip.zip (C-Chip Internal ROM)"
+    },
+    {
+      "name": "bubsys.zip",
+      "path": "fbneo\\bubsys.zip",
+      "optional": true,
+      "desc": "fbneo/bubsys.zip (Bubble System BIOS)"
+    },
+    {
+      "name": "namcoc69.zip",
+      "path": "fbneo\\namcoc69.zip",
+      "optional": true,
+      "desc": "fbneo/namcoc69.zip (Namco C69 BIOS)"
+    },
+    {
+      "name": "namcoc70.zip",
+      "path": "fbneo\\namcoc70.zip",
+      "optional": true,
+      "desc": "fbneo/namcoc70.zip (Namco C70 BIOS)"
+    },
+    {
+      "name": "namcoc75.zip",
+      "path": "fbneo\\namcoc75.zip",
+      "optional": true,
+      "desc": "fbneo/namcoc75.zip (Namco C75 BIOS)"
+    },
+    {
+      "name": "coleco.zip",
+      "path": "fbneo\\coleco.zip",
+      "optional": true,
+      "desc": "fbneo/coleco.zip (ColecoVision System BIOS)"
+    },
+    {
+      "name": "fdsbios.zip",
+      "path": "fbneo\\fdsbios.zip",
+      "optional": true,
+      "desc": "fbneo/fdsbios.zip (FDS System BIOS)"
+    },
+    {
+      "name": "msx.zip",
+      "path": "fbneo\\msx.zip",
+      "optional": true,
+      "desc": "fbneo/msx.zip (MSX1 System BIOS)"
+    },
+    {
+      "name": "ngp.zip",
+      "path": "fbneo\\ngp.zip",
+      "optional": true,
+      "desc": "fbneo/ngp.zip (NeoGeo Pocket BIOS)"
+    },
+    {
+      "name": "spectrum.zip",
+      "path": "fbneo\\spectrum.zip",
+      "optional": true,
+      "desc": "fbneo/spectrum.zip (ZX Spectrum BIOS)"
+    },
+    {
+      "name": "spec128.zip",
+      "path": "fbneo\\spec128.zip",
+      "optional": true,
+      "desc": "fbneo/spec128.zip (ZX Spectrum 128 BIOS)"
+    },
+    {
+      "name": "spec1282a.zip",
+      "path": "fbneo\\spec1282a.zip",
+      "optional": true,
+      "desc": "fbneo/spec1282a.zip (ZX Spectrum 128 +2a BIOS)"
+    },
+    {
+      "name": "channelf.zip",
+      "path": "fbneo\\channelf.zip",
+      "optional": true,
+      "desc": "fbneo/channelf.zip (Fairchild Channel F BIOS)"
+    },
+    {
+      "name": "hiscore.dat",
+      "path": "fbneo\\hiscore.dat",
+      "optional": true,
+      "desc": "fbneo/hiscore.dat (High Score support database)"
+    }
+  ]
+}

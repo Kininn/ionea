@@ -1,0 +1,21 @@
+{
+  "id": "citron",
+  "name": "Citron",
+  "family": "yuzu",
+  "detect": {
+    "programs": [
+      "citron.exe"
+    ],
+    "archive": "citron"
+  },
+  "gameFolders": [
+    {
+      "file": "{exe}\\user\\config\\qt-config.ini",
+      "match": "(?m)^Paths\\\\gamedirs\\\\\\d+\\\\path\\s*=\\s*(.+?)\\s*$"
+    },
+    {
+      "file": "{appdata}\\citron\\config\\qt-config.ini",
+      "match": "(?m)^Paths\\\\gamedirs\\\\\\d+\\\\path\\s*=\\s*(.+?)\\s*$"
+    }
+  ]
+}

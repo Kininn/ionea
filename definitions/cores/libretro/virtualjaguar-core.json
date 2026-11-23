@@ -1,0 +1,44 @@
+{
+  "id": "virtualjaguar-core",
+  "name": "Virtual Jaguar core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "virtualjaguar_libretro.dll"
+    ],
+    "archive": "virtualjaguar_libretro"
+  },
+  "systems": [
+    "atarijaguar",
+    "atarijaguarcd"
+  ],
+  "extraExts": [
+    ".chd"
+  ],
+  "requiredFiles": [
+    {
+      "name": "[BIOS] Atari Jaguar CD (World).j64",
+      "path": "[BIOS] Atari Jaguar CD (World).j64",
+      "optional": true,
+      "desc": "[BIOS] Atari Jaguar CD (World).j64 (Jaguar CD BIOS, retail - optional override)"
+    },
+    {
+      "name": "[BIOS] Atari Jaguar Developer CD (World).j64",
+      "path": "[BIOS] Atari Jaguar Developer CD (World).j64",
+      "optional": true,
+      "desc": "[BIOS] Atari Jaguar Developer CD (World).j64 (Jaguar CD BIOS, developer - optional override)"
+    },
+    {
+      "name": "jagboot_m.rom",
+      "path": "jagboot_m.rom",
+      "optional": true,
+      "desc": "jagboot_m.rom (Jaguar cart boot ROM, Model M - optional override)"
+    },
+    {
+      "name": "jagboot.rom",
+      "path": "jagboot.rom",
+      "optional": true,
+      "desc": "jagboot.rom (Jaguar cart boot ROM, any revision - optional, used when Cart BIOS Type is Custom)"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "retro8-core",
+  "name": "Retro8 core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "retro8_libretro.dll"
+    ],
+    "archive": "retro8_libretro"
+  },
+  "systems": [
+    "pico8"
+  ]
+}

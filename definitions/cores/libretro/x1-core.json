@@ -1,0 +1,30 @@
+{
+  "id": "x1-core",
+  "name": "x1 core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "x1_libretro.dll"
+    ],
+    "archive": "x1_libretro"
+  },
+  "systems": [
+    "x1"
+  ],
+  "requiredFiles": [
+    {
+      "name": "IPLROM.X1",
+      "path": "xmil\\IPLROM.X1",
+      "md5": "eeeea1cd29c6e0e8b094790ae969bfa7",
+      "optional": true,
+      "desc": "xmil/IPLROM.X1 (Sharp X1 IPL ROM)"
+    },
+    {
+      "name": "IPLROM.X1T",
+      "path": "xmil\\IPLROM.X1T",
+      "md5": "851e4a5936f17d13f8c39a980cf00d77",
+      "optional": true,
+      "desc": "xmil/IPLROM.X1T (Sharp X1 8x8 Font ROM)"
+    }
+  ]
+}

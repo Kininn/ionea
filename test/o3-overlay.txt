@@ -1,0 +1,80 @@
+# Ionea's own performance overlay over a core game. Setup: a tiny self-made GBA
+# program (made by a small script: paints the screen one colour and loops, no game) at
+# <root>\roms\Overlay Test.gba, IONEA_TESTROOT=<root>, then
+# --data <tmp> --no-import --windowed --mute --script test\o3-overlay.txt
+# Off by default. Simple from the Home menu row (Right). Detailed with position and size from its card. Hidden
+# while the Home menu is open, gone when the game closes. (No semicolons in comments: they split lines.)
+wait 900
+type Core Test
+key accept
+wait 900
+key accept
+wait 1100
+addrom T\roms\Overlay Test.gba
+wait 4000
+expect screen EmuChoiceCard
+key accept
+wait 1500
+expect screen AddRomCard
+key accept
+wait 2500
+setemu Overlay Test|mGBA core
+select Overlay Test
+expect name Overlay Test
+expect emu mGBA core
+key accept
+waitshown 30
+wait 2500
+expect ingame Overlay Test
+expect overlay hidden
+homebutton
+wait 800
+expect screen HomeMenuCard
+cardrow Performance overlay
+expect rowvalue Performance overlay|Off
+key right
+expect rowvalue Performance overlay|Simple
+expect overlay hidden
+cardrow Resume
+key accept
+wait 1800
+expect overlay simple
+expect overlayfps ok
+expect overlaysource core
+expect overlaycorner top
+overlaylog
+shot launcher-ov-simple
+homebutton
+wait 800
+expect screen HomeMenuCard
+expect overlay hidden
+cardrow Performance overlay
+key right
+expect rowvalue Performance overlay|Detailed
+key accept
+wait 500
+expect screen OverlayCard
+overlayset Position|Bottom
+overlayset Size|Large
+shot launcher-ov-card
+key back
+wait 600
+expect screen HomeMenuCard
+cardrow Resume
+key accept
+wait 2500
+expect overlay detailed
+expect overlayfps ok
+expect overlaysource core
+expect overlayspeed ok
+expect overlaycorner bottom
+expect savedoverlay Overlay Test|Mode|detailed
+expect savedoverlay Overlay Test|Corner|bottom
+expect savedoverlay global|Mode|none
+overlaylog
+shot launcher-ov-detailed
+closegame
+wait 2000
+expect ingame none
+expect overlay hidden
+quit

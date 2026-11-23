@@ -1,0 +1,74 @@
+{
+  "id": "quasi88-core",
+  "name": "QUASI88 core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "quasi88_libretro.dll"
+    ],
+    "archive": "quasi88_libretro"
+  },
+  "systems": [
+    "pc88"
+  ],
+  "requiredFiles": [
+    {
+      "name": "n88.rom",
+      "path": "quasi88\\n88.rom",
+      "desc": "n88.rom (Main BIOS)"
+    },
+    {
+      "name": "n88_0.rom",
+      "path": "quasi88\\n88_0.rom",
+      "desc": "n88_0.rom (Extension BIOS 1)"
+    },
+    {
+      "name": "n88_1.rom",
+      "path": "quasi88\\n88_1.rom",
+      "optional": true,
+      "desc": "n88_1.rom (Extension BIOS 2)"
+    },
+    {
+      "name": "n88_2.rom",
+      "path": "quasi88\\n88_2.rom",
+      "optional": true,
+      "desc": "n88_2.rom (Extension BIOS 3)"
+    },
+    {
+      "name": "n88_3.rom",
+      "path": "quasi88\\n88_3.rom",
+      "optional": true,
+      "desc": "n88_3.rom (Extension BIOS 4)"
+    },
+    {
+      "name": "n88n.rom",
+      "path": "quasi88\\n88n.rom",
+      "optional": true,
+      "desc": "n88n.rom (N Basic BIOS)"
+    },
+    {
+      "name": "disk.rom",
+      "path": "quasi88\\disk.rom",
+      "optional": true,
+      "desc": "disk.rom (Sub BIOS)"
+    },
+    {
+      "name": "n88knj1.rom",
+      "path": "quasi88\\n88knj1.rom",
+      "optional": true,
+      "desc": "n88knj1.rom (Kanji Font 1)"
+    },
+    {
+      "name": "n88knj2.rom",
+      "path": "quasi88\\n88knj2.rom",
+      "optional": true,
+      "desc": "n88knj2.rom (Kanji Font 2)"
+    },
+    {
+      "name": "n88jisho.rom",
+      "path": "quasi88\\n88jisho.rom",
+      "optional": true,
+      "desc": "n88jisho.rom (Jisho)"
+    }
+  ]
+}

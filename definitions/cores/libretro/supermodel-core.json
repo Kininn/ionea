@@ -1,0 +1,19 @@
+{
+  "id": "supermodel-core",
+  "name": "Supermodel core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "supermodel_libretro.dll"
+    ],
+    "archive": "supermodel_libretro"
+  },
+  "systems": [
+    "arcade",
+    "mame",
+    "model3"
+  ],
+  "extraExts": [
+    ".chd"
+  ]
+}

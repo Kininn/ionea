@@ -1,0 +1,18 @@
+{
+  "id": "dosbox_svn-core",
+  "name": "DOSBox-SVN core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "dosbox_svn_libretro.dll"
+    ],
+    "archive": "dosbox_svn_libretro"
+  },
+  "systems": [
+    "dos",
+    "pc"
+  ],
+  "extraExts": [
+    "./"
+  ]
+}

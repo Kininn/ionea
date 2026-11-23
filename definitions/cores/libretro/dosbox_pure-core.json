@@ -1,0 +1,28 @@
+{
+  "id": "dosbox_pure-core",
+  "name": "DOSBox-pure core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "dosbox_pure_libretro.dll"
+    ],
+    "archive": "dosbox_pure_libretro"
+  },
+  "systems": [
+    "dos",
+    "pc",
+    "windows3x",
+    "windows9x"
+  ],
+  "extraExts": [
+    ".chd",
+    ".ins",
+    ".ima",
+    ".vhd",
+    ".jrc",
+    ".tc",
+    ".m3u",
+    ".m3u8",
+    "./"
+  ]
+}

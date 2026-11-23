@@ -1,0 +1,25 @@
+{
+  "id": "ppsspp-core",
+  "name": "PPSSPP core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "ppsspp_libretro.dll"
+    ],
+    "archive": "ppsspp_libretro"
+  },
+  "systems": [
+    "psp"
+  ],
+  "extraExts": [
+    ".elf"
+  ],
+  "requiredFiles": [
+    {
+      "name": "ppge_atlas.zim",
+      "path": "PPSSPP\\ppge_atlas.zim",
+      "md5": "866855cc330b9b95cc69135fb7b41d38",
+      "desc": "ppge_atlas.zim (PPSSPP Data ROM)"
+    }
+  ]
+}

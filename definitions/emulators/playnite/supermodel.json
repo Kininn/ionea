@@ -1,0 +1,17 @@
+{
+  "id": "supermodel",
+  "name": "Supermodel",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^supermodel\\.exe$"
+    ],
+    "archive": "supermodel"
+  },
+  "start": {
+    "args": "\"{rom}\" -fullscreen"
+  },
+  "systems": [
+    "arcade"
+  ]
+}

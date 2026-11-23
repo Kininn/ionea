@@ -1,0 +1,27 @@
+{
+  "id": "nestopia-core",
+  "name": "Nestopia core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "nestopia_libretro.dll"
+    ],
+    "archive": "nestopia_libretro"
+  },
+  "systems": [
+    "nes"
+  ],
+  "extraExts": [
+    ".unif",
+    ".nsf"
+  ],
+  "requiredFiles": [
+    {
+      "name": "disksys.rom",
+      "path": "disksys.rom",
+      "md5": "ca30b50f880eb660a320674ed365ef7a",
+      "optional": true,
+      "desc": "disksys.rom (Family Computer Disk System BIOS)"
+    }
+  ]
+}

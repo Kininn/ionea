@@ -1,0 +1,139 @@
+# Profiles: the first start makes one (name + picture), names must be unique, play stats, each profile's
+# saves for an emulator with save folders (Dolphin: junctions) and one that saves next to the game (mGBA:
+# swapped), the home chip, "Who's playing?" at the start screen, removing a profile.
+# Setup: powershell -File test\make-fake-profiles.ps1 <T>, set IONEA_TESTROOT=<T> and IONEA_TEST_RECYCLE=<T>\recycle
+# Run:   --data <tmp> --no-import --emulators <T>\emus --windowed --mute --script test\u1-profiles.txt
+wait 900
+expect screen NewProfileScreen
+key accept
+wait 200
+expect screen NewProfileScreen
+type Alex
+key down
+photo T\pic.png
+key up
+key accept
+wait 1100
+expect screen StartScreen
+expect profile Alex
+expect profilepic yes
+expect profilecount 1
+shot launcher-u-start
+key accept
+wait 1100
+expect screen HomeScreen
+romgame Pocket Quest|T\roms\Pocket Quest (USA).gba|mGBA
+romgame Test Island|T\roms\Test Island.rvz|Dolphin
+play Pocket Quest|3600
+play Test Island|120
+expect playtime 3720
+expect mostplayed Pocket Quest
+expect monthcount 2
+# the first profile gets the saves made before profiles
+prepare Test Island|Dolphin
+expect link T\emus\Dolphin\User\GC
+expect filehas T\emus\Dolphin\User\GC\old.sav|before
+prepare Pocket Quest|mGBA
+expect filehas T\roms\Pocket Quest (USA).sav|owner save
+# a second profile: the same name in other letters is refused
+newprofile
+type alex
+key accept
+wait 200
+expect screen NewProfileScreen
+shot launcher-u-same-name
+type Sam
+key accept
+wait 700
+expect profile Sam
+expect profilecount 2
+expect playtime 0
+prepare Test Island|Dolphin
+expect gone T\emus\Dolphin\User\GC\old.sav
+writefile T\emus\Dolphin\User\GC\sam.sav|sam dolphin
+prepare Pocket Quest|mGBA
+expect gone T\roms\Pocket Quest (USA).sav
+writefile T\roms\Pocket Quest (USA).sav|sam save
+# back to Alex: Alex's saves, not Sam's
+switchprofile Alex
+expect playtime 3720
+prepare Test Island|Dolphin
+expect filehas T\emus\Dolphin\User\GC\old.sav|before
+expect gone T\emus\Dolphin\User\GC\sam.sav
+prepare Pocket Quest|mGBA
+expect filehas T\roms\Pocket Quest (USA).sav|owner save
+# and Sam again
+switchprofile Sam
+prepare Pocket Quest|mGBA
+expect filehas T\roms\Pocket Quest (USA).sav|sam save
+prepare Test Island|Dolphin
+expect filehas T\emus\Dolphin\User\GC\sam.sav|sam dolphin
+profilelog
+# the chip in the top bar
+switchprofile Alex
+select Pocket Quest
+key up
+wait 300
+expect chip yes
+shot launcher-u-chip
+key accept
+wait 600
+expect screen ProfileCard
+shot launcher-u-card
+key back
+wait 400
+key down
+wait 300
+expect chip no
+# pointing at the picture lights its ring, pointing at a game moves it back, a click opens the card
+mousechip move
+expect chip yes
+shot launcher-u-chip-hover
+mousetile move 0
+expect chip no
+mousebar move 0
+mousechip move
+expect chip yes
+expect bar -1
+mousechip down
+wait 600
+expect screen ProfileCard
+key back
+wait 400
+key down
+wait 300
+expect chip no
+# the start screen asks who's playing
+key back
+wait 900
+expect screen StartScreen
+key accept
+wait 600
+expect screen WhoCard
+expect whofocus Alex
+shot launcher-u-who
+key right
+expect whofocus Sam
+key accept
+wait 1300
+expect screen HomeScreen
+expect profile Sam
+# remove Sam from Alex's profile card (by the row's name, so the rows above it can change)
+switchprofile Alex
+prepare Pocket Quest|mGBA
+profilecard
+cardrow Remove a profile
+key accept
+wait 500
+expect screen RemoveProfileCard
+key accept
+wait 500
+expect screen ConfirmRemoveCard
+key down
+key accept
+wait 800
+expect profilecount 1
+expect profile Alex
+expect filehas T\roms\Pocket Quest (USA).sav|owner save
+profilelog
+quit

@@ -1,0 +1,14 @@
+{
+  "id": "vecx-core",
+  "name": "vecx core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "vecx_libretro.dll"
+    ],
+    "archive": "vecx_libretro"
+  },
+  "systems": [
+    "vectrex"
+  ]
+}

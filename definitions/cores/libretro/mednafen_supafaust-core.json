@@ -1,0 +1,22 @@
+{
+  "id": "mednafen_supafaust-core",
+  "name": "Beetle Supafaust core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "mednafen_supafaust_libretro.dll"
+    ],
+    "archive": "mednafen_supafaust_libretro"
+  },
+  "systems": [
+    "snes"
+  ],
+  "extraExts": [
+    ".fig",
+    ".gd3",
+    ".gd7",
+    ".dx2",
+    ".bsx",
+    ".swc"
+  ]
+}

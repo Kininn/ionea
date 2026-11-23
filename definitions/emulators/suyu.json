@@ -1,0 +1,21 @@
+{
+  "id": "suyu",
+  "name": "suyu",
+  "family": "yuzu",
+  "detect": {
+    "programs": [
+      "suyu.exe"
+    ],
+    "archive": "suyu"
+  },
+  "gameFolders": [
+    {
+      "file": "{exe}\\user\\config\\qt-config.ini",
+      "match": "(?m)^Paths\\\\gamedirs\\\\\\d+\\\\path\\s*=\\s*(.+?)\\s*$"
+    },
+    {
+      "file": "{appdata}\\suyu\\config\\qt-config.ini",
+      "match": "(?m)^Paths\\\\gamedirs\\\\\\d+\\\\path\\s*=\\s*(.+?)\\s*$"
+    }
+  ]
+}

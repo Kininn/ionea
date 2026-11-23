@@ -1,0 +1,26 @@
+{
+  "id": "prosystem-core",
+  "name": "ProSystem core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "prosystem_libretro.dll"
+    ],
+    "archive": "prosystem_libretro"
+  },
+  "systems": [
+    "atari7800"
+  ],
+  "extraExts": [
+    ".cdf"
+  ],
+  "requiredFiles": [
+    {
+      "name": "7800 BIOS (U).rom",
+      "path": "7800 BIOS (U).rom",
+      "md5": "0763f1ffb006ddbe32e52d497ee848ae",
+      "optional": true,
+      "desc": "7800 BIOS (U).rom (7800 BIOS)"
+    }
+  ]
+}

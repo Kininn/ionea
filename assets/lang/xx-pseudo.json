@@ -1,0 +1,6 @@
+{
+  "_name": "Pseudo (test)",
+  "_pseudo": true,
+  "_note": "Test pseudo-locale, not a translation. Every English string without a key here is shown [bracketed, accented and about 30 % longer ~~~], so text still hard-coded in English (no brackets) or cut off (no closing bracket) stands out. The few keys here are hand-written samples and win over the generated text.",
+  "settings.language": "[Łåñĝûåĝé ~~]"
+}

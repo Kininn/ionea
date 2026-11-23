@@ -1,0 +1,28 @@
+# Ring runner + pop-out on opening a game.
+wait 900
+type Ring Test
+key accept
+wait 900
+key accept
+wait 1100
+key right 2
+wait 500
+shot launcher-r-ring-a
+wait 650
+shot launcher-r-ring-b
+tap accept
+wait 20
+shot launcher-r-pop-a
+wait 20
+shot launcher-r-pop-b
+wait 130
+shot launcher-r-pop-c
+wait 1800
+expect screen HomeScreen
+expect launch shown
+waitlaunch 15
+expect screen HomeScreen
+key down
+wait 500
+shot launcher-r-button
+quit

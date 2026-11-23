@@ -1,0 +1,120 @@
+# Clicking the drawing on the device screens: a bound key / button starts its prompt straight away, an
+# unbound one asks which game button it is for, a drawn key clicked while a prompt waits is the answer.
+# The mouse's wheel (on top of its left / right buttons) can be clicked. No real input: fake devices,
+# "mousepart" routes the scripted pointer, "rawkey" / "mousebind" answer a prompt.
+# Run: --data <tmp> --no-import --dummies 6 --windowed --mute --script test\c5-drawclick.txt
+wait 900
+type Draw Test
+key accept
+wait 900
+key accept
+wait 1500
+expect screen HomeScreen
+devices none
+fakedevice keyboard on Test Keyboard
+fakedevice mouse on Test Mouse
+fakedevice pad on Test Pad
+wait 300
+# ---- keyboard and mouse, PS4 (R3 is the wheel) ----
+controls ps4
+devicescreen keyboard
+expect screen KeyboardScreen
+expect binding r3 MouseMiddle
+wait 300
+shot drawclick-keyboard
+# the wheel: R3's prompt, at once
+mousepart down MouseMiddle
+expect devfocus r3
+expect capturing yes
+shot drawclick-wheel-prompt
+rawkey G
+expect capturing no
+expect binding r3 G
+# a key on the drawing: its prompt
+mousepart down E
+expect devfocus south
+expect capturing yes
+key back
+expect capturing no
+expect binding south E
+# now nothing uses the wheel: pick the game button for it
+mousepart down MouseMiddle
+expect capturing no
+expect devassigning MouseMiddle
+shot drawclick-wheel-assign
+focusitem select
+key accept
+expect devassigning no
+expect binding select MouseMiddle
+# an unbound key, then Back cancels
+mousepart down H
+expect devassigning H
+key back
+expect devassigning no
+expect screen KeyboardScreen
+# an unbound key, then a click on a game button on the side gives it that key
+mousepart down H
+expect devassigning H
+focusitem start
+key accept
+expect binding start H
+# while a prompt waits, a left click on a drawn key takes that key (not left click)
+focusitem l2
+key accept
+expect capturing yes
+mousepart move K
+mousebind Left
+expect capturing no
+expect binding l2 K
+# a key that can't be a game button is refused, nothing waits
+mousepart down LWin
+expect devassigning no
+expect capturing no
+# the mouse's body: the mouse look row, focused, not changed
+mousepart down mouse
+expect devfocus mousespeed
+expect mousespeed 5
+key back
+wait 500
+# ---- controller, plugged in: a drawn button starts its prompt, another one is the answer ----
+expect padbinding south a
+expect padbinding east b
+devicescreen pad
+expect screen ControllerScreen
+mousepart down a
+expect devfocus south
+expect capturing yes
+mousepart down b
+expect capturing no
+expect padbinding south b
+expect padbinding east a
+# ---- no controller: a drawn button asks which game button it is for ----
+fakedevice pad off Test Pad
+wait 300
+expect padbinding north y
+expect padbinding west x
+mousepart down y
+expect capturing no
+expect devassigning y
+expect devfocus north
+shot drawclick-pad-assign
+focusitem west
+key accept
+expect devassigning no
+expect padbinding west y
+expect padbinding north x
+key back
+wait 500
+# ---- the mouse screen: the wheel can be clicked ----
+devicescreen mouse
+expect screen MouseScreen
+mousepart down wheel
+expect devfocus wheel
+expect devmsg The wheel scrolls lists and the game row
+mousepart down right
+expect devfocus right
+wait 300
+shot drawclick-mouse
+key back
+wait 500
+quit

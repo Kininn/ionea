@@ -1,0 +1,73 @@
+{
+  "id": "geargrafx-core",
+  "name": "Geargrafx core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "geargrafx_libretro.dll"
+    ],
+    "archive": "geargrafx_libretro"
+  },
+  "systems": [
+    "pcengine",
+    "pcenginecd",
+    "supergrafx",
+    "tg16",
+    "tg-cd"
+  ],
+  "extraExts": [
+    ".hes",
+    ".mmi"
+  ],
+  "requiredFiles": [
+    {
+      "name": "syscard3.pce",
+      "path": "syscard3.pce",
+      "md5": "38179df8f4ac870017db21ebcbf53114",
+      "optional": true,
+      "desc": "syscard3.pce (Super CD-ROM2 System V3.xx)"
+    },
+    {
+      "name": "syscard2.pce",
+      "path": "syscard2.pce",
+      "md5": "3a456f0eccff039eb5ff045f56ec1c3b",
+      "optional": true,
+      "desc": "syscard2.pce (CD-ROM System V2.xx)"
+    },
+    {
+      "name": "syscard1.pce",
+      "path": "syscard1.pce",
+      "md5": "2b7ccb3d86baa18f6402c176f3065082",
+      "optional": true,
+      "desc": "syscard1.pce (CD-ROM System V1.xx)"
+    },
+    {
+      "name": "gexpress.pce",
+      "path": "gexpress.pce",
+      "md5": "6d2cb14fc3e1f65ceb135633d1694122",
+      "optional": true,
+      "desc": "gexpress.pce (Game Express CD Card)"
+    },
+    {
+      "name": "pac-n1.bin",
+      "path": "pac-n1.bin",
+      "md5": "f69f173b251d8bf7649b10a9167a10bf",
+      "optional": true,
+      "desc": "pac-n1.bin (LaserActive PAC-N1, Japan)"
+    },
+    {
+      "name": "pce-lp1.bin",
+      "path": "pce-lp1.bin",
+      "md5": "761fea207d0eafd4cfd78da7c44cac88",
+      "optional": true,
+      "desc": "pce-lp1.bin (LaserActive PCE-LP1, Japan)"
+    },
+    {
+      "name": "pac-n10.bin",
+      "path": "pac-n10.bin",
+      "md5": "f0fb8a4605ac7eefbafd4f2d5a793cc8",
+      "optional": true,
+      "desc": "pac-n10.bin (LaserActive PAC-N10, USA)"
+    }
+  ]
+}

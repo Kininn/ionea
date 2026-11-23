@@ -1,0 +1,394 @@
+{
+  "id": "lichii",
+  "name": "Lichii",
+  "family": "eden",
+  "tested": {
+    "min": "228",
+    "max": "386.*"
+  },
+  "detect": {
+    "programs": [
+      "lichii.exe"
+    ],
+    "archive": "lichii"
+  },
+  "systems": [
+    "switch2"
+  ],
+  "requiredFiles": [
+    {
+      "name": "prod.keys",
+      "path": "user\\keys\\prod.keys",
+      "check": "switch-keys",
+      "share": "switch-keys"
+    },
+    {
+      "name": "title.keys",
+      "path": "user\\keys\\title.keys",
+      "check": "switch-titlekeys",
+      "share": "switch-titlekeys",
+      "optional": true
+    },
+    {
+      "name": "Firmware",
+      "path": "user\\nand\\system\\Contents\\registered\\",
+      "check": "switch-firmware",
+      "share": "switch2-firmware",
+      "optional": true
+    }
+  ],
+  "video": {
+    "format": "ini",
+    "style": "qt",
+    "sep": "=",
+    "file": "user\\config\\qt-config.ini",
+    "perGame": "user\\config\\custom\\{gameid}.ini",
+    "gameId": "switch",
+    "noGameId": "Its title id wasn't found (add prod.keys, or a [title id] in the file name)",
+    "savesOnExit": true,
+    "summary": "resolution, upscaling, frame pacing",
+    "settings": [
+      {
+        "key": "[Renderer]resolution_setup",
+        "shared": "resolution",
+        "values": [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12"
+        ],
+        "names": [
+          "0.25x",
+          "0.5x",
+          "0.75x",
+          "1x (native)",
+          "1.25x",
+          "1.5x",
+          "2x",
+          "3x",
+          "4x",
+          "5x",
+          "6x",
+          "7x",
+          "8x"
+        ],
+        "default": "3"
+      },
+      {
+        "key": "[Renderer]scaling_filter",
+        "shared": "upscaling",
+        "values": [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12"
+        ],
+        "names": [
+          "Nearest neighbor",
+          "Bilinear",
+          "Bicubic",
+          "Gaussian",
+          "Lanczos",
+          "ScaleForce",
+          "AMD FSR",
+          "Area",
+          "Zero-Tangent",
+          "B-Spline",
+          "Mitchell",
+          "Spline-1",
+          "MMPX"
+        ],
+        "default": "5"
+      },
+      {
+        "key": "[Renderer]aspect_ratio",
+        "shared": "aspect",
+        "values": [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "names": [
+          "16:9",
+          "4:3",
+          "21:9",
+          "16:10",
+          "Stretch to window"
+        ],
+        "default": "0"
+      },
+      {
+        "key": "[Renderer]use_vsync",
+        "shared": "pacing",
+        "values": [
+          "2",
+          "1",
+          "3",
+          "0"
+        ],
+        "names": [
+          "V-Sync",
+          "Low latency",
+          "Relaxed V-Sync",
+          "Uncapped (may tear)"
+        ],
+        "default": "2"
+      },
+      {
+        "key": "[Renderer]anti_aliasing",
+        "shared": "antialiasing",
+        "values": [
+          "0",
+          "1",
+          "2"
+        ],
+        "names": [
+          "Off",
+          "FXAA",
+          "SMAA"
+        ],
+        "default": "1"
+      },
+      {
+        "key": "[Renderer]max_anisotropy",
+        "shared": "filtering",
+        "values": [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+        ],
+        "names": [
+          "Automatic",
+          "Default",
+          "2x",
+          "4x",
+          "8x",
+          "16x"
+        ],
+        "default": "0"
+      },
+      {
+        "key": "[Renderer]backend",
+        "shared": "renderer",
+        "values": [
+          "1",
+          "0",
+          "3",
+          "4"
+        ],
+        "names": [
+          "Vulkan",
+          "OpenGL (GLSL)",
+          "OpenGL (GLASM)",
+          "OpenGL (SPIR-V)"
+        ],
+        "default": "1"
+      },
+      {
+        "key": "[Renderer]use_disk_shader_cache",
+        "shared": "shadercache",
+        "values": [
+          "false",
+          "true"
+        ],
+        "names": [
+          "Off",
+          "On"
+        ],
+        "default": "true"
+      },
+      {
+        "key": "[Renderer]hdr_mode",
+        "shared": "hdr",
+        "values": [
+          "0",
+          "1"
+        ],
+        "names": [
+          "Off",
+          "On"
+        ],
+        "default": "0"
+      },
+      {
+        "key": "[Core]speed_limit",
+        "shared": "speed",
+        "values": [
+          "50",
+          "75",
+          "100",
+          "150",
+          "200",
+          "300"
+        ],
+        "names": [
+          "50%",
+          "75%",
+          "100%",
+          "150%",
+          "200%",
+          "300%"
+        ],
+        "default": "100"
+      },
+      {
+        "key": "[Core]use_speed_limit",
+        "label": "Limit speed",
+        "values": [
+          "false",
+          "true"
+        ],
+        "names": [
+          "Off",
+          "On"
+        ],
+        "default": "true"
+      },
+      {
+        "key": "[Renderer]frame_pacing_mode",
+        "label": "Frame rate target",
+        "values": [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "names": [
+          "Automatic",
+          "30 fps",
+          "60 fps",
+          "90 fps",
+          "120 fps"
+        ],
+        "default": "0"
+      },
+      {
+        "key": "[Renderer]game_dlss_network",
+        "label": "Game's own DLSS",
+        "group": "Image quality",
+        "values": [
+          "false",
+          "true"
+        ],
+        "names": [
+          "Off",
+          "On"
+        ],
+        "default": "false"
+      },
+      {
+        "key": "[Renderer]nvidia_dlss",
+        "label": "NVIDIA DLSS",
+        "group": "Image quality",
+        "values": [
+          "false",
+          "true"
+        ],
+        "names": [
+          "Off",
+          "On"
+        ],
+        "default": "false"
+      },
+      {
+        "key": "[Renderer]fsr_sharpening_slider",
+        "label": "FSR sharpening",
+        "group": "Image quality",
+        "values": [
+          "0",
+          "25",
+          "50",
+          "75",
+          "100"
+        ],
+        "names": [
+          "0%",
+          "25%",
+          "50%",
+          "75%",
+          "100%"
+        ],
+        "default": "25"
+      },
+      {
+        "key": "[Renderer]frame_gen",
+        "label": "Frame generation",
+        "group": "Performance",
+        "values": [
+          "false",
+          "true"
+        ],
+        "names": [
+          "Off",
+          "On"
+        ],
+        "default": "false"
+      },
+      {
+        "key": "[Renderer]frame_gen_multiplier",
+        "label": "Frame gen multiplier",
+        "group": "Performance",
+        "values": [
+          "2",
+          "3",
+          "4"
+        ],
+        "names": [
+          "2x (30 to 60 fps)",
+          "3x (30 to 90 fps)",
+          "4x (30 to 120 fps)"
+        ],
+        "default": "2"
+      },
+      {
+        "key": "mod:user\\load\\{gameid}\\60 FPS (Ionea)",
+        "label": "60 fps patch",
+        "group": "Performance",
+        "values": [
+          "on",
+          "off"
+        ],
+        "names": [
+          "On",
+          "Off"
+        ],
+        "default": "on"
+      }
+    ]
+  },
+  "gameData": null,
+  "quiet": {
+    "files": {
+      "user\\config\\qt-config.ini": {
+        "set": {
+          "[UI]show_whats_new": "false",
+          "[UI]show_low_ram_warning": "false"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,21 @@
+# After o1-online.txt, a new start on the same data folder (with --online-prompt): the never-asked item
+# (Definition updates) brings the Going online screen back, off, and the other answers and the log were kept.
+wait 900
+expect screen StartScreen
+key accept
+wait 2200
+expect screen OnlineCard
+expect onlineasked no
+expect rowvalue Covers|On
+expect rowvalue Cores|On
+expect rowvalue Emulator installs|Off
+expect rowvalue Definition updates|Off
+shot o1-restart-asks
+key back
+wait 500
+expect screen HomeScreen
+expect onlineasked yes
+expect online definitions|off
+expect online covers|on
+expect onlinelog 14
+quit

@@ -1,0 +1,17 @@
+{
+  "id": "virtualjaguar",
+  "name": "Virtual Jaguar",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^virtualjaguar\\.exe$"
+    ],
+    "archive": "virtualjaguar"
+  },
+  "start": {
+    "args": "\"{rom}\" --fullscreen"
+  },
+  "systems": [
+    "atarijaguar"
+  ]
+}

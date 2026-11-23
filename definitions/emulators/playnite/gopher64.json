@@ -1,0 +1,21 @@
+{
+  "id": "gopher64",
+  "name": "gopher64",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^gopher64-windows-x86_64\\.exe$"
+    ],
+    "archive": "gopher64"
+  },
+  "start": {
+    "args": "\"{rom}\" -f"
+  },
+  "systems": [
+    "n64"
+  ],
+  "extraExts": [
+    ".zip",
+    ".7z"
+  ]
+}

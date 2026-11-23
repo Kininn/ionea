@@ -1,0 +1,71 @@
+# Settings > Storage opens at once with a spinner while the places are checked, then lists them.
+# A share that is never there (192.0.2.1 is a test-only address) keeps the check busy for 3 s.
+# While loading only B works, and a closed card never pops back up when the check ends.
+# Run: --data <tmp> --no-import --dummies 6 --windowed --mute --script test\s1-storage-load.txt
+wait 900
+type Living Room
+key accept
+wait 900
+key accept
+wait 1100
+key down
+key right 3
+wait 500
+expect bar 3
+key accept
+wait 600
+expect screen SettingsCard
+key down 3
+key accept
+key down
+wait 400
+key accept
+wait 250
+expect screen StorageCard
+shot storage-first
+wait 3600
+expect loading no
+shot storage-list
+key down 20
+wait 300
+key accept
+wait 500
+type \\192.0.2.1\games
+key accept
+wait 250
+expect screen StorageCard
+expect loading yes
+shot storage-loading
+key accept
+wait 100
+key down
+wait 100
+expect screen StorageCard
+expect loading yes
+key back
+wait 600
+expect screen SettingsCard
+wait 3500
+expect screen SettingsCard
+key back 2
+wait 500
+expect screen HomeScreen
+theme dark
+wait 300
+key accept
+wait 600
+key down 3
+key accept
+key down
+wait 400
+key accept
+wait 250
+expect loading yes
+shot storage-loading-dark
+wait 3600
+expect loading no
+expect rowvalue 192.0.2.1|0 games  ·  not connected
+shot storage-list-dark
+key back
+wait 400
+quit

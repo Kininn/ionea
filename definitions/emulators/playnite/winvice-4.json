@@ -1,0 +1,21 @@
+{
+  "id": "winvice-4",
+  "name": "WinVice (xplus4.exe)",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^xplus4\\.exe$"
+    ],
+    "archive": "winvice"
+  },
+  "start": {
+    "args": "\"{rom}\""
+  },
+  "systems": [
+    "plus4"
+  ],
+  "extraExts": [
+    ".d1m",
+    ".p64"
+  ]
+}

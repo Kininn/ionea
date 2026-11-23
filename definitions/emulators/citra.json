@@ -1,0 +1,51 @@
+{
+  "id": "citra",
+  "name": "Citra",
+  "detect": {
+    "programs": [
+      "citra-qt.exe"
+    ],
+    "archive": "citra"
+  },
+  "start": {
+    "args": "\"{rom}\""
+  },
+  "systems": [
+    "3ds"
+  ],
+  "controls": {
+    "format": "citra",
+    "file": "user\\config\\qt-config.ini"
+  },
+  "gameData": {
+    "read": "3ds-tmd",
+    "update": [
+      "user\\sdmc\\Nintendo 3DS\\00000000000000000000000000000000\\00000000000000000000000000000000\\title\\0004000e\\{low}"
+    ],
+    "addons": [
+      "user\\sdmc\\Nintendo 3DS\\00000000000000000000000000000000\\00000000000000000000000000000000\\title\\0004008c\\{low}"
+    ]
+  },
+  "gameFolders": [
+    {
+      "file": "{exe}\\user\\config\\qt-config.ini",
+      "match": "(?m)^Paths\\\\gamedirs\\\\\\d+\\\\path\\s*=\\s*(.+?)\\s*$"
+    },
+    {
+      "file": "{appdata}\\Citra\\config\\qt-config.ini",
+      "match": "(?m)^Paths\\\\gamedirs\\\\\\d+\\\\path\\s*=\\s*(.+?)\\s*$"
+    }
+  ],
+  "quiet": {
+    "files": {
+      "user\\config\\qt-config.ini": {
+        "format": "ini",
+        "style": "qt",
+        "sep": "=",
+        "set": {
+          "[UI]pauseWhenInBackground": "false"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "id": "raproject64",
+  "name": "RAProject64",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^RAProject64\\.exe$"
+    ],
+    "archive": "raproject64"
+  },
+  "start": {
+    "args": "\"{rom}\""
+  },
+  "systems": [
+    "n64"
+  ],
+  "extraExts": [
+    ".rom",
+    ".jap",
+    ".pal",
+    ".usa",
+    ".zip",
+    ".7z"
+  ]
+}

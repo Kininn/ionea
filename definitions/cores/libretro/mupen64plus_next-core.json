@@ -1,0 +1,24 @@
+{
+  "id": "mupen64plus_next-core",
+  "name": "Mupen64Plus-Next core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "mupen64plus_next_libretro.dll"
+    ],
+    "archive": "mupen64plus_next_libretro"
+  },
+  "systems": [
+    "n64",
+    "n64dd"
+  ],
+  "requiredFiles": [
+    {
+      "name": "IPL.n64",
+      "path": "Mupen64plus\\IPL.n64",
+      "md5": "8d3d9f294b6e174bc7b1d2fd1c727530",
+      "optional": true,
+      "desc": "Mupen64plus/IPL.n64 (64DD BIOS)"
+    }
+  ]
+}

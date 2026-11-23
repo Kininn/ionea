@@ -1,0 +1,17 @@
+{
+  "id": "clownmdemu-core",
+  "name": "ClownMDEmu core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "clownmdemu_libretro.dll"
+    ],
+    "archive": "clownmdemu_libretro"
+  },
+  "systems": [
+    "genesis",
+    "megacd",
+    "megacdjp",
+    "segacd"
+  ]
+}

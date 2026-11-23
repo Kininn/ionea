@@ -1,0 +1,20 @@
+{
+  "id": "DoubleCherryGB-core",
+  "name": "DoubleCherryGB core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "DoubleCherryGB_libretro.dll"
+    ],
+    "archive": "DoubleCherryGB_libretro"
+  },
+  "systems": [
+    "gb",
+    "gbc"
+  ],
+  "extraExts": [
+    ".cgb",
+    ".dmg",
+    ".sgb"
+  ]
+}

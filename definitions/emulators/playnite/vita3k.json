@@ -1,0 +1,20 @@
+{
+  "id": "vita3k",
+  "name": "Vita3K",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^Vita3K.*\\.exe$"
+    ],
+    "archive": "vita3k"
+  },
+  "start": {
+    "args": "\"{rom}\""
+  },
+  "systems": [
+    "psvita"
+  ],
+  "extraExts": [
+    ".vpk"
+  ]
+}

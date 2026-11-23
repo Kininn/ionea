@@ -1,0 +1,194 @@
+{
+  "id": "shadps4",
+  "name": "shadPS4",
+  "tested": {
+    "min": "0.21",
+    "max": "0.21.*"
+  },
+  "detect": {
+    "programs": [
+      "shadPS4.exe"
+    ],
+    "archive": "shadps4"
+  },
+  "start": {
+    "args": "-f true -g \"{rom}\"",
+    "portable": [
+      "user\\"
+    ]
+  },
+  "systems": [
+    "ps4"
+  ],
+  "saves": {
+    "folders": [
+      "user\\home"
+    ]
+  },
+  "requiredFiles": [
+    {
+      "name": "System modules",
+      "path": "user\\sys_modules\\",
+      "check": "ps4-modules",
+      "share": "ps4-modules",
+      "optional": true
+    }
+  ],
+  "controls": {
+    "format": "ps4",
+    "file": "user\\input_config\\default.ini",
+    "liveReload": true
+  },
+  "video": {
+    "format": "json",
+    "file": "user\\config.json",
+    "perGame": "user\\custom_configs\\{gameid}.json",
+    "gameId": "ps4-sfo",
+    "noGameId": "Its PS4 game id (CUSA…) wasn't found",
+    "savesOnExit": true,
+    "summary": "upscaling, frame pacing, HDR",
+    "settings": [
+      {
+        "key": "GPU.fsr_enabled",
+        "shared": "upscaling",
+        "type": "bool",
+        "values": [
+          "false",
+          "true"
+        ],
+        "names": [
+          "Off",
+          "AMD FSR"
+        ],
+        "default": "false"
+      },
+      {
+        "key": "GPU.rcas_enabled",
+        "label": "Sharpening",
+        "type": "bool",
+        "values": [
+          "false",
+          "true"
+        ],
+        "names": [
+          "Off",
+          "On"
+        ],
+        "default": "true"
+      },
+      {
+        "key": "GPU.rcas_attenuation",
+        "label": "Sharpening strength",
+        "type": "int",
+        "values": [
+          "0",
+          "100",
+          "250",
+          "500",
+          "1000"
+        ],
+        "names": [
+          "Strongest",
+          "Strong",
+          "Normal",
+          "Light",
+          "Very light"
+        ],
+        "default": "250"
+      },
+      {
+        "key": "GPU.present_mode",
+        "shared": "pacing",
+        "values": [
+          "Mailbox",
+          "Fifo",
+          "Immediate"
+        ],
+        "names": [
+          "Low latency",
+          "V-Sync",
+          "Uncapped (may tear)"
+        ],
+        "default": "Mailbox"
+      },
+      {
+        "key": "GPU.vblank_frequency",
+        "label": "Refresh rate (Hz)",
+        "type": "int",
+        "values": [
+          "60",
+          "90",
+          "120",
+          "144"
+        ],
+        "names": [
+          "60",
+          "90",
+          "120",
+          "144"
+        ],
+        "default": "60"
+      },
+      {
+        "key": "GPU.hdr_allowed",
+        "shared": "hdr",
+        "type": "bool",
+        "values": [
+          "false",
+          "true"
+        ],
+        "names": [
+          "Off",
+          "On"
+        ],
+        "default": "false"
+      }
+    ]
+  },
+  "hotkeys": {
+    "reloadInputs": "F8",
+    "mouseLook": "F7"
+  },
+  "gameData": {
+    "read": "sfo",
+    "update": [
+      "{gamedir}-patch",
+      "{gamedir}-UPDATE"
+    ],
+    "addons": [
+      "user\\addcont\\{gameid}\\*"
+    ],
+    "install": {
+      "kind": "ps4-pkg",
+      "tool": ["{data}\\Tools\\PkgExtractor\\pkg_extractor.exe", "{app}\\..\\Tools\\PkgExtractor\\pkg_extractor.exe"],
+      "check": "\"{file}\" --check-type",
+      "unpack": "\"{file}\" \"{out}\""
+    }
+  },
+  "gameFolders": [
+    {
+      "file": "{exe}\\user\\config.toml",
+      "match": "(?m)^\\s*(?:installDirs\\s*=\\s*\\[\\s*)?\"([A-Za-z]:[^\"]+)\""
+    },
+    {
+      "file": "{appdata}\\shadPS4\\config.toml",
+      "match": "(?m)^\\s*(?:installDirs\\s*=\\s*\\[\\s*)?\"([A-Za-z]:[^\"]+)\""
+    }
+  ],
+  "release": {
+    "github": "shadps4-emu/shadPS4",
+    "asset": "^shadps4-win64-(qt|sdl)-.*\\.zip$"
+  },
+  "quiet": {
+    "files": {
+      "user\\config.json": {
+        "format": "json",
+        "set": {
+          "General.show_fps_counter": "false",
+          "General.show_splash": "false",
+          "General.trophy_popup_disabled": "true"
+        }
+      }
+    }
+  }
+}

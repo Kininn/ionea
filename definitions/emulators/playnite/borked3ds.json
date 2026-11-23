@@ -1,0 +1,17 @@
+{
+  "id": "borked3ds",
+  "name": "Borked3DS",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^borked3ds\\.exe$"
+    ],
+    "archive": "borked3ds"
+  },
+  "start": {
+    "args": "\"{rom}\""
+  },
+  "systems": [
+    "3ds"
+  ]
+}

@@ -1,0 +1,78 @@
+﻿# 100 dummies: sideways scrolling, cards, toast, a real launch of the test game, add game
+wait 900
+type Living Room
+key accept
+wait 900
+key accept
+wait 1100
+expect count 101
+zoom small
+key right 12
+wait 700
+expect sel 48
+shot launcher-a-small-100-scrolled-light
+theme dark
+zoom medium
+wait 300
+shot launcher-a-medium-100-dark
+key pageright 2
+wait 700
+shot launcher-a-medium-100-scrolled-dark
+zoom large
+wait 300
+shot launcher-a-large-100-dark
+theme light
+key down
+key right 3
+wait 500
+expect bar 3
+key accept
+wait 600
+expect screen SettingsCard
+shot launcher-a-settings
+key back
+wait 300
+key left
+key accept
+wait 600
+shot launcher-a-controllers
+key back
+wait 300
+key left
+key accept
+wait 600
+shot launcher-a-search
+key back
+wait 300
+toast Controller connected
+wait 600
+shot launcher-a-toast
+wait 3000
+key pageleft 40
+wait 600
+expect sel 0
+key accept
+wait 380
+shot launcher-a-launch
+wait 900
+screen launcher-a-launch-game-screen
+wait 5500
+expect launch shown
+screen launcher-a-back-after-game
+expect screen HomeScreen
+addgame HERE\bin\TestGame.exe
+wait 700
+expect screen AddGameCard
+shot launcher-a-addgame
+key accept
+wait 1000
+expect games 101
+expect name TestGame
+shot launcher-a-added
+addgame HERE\bin\TestGame.exe
+wait 700
+expect screen MessageCard
+shot launcher-a-addgame-duplicate
+key accept
+wait 400
+quit

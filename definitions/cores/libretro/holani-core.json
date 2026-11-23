@@ -1,0 +1,22 @@
+{
+  "id": "holani-core",
+  "name": "Holani core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "holani_libretro.dll"
+    ],
+    "archive": "holani_libretro"
+  },
+  "systems": [
+    "atarilynx"
+  ],
+  "requiredFiles": [
+    {
+      "name": "lynxboot.img",
+      "path": "lynxboot.img",
+      "optional": true,
+      "desc": "lynxboot.img (Lynx Boot Image)"
+    }
+  ]
+}

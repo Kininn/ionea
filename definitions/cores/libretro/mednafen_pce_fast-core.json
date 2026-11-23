@@ -1,0 +1,44 @@
+{
+  "id": "mednafen_pce_fast-core",
+  "name": "Beetle PCE Fast core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "mednafen_pce_fast_libretro.dll"
+    ],
+    "archive": "mednafen_pce_fast_libretro"
+  },
+  "systems": [
+    "pcengine",
+    "pcenginecd",
+    "tg16",
+    "tg-cd"
+  ],
+  "requiredFiles": [
+    {
+      "name": "syscard3.pce",
+      "path": "syscard3.pce",
+      "md5": "38179df8f4ac870017db21ebcbf53114",
+      "optional": true,
+      "desc": "syscard3.pce (PCE-CD BIOS)"
+    },
+    {
+      "name": "syscard2.pce",
+      "path": "syscard2.pce",
+      "optional": true,
+      "desc": "syscard2.pce (PCE-CD BIOS)"
+    },
+    {
+      "name": "syscard1.pce",
+      "path": "syscard1.pce",
+      "optional": true,
+      "desc": "syscard1.pce (PCE-CD BIOS)"
+    },
+    {
+      "name": "gexpress.pce",
+      "path": "gexpress.pce",
+      "optional": true,
+      "desc": "gexpress.pce (PCE-CD BIOS)"
+    }
+  ]
+}

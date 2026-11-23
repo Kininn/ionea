@@ -1,0 +1,35 @@
+{
+  "id": "bluemsx-core",
+  "name": "blueMSX core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "bluemsx_libretro.dll"
+    ],
+    "archive": "bluemsx_libretro"
+  },
+  "systems": [
+    "colecovision",
+    "msx",
+    "msx1",
+    "msx2",
+    "msxturbor",
+    "sg-1000",
+    "spectravideo"
+  ],
+  "extraExts": [
+    ".sf"
+  ],
+  "requiredFiles": [
+    {
+      "name": "msxromdb.xml",
+      "path": "Databases\\msxromdb.xml",
+      "desc": "'Databases' folder"
+    },
+    {
+      "name": "MSX.rom",
+      "path": "Machines\\Shared Roms\\MSX.rom",
+      "desc": "'Machines' folder"
+    }
+  ]
+}

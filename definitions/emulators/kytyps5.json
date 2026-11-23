@@ -1,0 +1,23 @@
+{
+  "id": "kytyps5",
+  "name": "KytyPS5",
+  "_note": "Added for its quiet switches, checked against the faec1f4 build's own help text: --no-splash (startup splash), --no-trophy-notifications (trophy toasts and their sound). Its performance panel shows only with --perf-overlay (never passed) or F2. It wants --game <folder|elf|zar>; an entry added by hand keeps its own Args.",
+  "detect": {
+    "programs": [
+      "kyty_emulator.exe"
+    ],
+    "archive": "kyty"
+  },
+  "start": {
+    "args": "--game \"{rom}\""
+  },
+  "systems": [
+    "ps5"
+  ],
+  "quiet": {
+    "args": [
+      "--no-splash",
+      "--no-trophy-notifications"
+    ]
+  }
+}

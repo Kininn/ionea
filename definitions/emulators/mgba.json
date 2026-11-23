@@ -1,0 +1,181 @@
+{
+  "id": "mgba",
+  "name": "mGBA",
+  "tested": {
+    "min": "0.10",
+    "max": "0.10.*"
+  },
+  "detect": {
+    "programs": [
+      "mGBA.exe"
+    ],
+    "archive": "mgba",
+    "product": [
+      "mGBA"
+    ]
+  },
+  "start": {
+    "args": "-f \"{rom}\"",
+    "portable": [
+      "portable.ini"
+    ]
+  },
+  "systems": [
+    "gba",
+    "gbc",
+    "gb"
+  ],
+  "extraExts": [
+    ".zip",
+    ".7z"
+  ],
+  "saves": {
+    "beside": true
+  },
+  "controls": {
+    "format": "mgba",
+    "file": "config.ini"
+  },
+  "video": {
+    "format": "ini",
+    "sep": "=",
+    "file": "config.ini",
+    "ioneaApplies": true,
+    "savesOnExit": true,
+    "summary": "aspect ratio, filtering, speed",
+    "settings": [
+      {
+        "key": "[ports.qt]lockAspectRatio",
+        "shared": "aspect",
+        "values": [
+          "1",
+          "0"
+        ],
+        "names": [
+          "3:2 (native)",
+          "Stretch to window"
+        ],
+        "default": "1"
+      },
+      {
+        "key": "[ports.qt]videoSync",
+        "shared": "pacing",
+        "values": [
+          "0",
+          "1"
+        ],
+        "names": [
+          "Uncapped",
+          "V-Sync"
+        ],
+        "default": "0"
+      },
+      {
+        "key": "[ports.qt]resampleVideo",
+        "shared": "filtering",
+        "values": [
+          "0",
+          "1"
+        ],
+        "names": [
+          "Sharp",
+          "Smooth"
+        ],
+        "default": "0"
+      },
+      {
+        "key": "[ports.qt]fpsTarget",
+        "shared": "speed",
+        "values": [
+          "30",
+          "45",
+          "60",
+          "90",
+          "120"
+        ],
+        "names": [
+          "50%",
+          "75%",
+          "100%",
+          "150%",
+          "200%"
+        ],
+        "default": "60"
+      },
+      {
+        "key": "[ports.qt]lockIntegerScaling",
+        "label": "Integer scaling",
+        "values": [
+          "0",
+          "1"
+        ],
+        "names": [
+          "Off",
+          "On"
+        ],
+        "default": "0"
+      },
+      {
+        "key": "[ports.qt]interframeBlending",
+        "label": "Frame blending",
+        "values": [
+          "0",
+          "1"
+        ],
+        "names": [
+          "Off",
+          "On"
+        ],
+        "default": "0"
+      },
+      {
+        "key": "[ports.qt]frameskip",
+        "label": "Frame skip",
+        "values": [
+          "0",
+          "1",
+          "2",
+          "3"
+        ],
+        "names": [
+          "Off",
+          "1",
+          "2",
+          "3"
+        ],
+        "default": "0"
+      },
+      {
+        "key": "[ports.qt]audioSync",
+        "label": "Sync to audio",
+        "values": [
+          "0",
+          "1"
+        ],
+        "names": [
+          "Off",
+          "On"
+        ],
+        "default": "1"
+      }
+    ]
+  },
+  "release": {
+    "github": "mgba-emu/mgba",
+    "asset": "-win64\\.7z$"
+  },
+  "quiet": {
+    "files": {
+      "config.ini": {
+        "format": "ini",
+        "sep": "=",
+        "set": {
+          "[ports.qt]showOSD": "0",
+          "[ports.qt]showFrameCounter": "0",
+          "[ports.qt]showResetInfo": "0",
+          "[ports.qt]pauseOnFocusLost": "0"
+        }
+      }
+    }
+  }
+}

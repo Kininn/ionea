@@ -1,0 +1,17 @@
+{
+  "id": "vice_xplus4-core",
+  "name": "VICE xplus4 core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "vice_xplus4_libretro.dll"
+    ],
+    "archive": "vice_xplus4_libretro"
+  },
+  "systems": [
+    "plus4"
+  ],
+  "extraExts": [
+    "./"
+  ]
+}

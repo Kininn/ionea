@@ -1,0 +1,24 @@
+{
+  "id": "gambatte",
+  "name": "Gambatte",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^gambatte\\.exe$"
+    ],
+    "archive": "gambatte"
+  },
+  "start": {
+    "args": "\"{rom}\""
+  },
+  "systems": [
+    "gb",
+    "gbc"
+  ],
+  "extraExts": [
+    ".dmg",
+    ".zip",
+    ".gz",
+    ".sgb"
+  ]
+}

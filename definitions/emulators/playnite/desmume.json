@@ -1,0 +1,23 @@
+{
+  "id": "desmume",
+  "name": "DeSmuME",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^DeSmuME.*\\.exe$"
+    ],
+    "archive": "desmume"
+  },
+  "start": {
+    "args": "\"{rom}\""
+  },
+  "systems": [
+    "nds"
+  ],
+  "extraExts": [
+    ".zip",
+    ".7z",
+    ".rar",
+    ".gz"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "wasm4-core",
+  "name": "WASM-4 core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "wasm4_libretro.dll"
+    ],
+    "archive": "wasm4_libretro"
+  },
+  "systems": [
+    "wasm4"
+  ]
+}

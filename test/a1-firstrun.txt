@@ -1,0 +1,53 @@
+# first run -> start -> home (light), zoom levels, options bar
+wait 900
+expect screen NewProfileScreen
+key accept
+wait 300
+shot launcher-a-firstrun-empty
+type Living Room
+wait 200
+shot launcher-a-firstrun
+key accept
+wait 1000
+expect setting Living Room
+expect screen StartScreen
+shot launcher-a-start-light
+key accept
+wait 1100
+expect screen HomeScreen
+shot launcher-a-large-light
+key right 2
+wait 500
+expect sel 2
+zoom medium
+shot launcher-a-medium-light
+zoom small
+shot launcher-a-small-light
+key down 2
+wait 400
+expect bar 0
+key right 3
+key left 2
+wait 500
+expect bar 1
+shot launcher-a-bar-light
+key up
+wait 400
+expect bar -1
+expect sel 3
+key left
+key back
+wait 900
+expect screen StartScreen
+theme dark
+wait 400
+shot launcher-a-start-dark
+key accept
+wait 1100
+zoom large
+shot launcher-a-large-dark
+zoom medium
+shot launcher-a-medium-dark
+zoom small
+shot launcher-a-small-dark
+quit

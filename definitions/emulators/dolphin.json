@@ -1,0 +1,364 @@
+{
+  "id": "dolphin",
+  "name": "Dolphin",
+  "detect": {
+    "programs": [
+      "Dolphin.exe"
+    ],
+    "archive": "dolphin",
+    "product": [
+      "Dolphin"
+    ]
+  },
+  "start": {
+    "args": "-b -e \"{rom}\"",
+    "portable": [
+      "portable.txt"
+    ],
+    "seed": [
+      {
+        "file": "User\\Config\\Dolphin.ini",
+        "text": "[AutoUpdate]\nUpdateTrack = \n[Analytics]\nPermissionAsked = True\nEnabled = False\n[Interface]\nConfirmStop = False\n"
+      }
+    ]
+  },
+  "systems": [
+    "gc",
+    "wii"
+  ],
+  "saves": {
+    "folders": [
+      "User\\GC",
+      "User\\Wii",
+      "User\\StateSaves"
+    ]
+  },
+  "controls": {
+    "format": "dolphin",
+    "file": "User\\Config\\GCPadNew.ini",
+    "systems": [
+      "gc"
+    ]
+  },
+  "video": {
+    "format": "ini",
+    "sep": " = ",
+    "file": "User\\Config\\GFX.ini",
+    "perGame": "User\\GameSettings\\{gameid}.ini",
+    "gameSections": {
+      "Settings": "Video_Settings",
+      "Enhancements": "Video_Enhancements",
+      "Hardware": "Video_Hardware"
+    },
+    "gameId": "gc-disc",
+    "noGameId": "Its game id wasn't found (.iso, .gcm, .wbfs and .rvz show it; .gcz and .ciso don't)",
+    "savesOnExit": true,
+    "summary": "resolution, filtering, speed",
+    "settings": [
+      {
+        "key": "[Settings]InternalResolution",
+        "shared": "resolution",
+        "values": [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8"
+        ],
+        "names": [
+          "Auto (window)",
+          "1x (native)",
+          "2x (720p)",
+          "3x (1080p)",
+          "4x (1440p)",
+          "5x",
+          "6x (4K)",
+          "7x",
+          "8x (5K)"
+        ],
+        "default": "1"
+      },
+      {
+        "key": "[Enhancements]OutputResampling",
+        "shared": "upscaling",
+        "values": [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6"
+        ],
+        "names": [
+          "Default",
+          "Bilinear",
+          "Bicubic (B-Spline)",
+          "Bicubic (Mitchell-Netravali)",
+          "Bicubic (Catmull-Rom)",
+          "Sharp bilinear",
+          "Area sampling"
+        ],
+        "default": "0"
+      },
+      {
+        "key": "[Settings]AspectRatio",
+        "shared": "aspect",
+        "values": [
+          "0",
+          "1",
+          "2",
+          "3"
+        ],
+        "names": [
+          "Auto",
+          "16:9",
+          "4:3",
+          "Stretch to window"
+        ],
+        "default": "0"
+      },
+      {
+        "key": "[Hardware]VSync",
+        "shared": "pacing",
+        "values": [
+          "False",
+          "True"
+        ],
+        "names": [
+          "Uncapped (may tear)",
+          "V-Sync"
+        ],
+        "default": "False"
+      },
+      {
+        "key": "[Settings]MSAA",
+        "shared": "antialiasing",
+        "values": [
+          "1",
+          "2",
+          "4",
+          "8"
+        ],
+        "names": [
+          "Off",
+          "2x MSAA",
+          "4x MSAA",
+          "8x MSAA"
+        ],
+        "default": "1"
+      },
+      {
+        "key": "[Enhancements]MaxAnisotropy",
+        "shared": "filtering",
+        "values": [
+          "-1",
+          "0",
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "names": [
+          "Default",
+          "1x",
+          "2x",
+          "4x",
+          "8x",
+          "16x"
+        ],
+        "default": "-1"
+      },
+      {
+        "key": "[Core]GFXBackend",
+        "shared": "renderer",
+        "file": "User\\Config\\Dolphin.ini",
+        "values": [
+          "D3D",
+          "D3D12",
+          "Vulkan",
+          "OGL",
+          "Software Renderer"
+        ],
+        "names": [
+          "Direct3D 11",
+          "Direct3D 12",
+          "Vulkan",
+          "OpenGL",
+          "Software"
+        ],
+        "default": "D3D"
+      },
+      {
+        "key": "[Settings]ShaderCache",
+        "shared": "shadercache",
+        "values": [
+          "False",
+          "True"
+        ],
+        "names": [
+          "Off",
+          "On"
+        ],
+        "default": "True"
+      },
+      {
+        "key": "[Enhancements]HDROutput",
+        "shared": "hdr",
+        "values": [
+          "False",
+          "True"
+        ],
+        "names": [
+          "Off",
+          "On"
+        ],
+        "default": "False"
+      },
+      {
+        "key": "[Core]EmulationSpeed",
+        "shared": "speed",
+        "file": "User\\Config\\Dolphin.ini",
+        "values": [
+          "0.5",
+          "0.75",
+          "1",
+          "1.5",
+          "2",
+          "0"
+        ],
+        "names": [
+          "50%",
+          "75%",
+          "100%",
+          "150%",
+          "200%",
+          "Unlimited"
+        ],
+        "default": "1"
+      },
+      {
+        "key": "[Enhancements]ForceTextureFiltering",
+        "label": "Force filtering",
+        "values": [
+          "0",
+          "1",
+          "2"
+        ],
+        "names": [
+          "Default",
+          "Nearest",
+          "Linear"
+        ],
+        "default": "0"
+      },
+      {
+        "key": "[Settings]SSAA",
+        "label": "Supersampling",
+        "values": [
+          "False",
+          "True"
+        ],
+        "names": [
+          "Off",
+          "On"
+        ],
+        "default": "False"
+      },
+      {
+        "key": "[Settings]wideScreenHack",
+        "label": "Widescreen hack",
+        "values": [
+          "False",
+          "True"
+        ],
+        "names": [
+          "Off",
+          "On"
+        ],
+        "default": "False"
+      },
+      {
+        "key": "[Settings]ShaderCompilationMode",
+        "label": "Shader compilation",
+        "values": [
+          "0",
+          "1",
+          "2",
+          "3"
+        ],
+        "names": [
+          "Specialized",
+          "Exclusive ubershaders",
+          "Hybrid ubershaders",
+          "Skip drawing"
+        ],
+        "default": "0"
+      },
+      {
+        "key": "[Settings]WaitForShadersBeforeStarting",
+        "label": "Compile shaders first",
+        "values": [
+          "False",
+          "True"
+        ],
+        "names": [
+          "Off",
+          "On"
+        ],
+        "default": "False"
+      }
+    ]
+  },
+  "gameFolders": [
+    {
+      "file": "{exe}\\User\\Config\\Dolphin.ini",
+      "match": "(?m)^ISOPath\\d+\\s*=\\s*(.+?)\\s*$"
+    },
+    {
+      "file": "{appdata}\\Dolphin Emulator\\Config\\Dolphin.ini",
+      "match": "(?m)^ISOPath\\d+\\s*=\\s*(.+?)\\s*$"
+    },
+    {
+      "file": "{documents}\\Dolphin Emulator\\Config\\Dolphin.ini",
+      "match": "(?m)^ISOPath\\d+\\s*=\\s*(.+?)\\s*$"
+    }
+  ],
+  "quiet": {
+    "files": {
+      "User\\Config\\GFX.ini": {
+        "format": "ini",
+        "sep": " = ",
+        "set": {
+          "[Settings]ShowFPS": "False",
+          "[Settings]ShowFTimes": "False",
+          "[Settings]ShowVPS": "False",
+          "[Settings]ShowVTimes": "False",
+          "[Settings]ShowSpeed": "False",
+          "[Settings]ShowGraphs": "False",
+          "[Settings]OverlayStats": "False",
+          "[Settings]ShowNetPlayPing": "False",
+          "[Settings]ShowNetPlayMessages": "False"
+        }
+      },
+      "User\\Config\\Dolphin.ini": {
+        "format": "ini",
+        "sep": " = ",
+        "set": {
+          "[Interface]OnScreenDisplayMessages": "False",
+          "[Interface]UsePanicHandlers": "False",
+          "[Movie]ShowInputDisplay": "False",
+          "[Movie]ShowFrameCount": "False",
+          "[Movie]ShowLag": "False",
+          "[Movie]ShowRTC": "False",
+          "[Movie]ShowRerecord": "False",
+          "[Interface]PauseOnFocusLost": "False"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "id": "altirra",
+  "name": "Altirra",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^altirra\\.exe$"
+    ],
+    "archive": "altirra"
+  },
+  "start": {
+    "args": "\"{rom}\""
+  },
+  "systems": [
+    "atari800"
+  ],
+  "extraExts": [
+    ".dcm",
+    ".pro",
+    ".wav",
+    ".obx",
+    ".arc",
+    ".sap"
+  ]
+}

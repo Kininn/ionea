@@ -1,0 +1,14 @@
+{
+  "id": "tia-core",
+  "name": "Tia core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "tia_libretro.dll"
+    ],
+    "archive": "tia_libretro"
+  },
+  "systems": [
+    "atari2600"
+  ]
+}

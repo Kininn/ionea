@@ -1,0 +1,28 @@
+{
+  "id": "freeintv-core",
+  "name": "FreeIntv core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "freeintv_libretro.dll"
+    ],
+    "archive": "freeintv_libretro"
+  },
+  "systems": [
+    "intellivision"
+  ],
+  "requiredFiles": [
+    {
+      "name": "exec.bin",
+      "path": "exec.bin",
+      "md5": "62e761035cb657903761800f4437b8af",
+      "desc": "exec.bin"
+    },
+    {
+      "name": "grom.bin",
+      "path": "grom.bin",
+      "md5": "0cd5946c6473e42e8e4c2137785e427f",
+      "desc": "grom.bin"
+    }
+  ]
+}

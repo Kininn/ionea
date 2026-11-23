@@ -1,0 +1,17 @@
+{
+  "id": "bigpemu",
+  "name": "BigPEmu",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^BigPEmu\\.exe$"
+    ],
+    "archive": "bigpemu"
+  },
+  "start": {
+    "args": "\"{rom}\""
+  },
+  "systems": [
+    "atarijaguar"
+  ]
+}

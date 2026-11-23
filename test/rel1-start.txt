@@ -1,0 +1,12 @@
+# rel1: a release build starts on its own. Setup: test\rel1-start.ps1 -Exe <Launcher.exe>.
+# First run to Home, then quit. Windowed, muted, no real input.
+wait 2500
+expect screen NewProfileScreen
+type Player
+key accept
+wait 1100
+expect screen StartScreen
+key accept
+wait 1500
+expect screen HomeScreen
+quit

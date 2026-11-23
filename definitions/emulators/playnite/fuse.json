@@ -1,0 +1,16 @@
+{
+  "id": "fuse",
+  "name": "Fuse",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^fuse\\.exe$"
+    ]
+  },
+  "start": {
+    "args": "\"{rom}\""
+  },
+  "systems": [
+    "zxspectrum"
+  ]
+}

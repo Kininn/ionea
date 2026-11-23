@@ -1,0 +1,16 @@
+{
+  "id": "fbalpha2012_cps2-core",
+  "name": "FB Alpha 2012 CPS-2 core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "fbalpha2012_cps2_libretro.dll"
+    ],
+    "archive": "fbalpha2012_cps2_libretro"
+  },
+  "systems": [
+    "cps",
+    "cps2",
+    "fba"
+  ]
+}

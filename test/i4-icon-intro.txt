@@ -1,0 +1,15 @@
+# The icon intro (restored): one frame per replay, dark then light theme.
+# Eyes flicker on from 280 ms, the reveal opens from 1150 ms, hand-over from 2750 ms.
+intro 600
+shot i4-dark-eyes-on
+wait 3200
+intro 1700
+shot i4-dark-reveal
+wait 2100
+intro 2500
+shot i4-dark-full
+wait 1300
+theme light
+intro 2500
+shot i4-light-full
+wait 1300

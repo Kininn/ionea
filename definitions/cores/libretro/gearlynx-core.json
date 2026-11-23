@@ -1,0 +1,25 @@
+{
+  "id": "gearlynx-core",
+  "name": "Gearlynx core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "gearlynx_libretro.dll"
+    ],
+    "archive": "gearlynx_libretro"
+  },
+  "systems": [
+    "atarilynx"
+  ],
+  "extraExts": [
+    ".bin"
+  ],
+  "requiredFiles": [
+    {
+      "name": "lynxboot.img",
+      "path": "lynxboot.img",
+      "md5": "fcd403db69f54290b51035d82f835e7b",
+      "desc": "lynxboot.img (Lynx Boot Image)"
+    }
+  ]
+}

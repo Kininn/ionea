@@ -1,0 +1,37 @@
+{
+  "id": "pcsx2-core",
+  "name": "LRPS2 core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "pcsx2_libretro.dll"
+    ],
+    "archive": "pcsx2_libretro"
+  },
+  "systems": [
+    "ps2"
+  ],
+  "extraExts": [
+    ".elf",
+    ".ciso",
+    ".cue",
+    ".zso",
+    ".mdf",
+    ".nrg",
+    ".dump",
+    ".img"
+  ],
+  "requiredFiles": [
+    {
+      "name": "bios",
+      "path": "pcsx2\\bios",
+      "desc": "'pcsx2/bios' folder"
+    },
+    {
+      "name": "GameIndex.yaml",
+      "path": "pcsx2\\resources\\GameIndex.yaml",
+      "optional": true,
+      "desc": "pcsx2/resources/GameIndex.yaml (Game Database)"
+    }
+  ]
+}

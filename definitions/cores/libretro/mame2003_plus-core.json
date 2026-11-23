@@ -1,0 +1,19 @@
+{
+  "id": "mame2003_plus-core",
+  "name": "MAME 2003-Plus core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "mame2003_plus_libretro.dll"
+    ],
+    "archive": "mame2003_plus_libretro"
+  },
+  "systems": [
+    "arcade",
+    "cps",
+    "cps1",
+    "cps2",
+    "cps3",
+    "mame"
+  ]
+}

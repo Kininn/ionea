@@ -1,0 +1,30 @@
+{
+  "id": "ppsspp",
+  "name": "PPSSPP",
+  "detect": {
+    "programs": [
+      "PPSSPPWindows64.exe",
+      "PPSSPPWindows.exe"
+    ],
+    "archive": "ppsspp"
+  },
+  "start": {
+    "args": "--fullscreen \"{rom}\""
+  },
+  "systems": [
+    "psp"
+  ],
+  "saves": {
+    "folders": [
+      "memstick\\PSP\\SAVEDATA",
+      "memstick\\PSP\\PPSSPP_STATE"
+    ]
+  },
+  "gameData": {
+    "read": "sfo",
+    "update": [
+      "memstick\\PSP\\GAME\\{gameid}"
+    ],
+    "addons": []
+  }
+}

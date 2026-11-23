@@ -1,0 +1,19 @@
+{
+  "id": "cemu-core",
+  "name": "Cemu core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "cemu_libretro.dll"
+    ],
+    "archive": "cemu_libretro"
+  },
+  "systems": [
+    "wiiu"
+  ],
+  "extraExts": [
+    ".iso",
+    ".elf",
+    ".tmd"
+  ]
+}

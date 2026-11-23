@@ -1,0 +1,84 @@
+{
+  "id": "dosbox_core-core",
+  "name": "DOSBox-core core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "dosbox_core_libretro.dll"
+    ],
+    "archive": "dosbox_core_libretro"
+  },
+  "systems": [
+    "dos",
+    "pc"
+  ],
+  "extraExts": [
+    "./"
+  ],
+  "requiredFiles": [
+    {
+      "name": "MT32_CONTROL.ROM",
+      "path": "MT32_CONTROL.ROM",
+      "md5": "5626206284b22c2734f3e9efefcd2675",
+      "optional": true,
+      "desc": "MT32_CONTROL.ROM (MT-32 Control ROM v1.07)"
+    },
+    {
+      "name": "MT32_PCM.ROM",
+      "path": "MT32_PCM.ROM",
+      "md5": "89e42e386e82e0cacb4a2704a03706ca",
+      "optional": true,
+      "desc": "MT32_PCM.ROM (MT-32 PCM ROM)"
+    },
+    {
+      "name": "CM32L_CONTROL.ROM",
+      "path": "CM32L_CONTROL.ROM",
+      "md5": "bfff32b6144c1d706109accb6e6b1113",
+      "optional": true,
+      "desc": "CM32L_CONTROL.ROM (CM-32L/LAPC-I Control ROM v1.02)"
+    },
+    {
+      "name": "CM32L_PCM.ROM",
+      "path": "CM32L_PCM.ROM",
+      "md5": "08cdcfa0ed93e9cb16afa76e6ac5f0a4",
+      "optional": true,
+      "desc": "CM32L_PCM.ROM (CM-32L/CM-64/LAPC-I PCM ROM)"
+    },
+    {
+      "name": "libbass.so",
+      "path": "libbass.so",
+      "optional": true,
+      "desc": "libbass.so (BASS Linux library)"
+    },
+    {
+      "name": "libbassmidi.so",
+      "path": "libbassmidi.so",
+      "optional": true,
+      "desc": "libbassmidi.so (BASSMIDI Linux library)"
+    },
+    {
+      "name": "bass.dll",
+      "path": "bass.dll",
+      "optional": true,
+      "desc": "bass.dll (BASS Windows library)"
+    },
+    {
+      "name": "bassmidi.dll",
+      "path": "bassmidi.dll",
+      "optional": true,
+      "desc": "bassmidi.dll (BASSMIDI Windows library)"
+    },
+    {
+      "name": "libbass.dylib",
+      "path": "libbass.dylib",
+      "optional": true,
+      "desc": "libbass.dylib (BASS macOS library)"
+    },
+    {
+      "name": "libbassmidi.dylib",
+      "path": "libbassmidi.dylib",
+      "optional": true,
+      "desc": "libbassmidi.dylib (BASSMIDI macOS library)"
+    }
+  ]
+}

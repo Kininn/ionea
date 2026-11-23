@@ -1,0 +1,22 @@
+{
+  "id": "vircon32-core",
+  "name": "Vircon32 core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "vircon32_libretro.dll"
+    ],
+    "archive": "vircon32_libretro"
+  },
+  "systems": [
+    "vircon32"
+  ],
+  "requiredFiles": [
+    {
+      "name": "Vircon32Bios.v32",
+      "path": "Vircon32Bios.v32",
+      "optional": true,
+      "desc": "Vircon32Bios.v32 (alternative BIOS file)"
+    }
+  ]
+}

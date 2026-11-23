@@ -1,0 +1,82 @@
+{
+  "id": "np2kai-core",
+  "name": "Neko Project II Kai core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "np2kai_libretro.dll"
+    ],
+    "archive": "np2kai_libretro"
+  },
+  "systems": [
+    "pc98"
+  ],
+  "requiredFiles": [
+    {
+      "name": "font.bmp",
+      "path": "np2kai\\font.bmp",
+      "optional": true,
+      "desc": "np2kai/font.bmp (needed to display text)"
+    },
+    {
+      "name": "FONT.ROM",
+      "path": "np2kai\\FONT.ROM",
+      "optional": true,
+      "desc": "np2kai/FONT.ROM (alt font file)"
+    },
+    {
+      "name": "bios.rom",
+      "path": "np2kai\\bios.rom",
+      "optional": true,
+      "desc": "np2kai/bios.rom"
+    },
+    {
+      "name": "itf.rom",
+      "path": "np2kai\\itf.rom",
+      "optional": true,
+      "desc": "np2kai/itf.rom"
+    },
+    {
+      "name": "sound.rom",
+      "path": "np2kai\\sound.rom",
+      "optional": true,
+      "desc": "np2kai/sound.rom"
+    },
+    {
+      "name": "2608_BD.WAV",
+      "path": "np2kai\\2608_BD.WAV",
+      "optional": true,
+      "desc": "np2kai/2608_BD.WAV (YM2608 rhythm sample)"
+    },
+    {
+      "name": "2608_SD.WAV",
+      "path": "np2kai\\2608_SD.WAV",
+      "optional": true,
+      "desc": "np2kai/2608_SD.WAV (YM2608 rhythm sample)"
+    },
+    {
+      "name": "2608_TOP.WAV",
+      "path": "np2kai\\2608_TOP.WAV",
+      "optional": true,
+      "desc": "np2kai/2608_TOP.WAV (YM2608 rhythm sample)"
+    },
+    {
+      "name": "2608_HH.WAV",
+      "path": "np2kai\\2608_HH.WAV",
+      "optional": true,
+      "desc": "np2kai/2608_HH.WAV (YM2608 rhythm sample)"
+    },
+    {
+      "name": "2608_TOM.WAV",
+      "path": "np2kai\\2608_TOM.WAV",
+      "optional": true,
+      "desc": "np2kai/2608_TOM.WAV (YM2608 rhythm sample)"
+    },
+    {
+      "name": "2608_RIM.WAV",
+      "path": "np2kai\\2608_RIM.WAV",
+      "optional": true,
+      "desc": "np2kai/2608_RIM.WAV (YM2608 rhythm sample)"
+    }
+  ]
+}

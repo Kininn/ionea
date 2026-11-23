@@ -1,0 +1,98 @@
+# Game features: switching games from the Home menu, Add > Emulator, Emulators and ports,
+# and a name tile's cover colour. Setup: test\w3-game-features.ps1 (two tiny GBA programs at <root>\roms, a port
+# stand-in at <root>\port\bbport\bbport-run.exe, IONEA_TESTROOT=<root>, --windowed --mute, off screen).
+# No semicolons in comments: they split lines.
+wait 900
+type Core Test
+key accept
+wait 900
+key accept
+wait 1100
+addrom T\roms\Game One.gba
+wait 4000
+expect screen AddRomCard
+key accept
+wait 2500
+setemu Game One|mGBA core
+addrom T\roms\Game Two.gba
+wait 4000
+expect screen AddRomCard
+key accept
+wait 2500
+setemu Game Two|mGBA core
+# 1. switching games: Game One paused, Home screen, pick Game Two, Cancel, then switch
+select Game One
+key accept
+waitshown 30
+wait 2000
+expect ingame Game One
+homebutton
+wait 800
+cardrow Home screen
+key accept
+wait 800
+select Game Two
+key accept
+wait 800
+expect screen SwitchGameCard
+expect cardrows Close Game One and start Game Two | Cancel
+shot w3-switch
+cardrow Cancel
+key accept
+wait 500
+expect ingame Game One
+select Game Two
+key accept
+wait 800
+expect screen SwitchGameCard
+key accept
+wait 1500
+waitshown 30
+wait 2000
+expect ingame Game Two
+homebutton
+wait 800
+closegame
+wait 3000
+expect ingame none
+# 2. Add reads Game, Emulator, Container, and Emulator opens Add emulator
+addmenu
+expect screen AddMenuCard
+expect cardrows Game | Emulator | Container | Cancel
+cardrow Emulator
+key accept
+wait 600
+expect screen AddEmulatorCard
+key back
+wait 500
+# 3. a native port is listed under its own heading in Emulators and ports
+addemu T\port\bbport\bbport-run.exe
+wait 1200
+expect emuports Bloodborne (bbport)
+emulators
+wait 400
+expect screen EmulatorsCard
+shot w3-emulators
+key back
+wait 500
+settings Library
+wait 600
+expect rowvalue Emulators and ports|1 emulator, 1 port
+key back
+wait 500
+# 4. cover colour: Left / Right in Game info
+gameinfo Game Two
+cardrow Cover colour
+expect rowvalue Cover colour|Plain
+key right
+expect covercolour Game Two|Slate
+key right
+key right
+key right
+key right
+expect covercolour Game Two|Sunset
+shot w3-gameinfo-sunset
+key back
+wait 600
+shot w3-home-sunset
+quit

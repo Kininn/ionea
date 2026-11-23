@@ -1,0 +1,86 @@
+{
+  "id": "fmsx-core",
+  "name": "fMSX core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "fmsx_libretro.dll"
+    ],
+    "archive": "fmsx_libretro"
+  },
+  "systems": [
+    "msx",
+    "msx1",
+    "msx2"
+  ],
+  "extraExts": [
+    ".fdi"
+  ],
+  "requiredFiles": [
+    {
+      "name": "MSX.ROM",
+      "path": "MSX.ROM",
+      "md5": "364a1a579fe5cb8dba54519bcfcdac0d",
+      "desc": "MSX.ROM (MSX BIOS)"
+    },
+    {
+      "name": "MSX2.ROM",
+      "path": "MSX2.ROM",
+      "md5": "ec3a01c91f24fbddcbcab0ad301bc9ef",
+      "desc": "MSX2.ROM (MSX2 BIOS)"
+    },
+    {
+      "name": "MSX2EXT.ROM",
+      "path": "MSX2EXT.ROM",
+      "md5": "2183c2aff17cf4297bdb496de78c2e8a",
+      "desc": "MSX2EXT.ROM (MSX2 ExtROM)"
+    },
+    {
+      "name": "MSX2P.ROM",
+      "path": "MSX2P.ROM",
+      "md5": "847cc025ffae665487940ff2639540e5",
+      "desc": "MSX2P.ROM (MSX2+ BIOS)"
+    },
+    {
+      "name": "MSX2PEXT.ROM",
+      "path": "MSX2PEXT.ROM",
+      "md5": "7c8243c71d8f143b2531f01afa6a05dc",
+      "desc": "MSX2PEXT.ROM (MSX2+ ExtROM)"
+    },
+    {
+      "name": "DISK.ROM",
+      "path": "DISK.ROM",
+      "md5": "80dcd1ad1a4cf65d64b7ba10504e8190",
+      "optional": true,
+      "desc": "DISK.ROM (DiskROM/BDOS)"
+    },
+    {
+      "name": "FMPAC.ROM",
+      "path": "FMPAC.ROM",
+      "md5": "6f69cc8b5ed761b03afd78000dfb0e19",
+      "optional": true,
+      "desc": "FMPAC.ROM (FMPAC BIOS)"
+    },
+    {
+      "name": "MSXDOS2.ROM",
+      "path": "MSXDOS2.ROM",
+      "md5": "6418d091cd6907bbcf940324339e43bb",
+      "optional": true,
+      "desc": "MSXDOS2.ROM (MSX-DOS 2)"
+    },
+    {
+      "name": "PAINTER.ROM",
+      "path": "PAINTER.ROM",
+      "md5": "403cdea1cbd2bb24fae506941f8f655e",
+      "optional": true,
+      "desc": "PAINTER.ROM (Yamaha Painter)"
+    },
+    {
+      "name": "KANJI.ROM",
+      "path": "KANJI.ROM",
+      "md5": "febe8782b466d7c3b16de6d104826b34",
+      "optional": true,
+      "desc": "KANJI.ROM (Kanji Font)"
+    }
+  ]
+}

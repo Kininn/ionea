@@ -1,0 +1,14 @@
+{
+  "id": "ardens-core",
+  "name": "Ardens core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "ardens_libretro.dll"
+    ],
+    "archive": "ardens_libretro"
+  },
+  "systems": [
+    "arduboy"
+  ]
+}

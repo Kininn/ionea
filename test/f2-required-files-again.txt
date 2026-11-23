@@ -1,0 +1,44 @@
+# Required files, second start on the same data (f2-required-files.ps1): the first-start screen is not shown
+# again, Swit C (new, same family) got the store's files at startup, and the made-up System.dat adds hashes.
+wait 900
+key accept
+wait 2200
+expect screen HomeScreen
+expect reqmissing Swit C|0
+expect reqstate Swit C|prod.keys|Ready
+expect reqstate Swit C|Firmware|Ready
+
+# the user's own System.dat (made up): its hashes count, a file it doesn't list is refused
+reqpick Dat Psx|T\dat2
+wait 900
+expect screen MessageCard
+key back
+wait 300
+reqpick Dat Psx|T\dat
+wait 900
+expect reqstate Dat Psx|BIOS|Ready
+key back
+wait 300
+reqpick Dat Ps2|T\dat2\ps2-other.bin|PS2 BIOS
+wait 1200
+expect screen MessageCard
+key back
+wait 300
+expect reqstate Dat Ps2|PS2 BIOS|Missing
+reqpick Dat Ps2|T\dat\ps2-good.bin|PS2 BIOS
+wait 1200
+expect reqstate Dat Ps2|PS2 BIOS|Ready
+key back
+wait 300
+reqpick Dat Rom|T\dat2\named.bin|named.bin
+wait 900
+expect screen MessageCard
+key back
+wait 300
+reqpick Dat Rom|T\dat\rom.bin|rom.bin
+wait 900
+expect reqstate Dat Rom|rom.bin|Ready
+expect reqstate Dat Rom|named.bin|Missing
+key back
+wait 300
+quit

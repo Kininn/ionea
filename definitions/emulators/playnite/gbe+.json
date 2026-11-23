@@ -1,0 +1,19 @@
+{
+  "id": "gbe+",
+  "name": "GBE+",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^gbe_plus_qt*\\.exe$"
+    ]
+  },
+  "start": {
+    "args": "\"{rom}\""
+  },
+  "systems": [
+    "gb",
+    "gbc",
+    "gba",
+    "nds"
+  ]
+}

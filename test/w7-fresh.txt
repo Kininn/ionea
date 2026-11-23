@@ -1,0 +1,166 @@
+# A fresh install's first run. Setup: test\w7-fresh.ps1 (a new build in an empty folder,
+# no --data, an empty home for the scan, no Steam, a local server for the core, IONEA_TESTROOT=<root>).
+# Profile, Network, the scan (finds nothing, offers a download), controls setup, add an emulator, add games,
+# add a native port, start, pause, switch games, close. No semicolons in comments: they split lines.
+wait 900
+expect screen NewProfileScreen
+shot w7-01-profile
+type Player
+key accept
+wait 1100
+expect screen StartScreen
+key accept
+wait 2200
+# Network: offline by default, every source off
+expect screen OnlineCard
+expect rowvalue Offline mode|On
+shot w7-02-network
+cardrow Done
+key accept
+wait 800
+# the scan of an empty PC
+waitscan 20
+expect screen ScanCard
+expect cardrows Download an emulator | Look harder | Done
+shot w7-03-scan-empty
+offline off
+online cores on
+cardrow Download an emulator
+key accept
+wait 600
+expect screen EmuInstallCard
+cardrow mGBA core
+key accept
+wait 1500
+expect screen DownloadCard
+key down
+expect cardfocus Download
+key accept
+waitemuinstall 30
+expect emuinstall installed mGBA core
+expect emus 1
+wait 800
+# the scan closes by itself and the controls setup comes next
+shot w7-04-after-download
+expect screen SetupPromptCard
+shot w7-05-setup
+key accept
+wait 500
+expect screen SetupDeviceCard
+cardrow Keyboard and mouse
+key accept
+wait 500
+expect screen SetupBindsCard
+cardrow Use the recommended controls
+key accept
+wait 800
+expect setupdone yes
+# the recommended controls are shown, per system
+expect screen ControlsCard
+shot w7-06-controls
+cardrow Done
+key accept
+wait 600
+expect screen HomeScreen
+# the mouse camera consoles come from the definitions (the user's systems.json adds PS3)
+expect mousecams ps4:on:5,switch:on:5,switch2:on:5,gc:on:5,ps3:on:5
+# an emulator (a program the user picked) and a native port (described by the user's own definition)
+addemu T\emus\melonDS\melonDS.exe
+wait 1200
+# a known emulator: Ionea offers its core, the program itself is kept here
+expect screen CoreOfferCard
+cardrow Keep melonDS only
+key accept
+wait 800
+expect screen EmulatorsCard
+cardrow Done
+key accept
+wait 600
+expect screen HomeScreen
+addemu T\ports\testport\testport.exe
+wait 1200
+shot w7-07a-port-added
+expect emus 3
+expect emuports Port Game (testport)
+expect screen EmulatorsCard
+shot w7-07-emulators
+cardrow Done
+key accept
+wait 600
+expect screen HomeScreen
+# games
+addrom T\roms\Game One.gba
+wait 3000
+expect screen AddRomCard
+key accept
+wait 2500
+addrom T\roms\Port Game.gba
+wait 3000
+expect screen AddRomCard
+key accept
+wait 2500
+addrom T\roms\Small DS.nds
+wait 3000
+expect screen AddRomCard
+key accept
+wait 2500
+shot w7-08-home-games
+expect screen HomeScreen
+# 1. a core game: start, pause, resume
+select Game One
+key accept
+waitshown 30
+wait 2000
+expect ingame Game One
+homebutton
+wait 800
+expect paused yes
+shot w7-09-paused-core
+homebutton
+wait 800
+expect paused no
+# 2. switch to the emulator game from the Home screen
+homebutton
+wait 800
+cardrow Home screen
+key accept
+wait 800
+select Small DS
+key accept
+wait 800
+expect screen SwitchGameCard
+key accept
+wait 1500
+waitshown 40
+wait 2500
+expect ingame Small DS
+expect embedded yes
+homebutton
+wait 1000
+expect paused yes
+shot w7-10-paused-emulator
+# 3. switch to the port game: Play with asks, the port is picked
+cardrow Home screen
+key accept
+wait 800
+select Port Game
+key accept
+wait 800
+expect screen SwitchGameCard
+key accept
+wait 7000
+expect screen PlayWithCard
+shot w7-11-playwith
+cardrow Native · Port Game (testport)
+key accept
+waitshown 40
+wait 2500
+expect ingame Port Game
+homebutton
+wait 1000
+expect paused yes
+shot w7-12-paused-port
+closegame
+wait 4000
+expect ingame none
+quit

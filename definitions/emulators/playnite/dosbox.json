@@ -1,0 +1,17 @@
+{
+  "id": "dosbox",
+  "name": "DOSBox",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^dosbox\\.exe$"
+    ],
+    "archive": "dosbox"
+  },
+  "start": {
+    "args": "-conf \"{rom}\" -noconsole"
+  },
+  "systems": [
+    "dos"
+  ]
+}

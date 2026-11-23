@@ -1,0 +1,21 @@
+{
+  "id": "torzu",
+  "name": "torzu",
+  "family": "yuzu",
+  "detect": {
+    "programs": [
+      "torzu.exe"
+    ],
+    "archive": "torzu"
+  },
+  "gameFolders": [
+    {
+      "file": "{exe}\\user\\config\\qt-config.ini",
+      "match": "(?m)^Paths\\\\gamedirs\\\\\\d+\\\\path\\s*=\\s*(.+?)\\s*$"
+    },
+    {
+      "file": "{appdata}\\torzu\\config\\qt-config.ini",
+      "match": "(?m)^Paths\\\\gamedirs\\\\\\d+\\\\path\\s*=\\s*(.+?)\\s*$"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "id": "cap32-core",
+  "name": "Caprice32 core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "cap32_libretro.dll"
+    ],
+    "archive": "cap32_libretro"
+  },
+  "systems": [
+    "amstradcpc",
+    "gx4000"
+  ]
+}

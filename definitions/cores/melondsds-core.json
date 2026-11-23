@@ -1,0 +1,134 @@
+{
+  "id": "melondsds-core",
+  "name": "melonDS DS core",
+  "detect": {
+    "programs": [
+      "melondsds_libretro.dll"
+    ],
+    "archive": "melondsds_libretro"
+  },
+  "release": {
+    "url": "https://buildbot.libretro.com/nightly/windows/x86_64/latest/melondsds_libretro.dll.zip"
+  },
+  "systems": [
+    "nds"
+  ],
+  "requiredFiles": [
+    {
+      "name": "bios7.bin",
+      "path": "bios7.bin",
+      "md5": "df692a80a5b1bc90728bc3dfc76cd948",
+      "optional": true,
+      "desc": "ARM7 BIOS"
+    },
+    {
+      "name": "bios9.bin",
+      "path": "bios9.bin",
+      "md5": "a392174eb3e572fed6447e956bde4b25",
+      "optional": true,
+      "desc": "ARM9 BIOS"
+    },
+    {
+      "name": "firmware.bin",
+      "path": "firmware.bin",
+      "optional": true,
+      "desc": "NDS Firmware"
+    }
+  ],
+  "video": {
+    "format": "core",
+    "summary": "resolution, renderer, filtering",
+    "settings": [
+      {
+        "key": "melonds_render_mode",
+        "shared": "renderer",
+        "values": [
+          "software",
+          "opengl",
+          "compute"
+        ],
+        "names": [
+          "Software",
+          "OpenGL",
+          "OpenGL (compute)"
+        ],
+        "default": "software"
+      },
+      {
+        "key": "melonds_opengl_resolution",
+        "shared": "resolution",
+        "values": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8"
+        ],
+        "names": [
+          "1x (native)",
+          "2x",
+          "3x",
+          "4x",
+          "5x",
+          "6x",
+          "7x",
+          "8x"
+        ],
+        "default": "1"
+      },
+      {
+        "key": "melonds_opengl_filtering",
+        "shared": "filtering",
+        "values": [
+          "nearest",
+          "linear"
+        ],
+        "names": [
+          "Nearest",
+          "Linear"
+        ],
+        "default": "nearest"
+      },
+      {
+        "key": "melonds_opengl_better_polygons",
+        "label": "Better polygons",
+        "values": [
+          "disabled",
+          "enabled"
+        ],
+        "names": [
+          "Off",
+          "On"
+        ],
+        "default": "enabled"
+      },
+      {
+        "key": "melonds_jit_enable",
+        "label": "JIT recompiler",
+        "values": [
+          "disabled",
+          "enabled"
+        ],
+        "names": [
+          "Off",
+          "On"
+        ],
+        "default": "enabled"
+      }
+    ]
+  },
+  "quiet": {
+    "core": {
+      "melonds_show_unsupported_features": "disabled",
+      "melonds_show_bios_warnings": "disabled",
+      "melonds_show_current_layout": "disabled",
+      "melonds_show_mic_state": "disabled",
+      "melonds_show_camera_state": "disabled",
+      "melonds_show_lid_state": "disabled",
+      "melonds_show_sensor_reading": "disabled"
+    }
+  }
+}

@@ -1,0 +1,112 @@
+﻿# Each profile keeps its own sounds, key and button bindings, order, layout, look and folders, and the
+# home row starts on the game that profile played last. Then p3-profile-restart.txt on the same data
+# folder checks that it all comes back after a restart.
+# Run: --data <tmp> --no-import --dummies 6 --windowed --mute --script test/p2-profile-settings.txt
+# Dummies: Neon Drift, Crystal Quest, Silent Kingdom, Iron Signal, Solar Frontier, Lunar Rally
+wait 900
+type One
+key accept
+wait 1100
+expect screen StartScreen
+key accept
+wait 1100
+expect screen HomeScreen
+# profile One: quieter, moving sounds low, its own A key, medium layout, a folder
+soundvol 60
+soundgroup move 30
+expect gain scroll 0.032
+expect gain select 0.36
+setkey south Z
+setpad south y
+zoom medium
+infolder Neon Drift|Racing
+infolder Iron Signal|Racing
+play Crystal Quest|60
+wait 50
+play Iron Signal|60
+select Crystal Quest
+# last played first: the folder holding what was played last leads the row
+expect tile 0 folder:Racing
+expect tile 1 Crystal Quest
+# a new profile starts from the defaults, with no folders
+newprofile
+type Two
+key accept
+wait 800
+expect profile Two
+expect volume 100
+expect group move 100
+expect binding south Space
+expect padbinding south a
+expect zoom Large
+expect dark no
+expect order recent
+expect folderof Neon Drift|none
+expect tile 0 Crystal Quest
+soundvol 25
+theme dark
+setkey south X
+order name
+play Solar Frontier|60
+# back to One: all of One's settings, and its last game in front
+switchprofile One
+wait 800
+expect profile One
+expect volume 60
+expect group move 30
+expect binding south Z
+expect padbinding south y
+expect zoom Medium
+expect dark no
+expect order recent
+expect folderof Neon Drift|Racing
+expect name folder:Racing
+expect tile 0 folder:Racing
+play Lunar Rally|60
+select Lunar Rally
+expect tile 0 Lunar Rally
+switchprofile Two
+wait 800
+expect volume 25
+expect binding south X
+expect padbinding south a
+expect dark yes
+expect order name
+expect zoom Large
+expect folderof Neon Drift|none
+expect name Solar Frontier
+expect tile 0 Crystal Quest
+switchprofile One
+wait 800
+expect name Lunar Rally
+expect dark no
+# the Sounds card: Settings shows the volume, Left / Right sets levels
+settings sound
+expect settingspane Sound
+expect rowvalue Sounds|On
+expect rowvalue Volume|60%
+key back
+wait 300
+sounds
+expect screen SoundCard
+expect rowvalue Volume|60%
+key down
+key left
+expect volume 50
+expect rowvalue Volume|50%
+key down
+key right
+expect group move 40
+expect rowvalue Moving between games|40%
+key down 2
+key left 10
+expect group menu 0
+expect rowvalue Menus opening|Off
+expect gain menuopen 0
+key right 5
+expect group menu 50
+shot launcher-p2-sounds
+key back
+wait 300
+expect screen HomeScreen
+quit

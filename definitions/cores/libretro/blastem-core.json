@@ -1,0 +1,102 @@
+{
+  "id": "blastem-core",
+  "name": "BlastEm core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "blastem_libretro.dll"
+    ],
+    "archive": "blastem_libretro"
+  },
+  "systems": [
+    "colecovision",
+    "gamegear",
+    "genesis",
+    "mark3",
+    "mastersystem",
+    "megacd",
+    "megacdjp",
+    "sega32x",
+    "sega32xjp",
+    "sega32xna",
+    "segacd",
+    "sg-1000"
+  ],
+  "extraExts": [
+    ".sg1",
+    ".sc3",
+    ".sf7",
+    ".toc",
+    ".vgm",
+    ".vgz",
+    ".flac",
+    ".wav",
+    ".gz"
+  ],
+  "requiredFiles": [
+    {
+      "name": "rom.db",
+      "path": "rom.db",
+      "optional": true,
+      "desc": "rom.db (ROM feature database)"
+    },
+    {
+      "name": "bios_CD_U.bin",
+      "path": "bios_CD_U.bin",
+      "md5": "2efd74e3232ff260e371b99f84024f7f",
+      "optional": true,
+      "desc": "bios_CD_U.bin (Sega CD US BIOS, required for Sega CD games)"
+    },
+    {
+      "name": "bios_CD_E.bin",
+      "path": "bios_CD_E.bin",
+      "md5": "e66fa1dc5820d254611fdcdba0662372",
+      "optional": true,
+      "desc": "bios_CD_E.bin (Mega-CD EU BIOS, required for Sega CD games)"
+    },
+    {
+      "name": "bios_CD_J.bin",
+      "path": "bios_CD_J.bin",
+      "md5": "278a9397d192149e84e820ac621a8edd",
+      "optional": true,
+      "desc": "bios_CD_J.bin (Mega-CD JP BIOS, required for Sega CD games)"
+    },
+    {
+      "name": "32X_M_BIOS.bin",
+      "path": "32X_M_BIOS.bin",
+      "optional": true,
+      "desc": "32X_M_BIOS.bin (32X Master SH2 BIOS, required for 32X games)"
+    },
+    {
+      "name": "32X_S_BIOS.bin",
+      "path": "32X_S_BIOS.bin",
+      "optional": true,
+      "desc": "32X_S_BIOS.bin (32X Slave SH2 BIOS, required for 32X games)"
+    },
+    {
+      "name": "32X_G_BIOS.bin",
+      "path": "32X_G_BIOS.bin",
+      "optional": true,
+      "desc": "32X_G_BIOS.bin (32X 68000 BIOS)"
+    },
+    {
+      "name": "bios_MD.bin",
+      "path": "bios_MD.bin",
+      "optional": true,
+      "desc": "bios_MD.bin (Mega Drive TMSS ROM, also read as tmss.md)"
+    },
+    {
+      "name": "colecovision.rom",
+      "path": "colecovision.rom",
+      "md5": "2c66f5911e5b42b8ebe113403548eee7",
+      "optional": true,
+      "desc": "colecovision.rom (ColecoVision BIOS)"
+    },
+    {
+      "name": "laseractive_dyw_1322a.bin",
+      "path": "laseractive_dyw_1322a.bin",
+      "optional": true,
+      "desc": "laseractive_dyw_1322a.bin (LaserActive uPD ROM)"
+    }
+  ]
+}

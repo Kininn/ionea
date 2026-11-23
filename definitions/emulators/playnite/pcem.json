@@ -1,0 +1,19 @@
+{
+  "id": "pcem",
+  "name": "PCem",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^pcem\\.exe$"
+    ]
+  },
+  "start": {
+    "args": "--config \"{rom}\""
+  },
+  "systems": [
+    "dos"
+  ],
+  "extraExts": [
+    ".cfg"
+  ]
+}

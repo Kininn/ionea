@@ -1,0 +1,343 @@
+{
+  "id": "eden",
+  "name": "Eden",
+  "detect": {
+    "programs": [
+      "eden.exe"
+    ],
+    "archive": "eden"
+  },
+  "start": {
+    "args": "-f -g \"{rom}\"",
+    "portable": [
+      "user\\"
+    ],
+    "seed": [
+      {
+        "file": "user\\config\\qt-config.ini",
+        "text": "[UI]\ncheck_for_updates\\default=false\ncheck_for_updates=false\nconfirmStop\\default=false\nconfirmStop=2\n"
+      }
+    ]
+  },
+  "systems": [
+    "switch"
+  ],
+  "saves": {
+    "folders": [
+      "user\\nand\\user\\save"
+    ]
+  },
+  "requiredFiles": [
+    {
+      "name": "prod.keys",
+      "path": "user\\keys\\prod.keys",
+      "check": "switch-keys",
+      "share": "switch-keys"
+    },
+    {
+      "name": "title.keys",
+      "path": "user\\keys\\title.keys",
+      "check": "switch-titlekeys",
+      "share": "switch-titlekeys",
+      "optional": true
+    },
+    {
+      "name": "Firmware",
+      "path": "user\\nand\\system\\Contents\\registered\\",
+      "check": "switch-firmware",
+      "share": "switch-firmware"
+    }
+  ],
+  "controls": {
+    "format": "yuzu",
+    "file": "user\\config\\qt-config.ini"
+  },
+  "video": {
+    "format": "ini",
+    "style": "qt",
+    "sep": "=",
+    "file": "user\\config\\qt-config.ini",
+    "perGame": "user\\config\\custom\\{gameid}.ini",
+    "gameId": "switch",
+    "noGameId": "Its title id wasn't found (add prod.keys, or a [title id] in the file name)",
+    "savesOnExit": true,
+    "summary": "resolution, upscaling, frame pacing",
+    "settings": [
+      {
+        "key": "[Renderer]resolution_setup",
+        "shared": "resolution",
+        "values": [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12"
+        ],
+        "names": [
+          "0.25x",
+          "0.5x",
+          "0.75x",
+          "1x (native)",
+          "1.25x",
+          "1.5x",
+          "2x",
+          "3x",
+          "4x",
+          "5x",
+          "6x",
+          "7x",
+          "8x"
+        ],
+        "default": "3"
+      },
+      {
+        "key": "[Renderer]scaling_filter",
+        "shared": "upscaling",
+        "values": [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12"
+        ],
+        "names": [
+          "Nearest neighbor",
+          "Bilinear",
+          "Bicubic",
+          "Gaussian",
+          "Lanczos",
+          "ScaleForce",
+          "AMD FSR",
+          "Area",
+          "Zero-Tangent",
+          "B-Spline",
+          "Mitchell",
+          "Spline-1",
+          "MMPX"
+        ],
+        "default": "1"
+      },
+      {
+        "key": "[Renderer]aspect_ratio",
+        "shared": "aspect",
+        "values": [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "names": [
+          "16:9",
+          "4:3",
+          "21:9",
+          "16:10",
+          "Stretch to window"
+        ],
+        "default": "0"
+      },
+      {
+        "key": "[Renderer]use_vsync",
+        "shared": "pacing",
+        "values": [
+          "2",
+          "1",
+          "3",
+          "0"
+        ],
+        "names": [
+          "V-Sync",
+          "Low latency",
+          "Relaxed V-Sync",
+          "Uncapped (may tear)"
+        ],
+        "default": "2"
+      },
+      {
+        "key": "[Renderer]anti_aliasing",
+        "shared": "antialiasing",
+        "values": [
+          "0",
+          "1",
+          "2"
+        ],
+        "names": [
+          "Off",
+          "FXAA",
+          "SMAA"
+        ],
+        "default": "0"
+      },
+      {
+        "key": "[Renderer]max_anisotropy",
+        "shared": "filtering",
+        "values": [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+        ],
+        "names": [
+          "Automatic",
+          "Default",
+          "2x",
+          "4x",
+          "8x",
+          "16x"
+        ],
+        "default": "0"
+      },
+      {
+        "key": "[Renderer]backend",
+        "shared": "renderer",
+        "values": [
+          "1",
+          "0",
+          "3",
+          "4"
+        ],
+        "names": [
+          "Vulkan",
+          "OpenGL (GLSL)",
+          "OpenGL (GLASM)",
+          "OpenGL (SPIR-V)"
+        ],
+        "default": "1"
+      },
+      {
+        "key": "[Renderer]use_disk_shader_cache",
+        "shared": "shadercache",
+        "values": [
+          "false",
+          "true"
+        ],
+        "names": [
+          "Off",
+          "On"
+        ],
+        "default": "true"
+      },
+      {
+        "key": "[Core]speed_limit",
+        "shared": "speed",
+        "values": [
+          "50",
+          "75",
+          "100",
+          "150",
+          "200",
+          "300"
+        ],
+        "names": [
+          "50%",
+          "75%",
+          "100%",
+          "150%",
+          "200%",
+          "300%"
+        ],
+        "default": "100"
+      },
+      {
+        "key": "[Core]use_speed_limit",
+        "label": "Limit speed",
+        "values": [
+          "false",
+          "true"
+        ],
+        "names": [
+          "Off",
+          "On"
+        ],
+        "default": "true"
+      },
+      {
+        "key": "[Renderer]frame_pacing_mode",
+        "label": "Frame rate target",
+        "values": [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "names": [
+          "Automatic",
+          "30 fps",
+          "60 fps",
+          "90 fps",
+          "120 fps"
+        ],
+        "default": "0"
+      }
+    ]
+  },
+  "hotkeys": {
+    "mousePanning": "F3"
+  },
+  "gameData": {
+    "read": "switch",
+    "folder": "{content}",
+    "install": {
+      "kind": "switch-keep",
+      "config": "user\\config\\qt-config.ini"
+    },
+    "mods": [
+      "user\\load\\{gameid}\\*"
+    ],
+    "modsOff": "user\\config\\qt-config.ini"
+  },
+  "gameFolders": [
+    {
+      "file": "{exe}\\user\\config\\qt-config.ini",
+      "match": "(?m)^Paths\\\\gamedirs\\\\\\d+\\\\path\\s*=\\s*(.+?)\\s*$"
+    },
+    {
+      "file": "{appdata}\\eden\\config\\qt-config.ini",
+      "match": "(?m)^Paths\\\\gamedirs\\\\\\d+\\\\path\\s*=\\s*(.+?)\\s*$"
+    }
+  ],
+  "quiet": {
+    "files": {
+      "user\\config\\qt-config.ini": {
+        "format": "ini",
+        "style": "qt",
+        "sep": "=",
+        "set": {
+          "[UI]showStatusBar": "false",
+          "[UI]UIGameList\\show_perf_overlay": "false",
+          "[UI]Shortcuts\\Main%20Window\\Toggle%20Performance%20Overlay\\KeySeq": "",
+          "[UI]Shortcuts\\Main%20Window\\Toggle%20Status%20Bar\\KeySeq": "",
+          "[UI]Shortcuts\\Main%20Window\\Exit%20Fullscreen\\KeySeq": "",
+          "[UI]Shortcuts\\Main%20Window\\Fullscreen\\KeySeq": "",
+          "[UI]Shortcuts\\Main%20Window\\Fullscreen\\Controller_KeySeq": "",
+          "[UI]Shortcuts\\Main%20Window\\Capture%20Screenshot\\Controller_KeySeq": "",
+          "[UI]Screenshots\\enable_screenshot_save_as": "false",
+          "[Controls]player_0_button_home": "\"engine:keyboard,code:-1,toggle:0\"",
+          "[Controls]player_0_button_screenshot": "\"engine:keyboard,code:-1,toggle:0\"",
+          "[Controls]player_8_button_home": "\"engine:keyboard,code:-1,toggle:0\"",
+          "[Controls]player_8_button_screenshot": "\"engine:keyboard,code:-1,toggle:0\"",
+          "[UI]pauseWhenInBackground": "false"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "id": "duckstation",
+  "name": "DuckStation",
+  "detect": {
+    "programs": [
+      "duckstation-qt-x64-ReleaseLTCG.exe",
+      "duckstation-qt.exe"
+    ],
+    "archive": "duckstation",
+    "product": [
+      "DuckStation"
+    ]
+  },
+  "start": {
+    "args": "-batch -fullscreen -- \"{rom}\"",
+    "portable": [
+      "portable.txt"
+    ]
+  },
+  "systems": [
+    "psx"
+  ],
+  "saves": {
+    "folders": [
+      "memcards",
+      "savestates"
+    ]
+  },
+  "requiredFiles": [
+    {
+      "name": "PS1 BIOS",
+      "path": "bios\\",
+      "md5s": [
+        "8dd7d5296a650fac7319bce665a6a53c",
+        "490f666e1afb15b7362b406ed1cea246",
+        "32736f17079d0b2b7024407c39bd3050",
+        "c53ca5908936d412331790f4426c6c33",
+        "81bbe60ba7a3d1cea1d48c14cbcc647b"
+      ],
+      "dat": "Sony - PlayStation"
+    }
+  ],
+  "gameFolders": [
+    {
+      "file": "{exe}\\settings.ini",
+      "match": "(?m)^(?:Recursive)?Paths\\s*=\\s*(.+?)\\s*$"
+    },
+    {
+      "file": "{documents}\\DuckStation\\settings.ini",
+      "match": "(?m)^(?:Recursive)?Paths\\s*=\\s*(.+?)\\s*$"
+    },
+    {
+      "file": "{localappdata}\\DuckStation\\settings.ini",
+      "match": "(?m)^(?:Recursive)?Paths\\s*=\\s*(.+?)\\s*$"
+    }
+  ],
+  "release": {
+    "github": "stenzek/duckstation",
+    "asset": "^duckstation-windows-x64-release\\.zip$"
+  }
+}

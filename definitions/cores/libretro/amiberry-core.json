@@ -1,0 +1,67 @@
+{
+  "id": "amiberry-core",
+  "name": "Amiberry core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "amiberry_libretro.dll"
+    ],
+    "archive": "amiberry_libretro"
+  },
+  "systems": [
+    "amiga",
+    "amiga1200",
+    "amiga600",
+    "amigacd32",
+    "cdtv"
+  ],
+  "extraExts": [
+    ".raw",
+    ".lzh",
+    ".m3u8"
+  ],
+  "requiredFiles": [
+    {
+      "name": "kick34005.A500",
+      "path": "kick34005.A500",
+      "optional": true,
+      "desc": "A500 Kickstart v1.3 r34.5"
+    },
+    {
+      "name": "kick37350.A600",
+      "path": "kick37350.A600",
+      "optional": true,
+      "desc": "A600 Kickstart v2.05 r37.350"
+    },
+    {
+      "name": "kick40068.A1200",
+      "path": "kick40068.A1200",
+      "optional": true,
+      "desc": "A1200 Kickstart v3.1 r40.68"
+    },
+    {
+      "name": "kick33180.A500",
+      "path": "kick33180.A500",
+      "optional": true,
+      "desc": "A500 Kickstart v1.2 r33.180"
+    },
+    {
+      "name": "kick40068.A4000",
+      "path": "kick40068.A4000",
+      "optional": true,
+      "desc": "A4000 Kickstart v3.1 r40.68"
+    },
+    {
+      "name": "kick40060.CD32",
+      "path": "kick40060.CD32",
+      "optional": true,
+      "desc": "CD32 Kickstart v3.1 r40.60"
+    },
+    {
+      "name": "kick40060.CD32.ext",
+      "path": "kick40060.CD32.ext",
+      "optional": true,
+      "desc": "CD32 Extended-ROM r40.60"
+    }
+  ]
+}

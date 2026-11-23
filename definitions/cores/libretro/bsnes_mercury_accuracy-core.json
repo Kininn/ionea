@@ -1,0 +1,130 @@
+{
+  "id": "bsnes_mercury_accuracy-core",
+  "name": "bsnes-mercury Accuracy core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "bsnes_mercury_accuracy_libretro.dll"
+    ],
+    "archive": "bsnes_mercury_accuracy_libretro"
+  },
+  "systems": [
+    "satellaview",
+    "snes",
+    "sufami"
+  ],
+  "extraExts": [
+    ".gb",
+    ".gbc"
+  ],
+  "requiredFiles": [
+    {
+      "name": "dsp1.data.rom",
+      "path": "dsp1.data.rom",
+      "optional": true,
+      "desc": "dsp1.data.rom"
+    },
+    {
+      "name": "dsp1.program.rom",
+      "path": "dsp1.program.rom",
+      "optional": true,
+      "desc": "dsp1.program.rom"
+    },
+    {
+      "name": "dsp1b.data.rom",
+      "path": "dsp1b.data.rom",
+      "optional": true,
+      "desc": "dsp1b.data.rom"
+    },
+    {
+      "name": "dsp1b.program.rom",
+      "path": "dsp1b.program.rom",
+      "optional": true,
+      "desc": "dsp1b.program.rom"
+    },
+    {
+      "name": "dsp2.data.rom",
+      "path": "dsp2.data.rom",
+      "optional": true,
+      "desc": "dsp2.data.rom"
+    },
+    {
+      "name": "dsp2.program.rom",
+      "path": "dsp2.program.rom",
+      "optional": true,
+      "desc": "dsp2.program.rom"
+    },
+    {
+      "name": "dsp3.data.rom",
+      "path": "dsp3.data.rom",
+      "optional": true,
+      "desc": "dsp3.data.rom"
+    },
+    {
+      "name": "dsp3.program.rom",
+      "path": "dsp3.program.rom",
+      "optional": true,
+      "desc": "dsp3.program.rom"
+    },
+    {
+      "name": "dsp4.data.rom",
+      "path": "dsp4.data.rom",
+      "optional": true,
+      "desc": "dsp4.data.rom"
+    },
+    {
+      "name": "dsp4.program.rom",
+      "path": "dsp4.program.rom",
+      "optional": true,
+      "desc": "dsp4.program.rom"
+    },
+    {
+      "name": "cx4.data.rom",
+      "path": "cx4.data.rom",
+      "optional": true,
+      "desc": "cx4.data.rom"
+    },
+    {
+      "name": "st010.data.rom",
+      "path": "st010.data.rom",
+      "optional": true,
+      "desc": "st010.data.rom"
+    },
+    {
+      "name": "st010.program.rom",
+      "path": "st010.program.rom",
+      "optional": true,
+      "desc": "st010.program.rom"
+    },
+    {
+      "name": "st011.data.rom",
+      "path": "st011.data.rom",
+      "optional": true,
+      "desc": "st011.data.rom"
+    },
+    {
+      "name": "st011.program.rom",
+      "path": "st011.program.rom",
+      "optional": true,
+      "desc": "st011.program.rom"
+    },
+    {
+      "name": "st018.data.rom",
+      "path": "st018.data.rom",
+      "optional": true,
+      "desc": "st018.data.rom"
+    },
+    {
+      "name": "st018.program.rom",
+      "path": "st018.program.rom",
+      "optional": true,
+      "desc": "st018.program.rom"
+    },
+    {
+      "name": "sgb.boot.rom",
+      "path": "sgb.boot.rom",
+      "optional": true,
+      "desc": "sgb.boot.rom (SGB Boot Image)"
+    }
+  ]
+}

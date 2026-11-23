@@ -1,0 +1,33 @@
+{
+  "id": "pcee2-core",
+  "name": "PCEE2 core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "pcee2_libretro.dll"
+    ],
+    "archive": "pcee2_libretro"
+  },
+  "systems": [
+    "ps2"
+  ],
+  "extraExts": [
+    ".zso",
+    ".mdf",
+    ".nrg",
+    ".elf",
+    ".irx"
+  ],
+  "requiredFiles": [
+    {
+      "name": "bios",
+      "path": "pcsx2\\bios",
+      "desc": "'pcsx2/bios' folder (any valid PS2 BIOS dump, e.g. scph39001.bin)"
+    },
+    {
+      "name": "resources",
+      "path": "pcsx2\\resources",
+      "desc": "'pcsx2/resources' folder (shaders, GameIndex.yaml, fonts)"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "id": "dice-core",
+  "name": "DICE core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "dice_libretro.dll"
+    ],
+    "archive": "dice_libretro"
+  },
+  "systems": [
+    "arcade",
+    "mame"
+  ],
+  "extraExts": [
+    ".dmy",
+    ".k1",
+    ".a1",
+    ".6c",
+    ".c6",
+    ".d2",
+    ".s1",
+    ".f4",
+    ".a4",
+    ".1da",
+    ".da1",
+    ".c4",
+    ".4c",
+    ".4d",
+    ".d7",
+    ".d4"
+  ]
+}

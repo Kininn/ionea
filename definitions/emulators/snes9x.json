@@ -1,0 +1,23 @@
+{
+  "id": "snes9x",
+  "name": "Snes9x",
+  "detect": {
+    "programs": [
+      "snes9x-x64.exe",
+      "snes9x.exe"
+    ],
+    "archive": "snes9x"
+  },
+  "start": {
+    "args": "-fullscreen \"{rom}\""
+  },
+  "systems": [
+    "snes"
+  ],
+  "extraExts": [
+    ".zip"
+  ],
+  "saves": {
+    "beside": true
+  }
+}

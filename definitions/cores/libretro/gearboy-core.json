@@ -1,0 +1,36 @@
+{
+  "id": "gearboy-core",
+  "name": "Gearboy core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "gearboy_libretro.dll"
+    ],
+    "archive": "gearboy_libretro"
+  },
+  "systems": [
+    "gb",
+    "gbc"
+  ],
+  "extraExts": [
+    ".dmg",
+    ".cgb",
+    ".sgb"
+  ],
+  "requiredFiles": [
+    {
+      "name": "dmg_boot.bin",
+      "path": "dmg_boot.bin",
+      "md5": "32fbbd84168d3482956eb3c5051637f5",
+      "optional": true,
+      "desc": "dmg_boot.bin (Game Boy boot ROM)"
+    },
+    {
+      "name": "cgb_boot.bin",
+      "path": "cgb_boot.bin",
+      "md5": "dbfce9db9deaa2567f6a84fde55f9680",
+      "optional": true,
+      "desc": "cgb_boot.bin (Game Boy Color boot ROM)"
+    }
+  ]
+}

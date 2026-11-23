@@ -1,0 +1,17 @@
+{
+  "id": "xbased",
+  "name": "xbased",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^xbased\\.exe$"
+    ],
+    "archive": "xbased"
+  },
+  "start": {
+    "args": "\"{rom}\""
+  },
+  "systems": [
+    "xbox"
+  ]
+}

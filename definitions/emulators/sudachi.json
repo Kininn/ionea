@@ -1,0 +1,21 @@
+{
+  "id": "sudachi",
+  "name": "Sudachi",
+  "family": "yuzu",
+  "detect": {
+    "programs": [
+      "sudachi.exe"
+    ],
+    "archive": "sudachi"
+  },
+  "gameFolders": [
+    {
+      "file": "{exe}\\user\\config\\qt-config.ini",
+      "match": "(?m)^Paths\\\\gamedirs\\\\\\d+\\\\path\\s*=\\s*(.+?)\\s*$"
+    },
+    {
+      "file": "{appdata}\\sudachi\\config\\qt-config.ini",
+      "match": "(?m)^Paths\\\\gamedirs\\\\\\d+\\\\path\\s*=\\s*(.+?)\\s*$"
+    }
+  ]
+}

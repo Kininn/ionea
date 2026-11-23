@@ -1,0 +1,233 @@
+# Game controls: the first-start setup (asked once per profile, B or Later answers it too), the device
+# (the controller first while one is plugged in), recommended or your own controls with each console's
+# screen in turn, the Controls card, one game's own controls over its console's, mouse buttons as game
+# buttons (not left click where it is the DS touch screen). No real input: fake devices, rawkey, mousebind.
+# Run: --data <tmp> --no-import --dummies 6 --windowed --mute --setup --script test\c3-controls.txt
+wait 900
+type Controls Test
+key accept
+wait 900
+key accept
+wait 1800
+expect screen SetupPromptCard
+expect setupdone no
+wait 300
+shot setup-prompt
+key back
+wait 400
+expect screen HomeScreen
+expect setupdone yes
+devices none
+fakedevice keyboard on Test Keyboard
+fakedevice mouse on Test Mouse
+fakedevice pad on Test Pad
+wait 300
+# Set up now: the device, then the controls
+setup
+expect screen SetupPromptCard
+key accept
+wait 400
+expect screen SetupDeviceCard
+expect cardfocus Controller
+expect rowvalue Keyboard and mouse|Test Keyboard  ·  Test Mouse
+expect rowvalue Controller|Test Pad
+shot setup-device
+key up
+key accept
+wait 400
+expect maininput keyboard
+expect screen SetupBindsCard
+shot setup-binds
+# Customize: each console's keyboard screen in turn, then the Controls card
+key down
+key accept
+wait 500
+expect screen KeyboardScreen
+expect devtitle Game Boy Advance
+expect devitems dev:keyboard,dev:mouse,dev:pad,console,on,reset,east,south,l1,r1,start,select,up,down,left,right
+controls gba
+expect binding east E
+expect binding south Space
+expect binding up W
+expect binding start Return
+key back
+wait 500
+expect screen KeyboardScreen
+expect devtitle Nintendo DS
+key back
+wait 500
+expect devtitle Nintendo 3DS
+expect devitems dev:keyboard,dev:mouse,dev:pad,console,on,reset,east,south,north,west,l1,r1,l2,r2,start,select,up,down,left,right,ls_up,ls_down,ls_left,ls_right,rs_up,rs_down,rs_left,rs_right
+controls 3ds
+expect binding ls_up W
+expect binding up D1
+expect binding l2 Z
+wait 300
+shot controls-3ds
+key back
+wait 500
+expect devtitle GameCube
+controls gc
+expect binding south E
+expect binding rs_left Left
+key back
+wait 500
+expect devtitle PlayStation 4
+controls ps4
+expect binding r1 MouseLeft
+expect binding r2 LeftShift
+expect binding l1 MouseRight
+expect binding l2 LeftCtrl
+expect binding east Space
+expect binding south E
+expect binding north R
+expect binding west F
+expect binding r3 MouseMiddle
+expect binding ls_up W
+wait 300
+shot controls-ps4
+# a mouse button for a PS4 button: the one that had it takes the old key
+focusitem select
+key accept
+expect capturing yes
+mousebind Middle
+expect capturing no
+expect binding select MouseMiddle
+expect binding r3 Tab
+# Mouse look sensitivity (PS4 only): Left / Right steps it (not to the other column), A goes up and wraps round
+expect devitems dev:keyboard,dev:mouse,dev:pad,console,on,reset,south,east,west,north,l1,r1,l2,r2,l3,r3,start,select,up,down,left,right,ls_up,ls_down,ls_left,ls_right,rs_up,rs_down,rs_left,rs_right,mousecam,mousespeed
+expect mousespeed 5
+focusitem mousespeed
+key right
+expect mousespeed 6
+expect devfocus mousespeed
+key left 3
+expect mousespeed 3
+key right 9
+expect mousespeed 10
+key accept
+expect mousespeed 1
+key left
+expect mousespeed 1
+key right 6
+expect mousespeed 7
+wait 300
+shot controls-ps4-mousespeed
+key back
+wait 500
+expect screen ControlsCard
+expect rowvalue PlayStation 4|Your own
+expect rowvalue Game Boy Advance|Recommended
+shot controls-card
+# Set up for: the controller screens instead
+expect rowvalue Set up for|Keyboard and mouse
+key right
+expect rowvalue Set up for|Controller
+expect maininput pad
+key down
+key accept
+wait 500
+expect screen ControllerScreen
+expect devtitle Game Boy Advance
+expect devitems dev:keyboard,dev:mouse,dev:pad,console,nintendo,on,reset,l1,select,up,down,left,right,r1,start,east,south
+controls gba
+focusitem south
+key accept
+expect capturing yes
+padpress y
+expect capturing no
+expect padbinding south y
+key back
+wait 400
+expect rowvalue Game Boy Advance|Your own
+# Back to the recommended controls: every console
+key down 5
+expect cardfocus Back to the recommended controls
+key accept
+expect rowvalue Game Boy Advance|Recommended
+expect rowvalue PlayStation 4|Recommended
+expect padbinding south a
+controls ps4
+expect mousespeed 5
+expect binding select Tab
+key back
+wait 400
+expect screen HomeScreen
+# Set up for a controller, one plugged in: the Input button opens the controller screen
+mousebar down 2
+wait 500
+expect screen ControllerScreen
+expect devfocus l1
+key back
+wait 400
+expect screen HomeScreen
+# One game's own controls: until "This game only" is on, its screens change its console's
+gamesystem Neon Drift|gba
+expect gamecursor Neon Drift|hidden
+expect mouselook Neon Drift|no
+controlsfor Neon Drift
+wait 400
+expect screen GameControlsCard
+expect cardfocus Controller
+expect rowvalue This game only|Off
+expect rowvalue Keyboard and mouse|Game Boy Advance
+shot controls-game
+key up
+key accept
+wait 500
+expect screen KeyboardScreen
+expect devtitle Neon Drift
+expect devitems dev:keyboard,dev:pad,own,on,reset,east,south,l1,r1,start,select,up,down,left,right
+controls gba Neon Drift
+focusitem east
+key accept
+rawkey L
+expect binding east L
+expect ownctl no
+controls gba
+expect binding east L
+# with its own on, the console's stay as they are
+controls gba Neon Drift
+focusitem own
+key accept
+expect ownctl yes
+focusitem east
+key accept
+rawkey O
+expect binding east O
+controls gba
+expect binding east L
+controls gba Neon Drift
+wait 300
+shot controls-game-own
+key back
+wait 400
+expect screen GameControlsCard
+expect rowvalue This game only|On
+expect rowvalue Keyboard and mouse|This game's
+key down 2
+key left
+expect ownctl no
+expect binding east L
+key down
+key accept
+wait 400
+expect screen HomeScreen
+# Left click is the DS touch screen: it can't be a DS button, the side buttons can
+controls nds
+devicescreen keyboard
+expect devtitle Nintendo DS
+focusitem east
+key accept
+mousebind Left
+expect capturing yes
+expect devmsg Left click is the touch screen here. Pick another button, or Esc.
+mousebind XButton1
+expect capturing no
+expect binding east MouseBack
+wait 300
+shot controls-ds-mouse
+key back
+wait 400
+expect screen HomeScreen
+quit

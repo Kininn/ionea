@@ -1,0 +1,14 @@
+{
+  "id": "chailove-core",
+  "name": "ChaiLove core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "chailove_libretro.dll"
+    ],
+    "archive": "chailove_libretro"
+  },
+  "systems": [
+    "chailove"
+  ]
+}

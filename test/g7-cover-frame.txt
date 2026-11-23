@@ -1,0 +1,46 @@
+﻿# 12 dummies: a portrait picture chosen in Game info is kept whole and Adjust cover opens on it;
+# it zooms out past the fill (Whole picture, then the 0.8x margin), moves inside the tile when zoomed out, and is
+# kept. Game info > Rename: a new name is kept, another game's name is refused.
+wait 900
+type Living Room
+key accept
+wait 900
+key accept
+wait 1100
+gameinfo Neon Drift
+coverpick test\g7-portrait.png
+wait 400
+expect screen CoverAdjustCard
+expect adjustview 1.00|0.50|0.50
+cardrow Whole picture
+key accept
+expect adjustview 0.60|0.50|0.50
+shot launcher-g7-whole
+key pageleft
+expect adjustview 0.48|0.50|0.50
+covermouse down 0 0
+covermouse move 40 0
+covermouse up 40 0
+expect adjustview 0.48|0.29|0.50
+key back
+wait 500
+expect screen GameInfoCard
+expect coverview Neon Drift|0.48|0.29|0.50
+shot launcher-g7-info
+cardrow Rename
+key accept
+wait 400
+expect screen TextCard
+type Crystal Quest
+key accept
+expect screen TextCard
+type Neon Drift Remix
+key accept
+wait 400
+expect screen GameInfoCard
+expect coverview Neon Drift Remix|0.48|0.29|0.50
+key back
+wait 700
+expect screen HomeScreen
+shot launcher-g7-home
+quit

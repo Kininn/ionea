@@ -1,0 +1,18 @@
+{
+  "id": "easyrpg-core",
+  "name": "EasyRPG Player core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "easyrpg_libretro.dll"
+    ],
+    "archive": "easyrpg_libretro"
+  },
+  "systems": [
+    "easyrpg"
+  ],
+  "extraExts": [
+    ".ldb",
+    ".lzh"
+  ]
+}

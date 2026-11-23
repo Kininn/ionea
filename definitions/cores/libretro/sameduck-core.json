@@ -1,0 +1,17 @@
+{
+  "id": "sameduck-core",
+  "name": "SameDuck core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "sameduck_libretro.dll"
+    ],
+    "archive": "sameduck_libretro"
+  },
+  "systems": [
+    "megaduck"
+  ],
+  "extraExts": [
+    ".duck"
+  ]
+}

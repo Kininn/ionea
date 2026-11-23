@@ -1,0 +1,77 @@
+{
+  "id": "dolphin-core",
+  "name": "Dolphin core",
+  "detect": {
+    "programs": [
+      "dolphin_libretro.dll"
+    ],
+    "archive": "dolphin_libretro"
+  },
+  "release": {
+    "url": "https://buildbot.libretro.com/nightly/windows/x86_64/latest/dolphin_libretro.dll.zip"
+  },
+  "systems": [
+    "gc",
+    "wii"
+  ],
+  "requiredFiles": [
+    {
+      "name": "Dolphin Sys folder",
+      "path": "dolphin-emu\\Sys\\",
+      "check": "dolphin-sys",
+      "share": "dolphin-sys"
+    }
+  ],
+  "video": {
+    "format": "core",
+    "summary": "resolution, anti-aliasing, renderer",
+    "settings": [
+      {
+        "key": "dolphin_efb_scale",
+        "shared": "resolution"
+      },
+      {
+        "key": "dolphin_renderer",
+        "shared": "renderer"
+      },
+      {
+        "key": "dolphin_anti_aliasing",
+        "shared": "antialiasing"
+      },
+      {
+        "key": "dolphin_max_anisotropy",
+        "shared": "filtering"
+      },
+      {
+        "key": "dolphin_force_texture_filtering_mode",
+        "label": "Force filtering"
+      },
+      {
+        "key": "dolphin_widescreen_hack",
+        "label": "Widescreen hack"
+      },
+      {
+        "key": "dolphin_shader_compilation_mode",
+        "label": "Shader compilation"
+      },
+      {
+        "key": "dolphin_wait_for_shaders",
+        "label": "Compile shaders first"
+      },
+      {
+        "key": "dolphin_skip_dupe_frames",
+        "label": "Skip duplicate frames"
+      },
+      {
+        "key": "dolphin_cpu_clock_rate",
+        "label": "CPU speed"
+      }
+    ]
+  },
+  "quiet": {
+    "core": {
+      "dolphin_osd_enabled": "disabled",
+      "dolphin_log_popups_enabled": "disabled"
+    }
+  }
+}

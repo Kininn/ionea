@@ -1,0 +1,17 @@
+{
+  "id": "ryujinx-2",
+  "name": "Ryujinx (ryujinx.ava.exe)",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^ryujinx\\.ava\\.exe$"
+    ],
+    "archive": "ryujinx"
+  },
+  "start": {
+    "args": "--fullscreen \"{rom}\""
+  },
+  "systems": [
+    "switch"
+  ]
+}

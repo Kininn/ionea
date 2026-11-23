@@ -1,0 +1,14 @@
+{
+  "id": "mednafen_vb-core",
+  "name": "Beetle VB core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "mednafen_vb_libretro.dll"
+    ],
+    "archive": "mednafen_vb_libretro"
+  },
+  "systems": [
+    "virtualboy"
+  ]
+}

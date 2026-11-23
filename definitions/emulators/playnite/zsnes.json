@@ -1,0 +1,38 @@
+{
+  "id": "zsnes",
+  "name": "ZSNES",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^zsnesw\\.exe$"
+    ],
+    "archive": "zsnes"
+  },
+  "start": {
+    "args": "\"{rom}\""
+  },
+  "systems": [
+    "snes"
+  ],
+  "extraExts": [
+    ".zip",
+    ".swc",
+    ".fig",
+    ".mgd",
+    ".mgh",
+    ".ufo",
+    ".bin",
+    ".gd3",
+    ".gd7",
+    ".dx2",
+    ".usa",
+    ".eur",
+    ".jap",
+    ".aus",
+    ".st",
+    ".bs",
+    ".048",
+    ".058",
+    ".078"
+  ]
+}

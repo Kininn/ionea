@@ -1,0 +1,77 @@
+{
+  "id": "bloodborne-bbport",
+  "name": "Bloodborne (bbport)",
+  "kind": "port",
+  "_note": "Checked against the 0.7 zip (README-Windows.txt, run.py, scripts\\game_check.py): bbport-run.exe is the port's own launcher (bbport_launcher_win, Russian-only window); --play starts the game with its saved settings (%APPDATA%\\bbport-launcher\\settings.json: language, game_dir) without the window, through run.py. Game language 1 = English (US), 8 = Russian (its default). BB_GAME_DIR is the game folder (eboot.bin and sce_sys\\param.sfo at 01.09, the update copied over the base game). user\\ holds the saves (user\\savedata) and what the game writes for the player. Online only with BB_ONLINE=1, never set by Ionea. Not yet run with the real game.",
+  "tested": { "min": "0.7", "max": "0.7.*" },
+  "detect": { "programs": [ "bbport-run.exe" ] },
+  "start": { "args": "--play", "portable": [ "user\\" ] },
+  "saves": { "folders": [ "user" ] },
+  "video": {
+    "_note": "bbport.ini next to the program (key=value, no sections), read by run.py and the game at start; its in-game menu (Insert / L3+R3) writes the same file. Values from scripts\\patches.py (preset scales 1.0/1.5/1.7/2.0/3.0, anti_aliasing auto/game/fxaa/off/smaa, model_lod -2/0/1/2, effects 0/1). verify: upscaler names taa/fsr3/fsr4/dlss and low_latency on/off are only seen in bb-probe.exe's text and the shipped file; DLSS needs an NVIDIA card. Frame rate (BB_FPS) and texture_quality are not here yet.",
+    "format": "ini",
+    "sep": "=",
+    "file": "bbport.ini",
+    "ioneaApplies": true,
+    "summary": "upscaler, resolution, effects",
+    "settings": [
+      { "key": "output_res", "shared": "resolution", "values": [ "auto", "1280x720", "1920x1080", "2560x1440", "3840x2160" ], "names": [ "The monitor's", "720p", "1080p", "1440p", "4K" ], "default": "auto" },
+      { "key": "upscaler", "shared": "upscaling", "values": [ "off", "taa", "fsr3", "fsr4", "dlss" ], "names": [ "Off", "TAA", "FSR 3", "FSR 4", "DLSS" ], "default": "fsr3" },
+      { "key": "preset", "label": "Upscaler quality", "group": "Image quality", "values": [ "0", "1", "2", "3", "4" ], "names": [ "Native", "Quality", "Balanced", "Performance", "Ultra performance" ], "default": "0" },
+      { "key": "anti_aliasing", "shared": "antialiasing", "values": [ "auto", "game", "fxaa", "smaa", "off" ], "names": [ "Auto", "The game's", "FXAA", "SMAA", "Off" ], "default": "auto" },
+      { "key": "model_lod", "label": "Model detail", "group": "Image quality", "values": [ "-2", "0", "1", "2" ], "names": [ "Highest", "The game's", "Lower", "Lowest" ], "default": "0" },
+      { "key": "low_latency", "label": "Low latency", "group": "Performance", "values": [ "on", "off" ], "names": [ "On", "Off" ], "default": "on" },
+      { "key": "effect_motion_blur", "label": "Motion blur", "group": "Effects", "values": [ "1", "0" ], "names": [ "On", "Off" ], "default": "1" },
+      { "key": "effect_dof", "label": "Depth of field", "group": "Effects", "values": [ "1", "0" ], "names": [ "On", "Off" ], "default": "1" },
+      { "key": "effect_chromatic_aberration", "label": "Chromatic aberration", "group": "Effects", "values": [ "1", "0" ], "names": [ "On", "Off" ], "default": "1" },
+      { "key": "effect_bloom", "label": "Bloom", "group": "Effects", "values": [ "1", "0" ], "names": [ "On", "Off" ], "default": "1" },
+      { "key": "effect_ssao", "label": "Ambient occlusion", "group": "Effects", "values": [ "1", "0" ], "names": [ "On", "Off" ], "default": "1" },
+      { "key": "effect_dynamic_shadows", "label": "Dynamic shadows", "group": "Effects", "values": [ "1", "0" ], "names": [ "On", "Off" ], "default": "1" },
+      { "key": "effect_ssr", "label": "Screen-space reflections", "group": "Effects", "values": [ "0", "1" ], "names": [ "Off", "On" ], "default": "0" },
+      { "key": "skip_intro", "label": "Skip the intro", "group": "Game", "values": [ "0", "1" ], "names": [ "Off", "On" ], "default": "0" }
+    ]
+  },
+  "port": {
+    "kind": "recomp",
+    "repo": "github.com/deadinside28/bloodborne_pc",
+    "games": [
+      { "system": "ps4", "name": "Bloodborne", "ids": [ "CUSA00900", "CUSA00207", "CUSA00208", "CUSA00299", "CUSA01363", "CUSA03179", "CUSA03173", "CUSA03014", "CUSA03023" ], "versions": [ "01.09" ] }
+    ],
+    "prepare": { "kind": "ps4-merge", "proof": "eboot.bin" },
+    "gameDirEnv": [ "BB_GAME_DIR" ],
+    "gameProgram": "bb-probe.exe",
+    "gameProgramEnv": "BB_PROBE",
+    "turnOff": [ "online play (BB_ONLINE, online\\bbnet20.dll)" ],
+    "sharedSaves": {
+      "_note": "bbport's user\\savedata\\1\\<id>\\SPRJ0005 and shadPS4's user\\home\\1000\\savedata\\<id>\\SPRJ0005 hold the same files (userdata0000-0010, backup0000/0010; same header and sizes). Shared (the default): each save folder here is a link to shadPS4's, per profile. Each keeps its own metadata (bbport: SPRJ0005.sce_sys\\param.bin beside it; shadPS4: sce_sys\\param.sfo inside). Game info > Saves: Shared / Separate.",
+      "emulators": [ "shadps4" ],
+      "port": "user\\savedata\\1\\{gameid}",
+      "emulator": "user\\home\\1000\\savedata\\{gameid}",
+      "skip": [ "*.sce_sys" ],
+      "default": "shared"
+    },
+    "addons": {
+      "_note": "bb-probe.exe mounts add-ons from its --user folder (user\\addcont\\<title id>\\<entitlement label>; its text has '%s/addcont', '%s/%s/%s' and the guest mount '/addcont%d'), the layout shadPS4 has. Without them its log says 'offline base-game profile, no mounted add-ons' and a save made with The Old Hunters asks for the DLC. At every native start Ionea links each add-on folder of the game's emulator (shadPS4's gameData addons: user\\addcont\\{gameid}\\*, e.g. SPEXPANSIONDLC03, SPDLCMESSENGER00/01) here as a junction, in the active profile's user folder. The add-on folders hold only sce_sys (the licence); the content is in the 01.09 update.",
+      "to": "user\\addcont\\{gameid}"
+    }
+  },
+  "perf": {
+    "_note": "run.py sets BB_FRAME_STATS=1 and BB_FRAME_LOG=logs\\<time>.frames.csv beside bbport-run.exe on Windows (unless BB_FRAME_STATS=off or BB_SAVE_LOG=0): one row per frame, t_s the frame's time in seconds. Ionea's overlay reads it for an exact frame rate (also above the monitor's refresh rate).",
+    "frameLog": "logs\\*.frames.csv",
+    "time": "t_s"
+  },
+  "quiet": {
+    "files": {
+      "bbport.ini": {
+        "format": "ini",
+        "sep": "=",
+        "set": {
+          "show_fps": "0"
+        }
+      }
+    },
+    "env": {
+      "BB_SHADER_PROGRESS": "0"
+    }
+  }
+}

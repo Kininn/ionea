@@ -1,0 +1,17 @@
+{
+  "id": "decaf-emu",
+  "name": "decaf-emu",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^decaf-sdl\\.exe$"
+    ],
+    "archive": "decaf-emu"
+  },
+  "start": {
+    "args": "play \"{rom}\""
+  },
+  "systems": [
+    "wiiu"
+  ]
+}

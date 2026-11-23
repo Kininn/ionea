@@ -1,0 +1,17 @@
+{
+  "id": "cxbx-reloaded",
+  "name": "Cxbx-Reloaded",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^cxbx\\.exe$"
+    ],
+    "archive": "cxbx-reloaded"
+  },
+  "start": {
+    "args": "\"{rom}\""
+  },
+  "systems": [
+    "xbox"
+  ]
+}

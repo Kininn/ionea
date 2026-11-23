@@ -1,0 +1,78 @@
+{
+  "id": "yuzu",
+  "name": "yuzu",
+  "detect": {
+    "programs": [
+      "yuzu.exe"
+    ],
+    "archive": "yuzu"
+  },
+  "start": {
+    "args": "-f -g \"{rom}\""
+  },
+  "systems": [
+    "switch"
+  ],
+  "requiredFiles": [
+    {
+      "name": "prod.keys",
+      "path": "user\\keys\\prod.keys",
+      "check": "switch-keys",
+      "share": "switch-keys"
+    },
+    {
+      "name": "title.keys",
+      "path": "user\\keys\\title.keys",
+      "check": "switch-titlekeys",
+      "share": "switch-titlekeys",
+      "optional": true
+    },
+    {
+      "name": "Firmware",
+      "path": "user\\nand\\system\\Contents\\registered\\",
+      "check": "switch-firmware",
+      "share": "switch-firmware"
+    }
+  ],
+  "controls": {
+    "format": "yuzu",
+    "file": "user\\config\\qt-config.ini"
+  },
+  "hotkeys": {
+    "mousePanning": "F3"
+  },
+  "gameData": {
+    "read": "switch",
+    "folder": "{content}",
+    "install": {
+      "kind": "switch-keep",
+      "config": "user\\config\\qt-config.ini"
+    },
+    "mods": [
+      "user\\load\\{gameid}\\*"
+    ],
+    "modsOff": "user\\config\\qt-config.ini"
+  },
+  "gameFolders": [
+    {
+      "file": "{exe}\\user\\config\\qt-config.ini",
+      "match": "(?m)^Paths\\\\gamedirs\\\\\\d+\\\\path\\s*=\\s*(.+?)\\s*$"
+    },
+    {
+      "file": "{appdata}\\yuzu\\config\\qt-config.ini",
+      "match": "(?m)^Paths\\\\gamedirs\\\\\\d+\\\\path\\s*=\\s*(.+?)\\s*$"
+    }
+  ],
+  "quiet": {
+    "files": {
+      "user\\config\\qt-config.ini": {
+        "format": "ini",
+        "style": "qt",
+        "sep": "=",
+        "set": {
+          "[UI]pauseWhenInBackground": "false"
+        }
+      }
+    }
+  }
+}

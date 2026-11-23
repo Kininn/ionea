@@ -1,0 +1,14 @@
+{
+  "id": "prboom-core",
+  "name": "PrBoom core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "prboom_libretro.dll"
+    ],
+    "archive": "prboom_libretro"
+  },
+  "systems": [
+    "doom"
+  ]
+}

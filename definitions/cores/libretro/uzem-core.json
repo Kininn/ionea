@@ -1,0 +1,14 @@
+{
+  "id": "uzem-core",
+  "name": "uzem core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "uzem_libretro.dll"
+    ],
+    "archive": "uzem_libretro"
+  },
+  "systems": [
+    "uzebox"
+  ]
+}

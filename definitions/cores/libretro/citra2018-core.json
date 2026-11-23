@@ -1,0 +1,17 @@
+{
+  "id": "citra2018-core",
+  "name": "Citra 2018 core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "citra2018_libretro.dll"
+    ],
+    "archive": "citra2018_libretro"
+  },
+  "systems": [
+    "3ds"
+  ],
+  "extraExts": [
+    ".axf"
+  ]
+}

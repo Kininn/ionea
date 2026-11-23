@@ -1,0 +1,97 @@
+{
+  "id": "genesis_plus_gx-core",
+  "name": "Genesis Plus GX core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "genesis_plus_gx_libretro.dll"
+    ],
+    "archive": "genesis_plus_gx_libretro"
+  },
+  "systems": [
+    "gamegear",
+    "genesis",
+    "mark3",
+    "mastersystem",
+    "megacd",
+    "megacdjp",
+    "segacd",
+    "sg-1000"
+  ],
+  "requiredFiles": [
+    {
+      "name": "bios_MD.bin",
+      "path": "bios_MD.bin",
+      "optional": true,
+      "desc": "bios_MD.bin (Mega Drive startup ROM)"
+    },
+    {
+      "name": "bios_CD_E.bin",
+      "path": "bios_CD_E.bin",
+      "optional": true,
+      "desc": "bios_CD_E.bin (MegaCD EU BIOS)"
+    },
+    {
+      "name": "bios_CD_U.bin",
+      "path": "bios_CD_U.bin",
+      "optional": true,
+      "desc": "bios_CD_U.bin (SegaCD US BIOS)"
+    },
+    {
+      "name": "bios_CD_J.bin",
+      "path": "bios_CD_J.bin",
+      "optional": true,
+      "desc": "bios_CD_J.bin (MegaCD JP BIOS)"
+    },
+    {
+      "name": "bios_E.sms",
+      "path": "bios_E.sms",
+      "optional": true,
+      "desc": "bios_E.sms (MasterSystem EU BIOS)"
+    },
+    {
+      "name": "bios_U.sms",
+      "path": "bios_U.sms",
+      "optional": true,
+      "desc": "bios_U.sms (MasterSystem US BIOS)"
+    },
+    {
+      "name": "bios_J.sms",
+      "path": "bios_J.sms",
+      "optional": true,
+      "desc": "bios_J.sms (MasterSystem JP BIOS)"
+    },
+    {
+      "name": "bios.gg",
+      "path": "bios.gg",
+      "optional": true,
+      "desc": "bios.gg (GameGear BIOS)"
+    },
+    {
+      "name": "sk.bin",
+      "path": "sk.bin",
+      "md5": "4ea493ea4e9f6c9ebfccbdb15110367e",
+      "optional": true,
+      "desc": "sk.bin (Sonic & Knuckles ROM)"
+    },
+    {
+      "name": "sk2chip.bin",
+      "path": "sk2chip.bin",
+      "md5": "b4e76e416b887f4e7413ba76fa735f16",
+      "optional": true,
+      "desc": "sk2chip.bin (Sonic & Knuckles UPMEM ROM)"
+    },
+    {
+      "name": "areplay.bin",
+      "path": "areplay.bin",
+      "optional": true,
+      "desc": "areplay.bin (Action Replay ROM)"
+    },
+    {
+      "name": "ggenie.bin",
+      "path": "ggenie.bin",
+      "optional": true,
+      "desc": "ggenie.bin (Game Genie ROM)"
+    }
+  ]
+}

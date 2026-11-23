@@ -1,0 +1,46 @@
+{
+  "id": "geolith-core",
+  "name": "Geolith core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "geolith_libretro.dll"
+    ],
+    "archive": "geolith_libretro"
+  },
+  "systems": [
+    "arcade",
+    "mame",
+    "neogeo",
+    "neogeocd",
+    "neogeocdjp"
+  ],
+  "requiredFiles": [
+    {
+      "name": "aes.zip",
+      "path": "aes.zip",
+      "desc": "aes.zip (Neo Geo AES System ROM)"
+    },
+    {
+      "name": "neogeo.zip",
+      "path": "neogeo.zip",
+      "desc": "neogeo.zip (Neo Geo MVS System ROM)"
+    },
+    {
+      "name": "neocd.zip",
+      "path": "neocd.zip",
+      "desc": "neocd.zip (Neo Geo CD System ROM)"
+    },
+    {
+      "name": "neocdz.zip",
+      "path": "neocdz.zip",
+      "desc": "neocdz.zip (Neo Geo CDZ System ROM)"
+    },
+    {
+      "name": "irrmaze.zip",
+      "path": "irrmaze.zip",
+      "optional": true,
+      "desc": "irrmaze.zip (The Irritating Maze)"
+    }
+  ]
+}

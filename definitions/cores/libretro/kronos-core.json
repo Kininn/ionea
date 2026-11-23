@@ -1,0 +1,46 @@
+{
+  "id": "kronos-core",
+  "name": "Kronos core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "kronos_libretro.dll"
+    ],
+    "archive": "kronos_libretro"
+  },
+  "systems": [
+    "arcade",
+    "consolearcade",
+    "mame",
+    "saturn",
+    "saturnjp",
+    "stv"
+  ],
+  "requiredFiles": [
+    {
+      "name": "saturn_bios.bin",
+      "path": "kronos\\saturn_bios.bin",
+      "md5": "af5828fdff51384f99b3c4926be27762",
+      "desc": "kronos/saturn_bios.bin (Saturn BIOS)"
+    },
+    {
+      "name": "stvbios.zip",
+      "path": "kronos\\stvbios.zip",
+      "desc": "kronos/stvbios.zip (ST-V BIOS from MAME)"
+    },
+    {
+      "name": "mpr-18811-mx.ic1",
+      "path": "mpr-18811-mx.ic1",
+      "md5": "255113ba943c92a54facd25a10fd780c",
+      "optional": true,
+      "desc": "mpr-18811-mx.ic1 (The King of Fighters '95 ROM Cartridge)"
+    },
+    {
+      "name": "mpr-19367-mx.ic1",
+      "path": "mpr-19367-mx.ic1",
+      "md5": "1cd19988d1d72a3e7caa0b73234c96b4",
+      "optional": true,
+      "desc": "mpr-19367-mx.ic1 (Ultraman: Hikari no Kyojin Densetsu ROM Cartridge)"
+    }
+  ]
+}

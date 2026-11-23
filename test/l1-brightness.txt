@@ -1,0 +1,15 @@
+# l1: Settings > Look and layout > Brightness (MainWindow.SetBrightness): a black veil over the whole window.
+wait 1500
+expect brightness 100
+shot l1-100
+brightness 60
+expect brightness 60
+shot l1-60
+brightness 20
+expect brightness 40
+brightness 100
+expect brightness 100
+shot l1-back
+brightness 70
+settings look and layout
+shot l1-settings

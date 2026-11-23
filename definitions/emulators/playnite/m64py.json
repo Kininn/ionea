@@ -1,0 +1,26 @@
+{
+  "id": "m64py",
+  "name": "M64Py",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^m64py\\.exe$"
+    ],
+    "archive": "m64py"
+  },
+  "start": {
+    "args": "\"{rom}\""
+  },
+  "systems": [
+    "n64"
+  ],
+  "extraExts": [
+    ".gzip",
+    ".bzip2",
+    ".zip",
+    ".rar",
+    ".7z",
+    ".ndd",
+    ".d64"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "id": "rustynes-core",
+  "name": "RustyNES core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "rustynes_libretro.dll"
+    ],
+    "archive": "rustynes_libretro"
+  },
+  "systems": [
+    "nes"
+  ],
+  "extraExts": [
+    ".unif"
+  ],
+  "requiredFiles": [
+    {
+      "name": "disksys.rom",
+      "path": "disksys.rom",
+      "md5": "ca30b50f880eb660a320674ed365ef7a",
+      "optional": true,
+      "desc": "disksys.rom (Family Computer Disk System BIOS)"
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+# Four small fixes: the changelog scrolls with the wheel, a full level dips when pressed again,
+# and a core game's Display mode and Window size change at once from its Home menu (Display.cs, GameWindow).
+# Setup: test\w2-small-fixes.ps1 (a tiny GBA program at <root>\roms\Window Test.gba, IONEA_TESTROOT=<root>, then
+# --data <tmp> --no-import --windowed --mute, off screen). No semicolons in comments: they split lines.
+wait 900
+type Core Test
+key accept
+wait 900
+key accept
+wait 1100
+addrom T\roms\Window Test.gba
+wait 4000
+expect screen AddRomCard
+key accept
+wait 2500
+setemu Window Test|mGBA core
+# 1. the changelog's text scrolls with the wheel (and Down)
+changelog
+expect screen ChangelogCard
+expect cardscrolled no
+mouse wheeldown 960 540
+wait 400
+expect cardscrolled yes
+key back
+wait 500
+# 3. a level at 100 dips when pressed again (Right, then A)
+displaycard global
+expect screen DisplayCard
+key down
+key down
+key down
+key right
+key right
+key right
+key right
+key right
+expect dips 0
+key right
+expect dips 1
+key accept
+expect dips 2
+wait 800
+key back
+wait 500
+# 2. the game's window, live from its Home menu
+select Window Test
+key accept
+waitshown 30
+wait 2500
+expect ingame Window Test
+expect gamewindow as launcher
+homebutton
+wait 800
+displaycard Window Test
+expect screen DisplayCard
+displayset Display mode|Window
+wait 900
+expect gamewindow window 480x320
+# the Home menu is up: the window grows to 540 high at the game's shape (100% display scale)
+expect gameclient 810x540
+shot w2-window-2x
+displayset Window size|1x
+wait 900
+expect gamewindow window 240x160
+expect gameclient 810x540
+shot w2-window-1x
+displayset Window size|1.5x
+wait 900
+expect gamewindow window 360x240
+key back
+wait 600
+shot w2-homemenu-1.5x
+homebutton
+wait 900
+# resumed: the window is back to the game's size
+expect gameclient 360x240
+homebutton
+wait 900
+displaycard Window Test
+displayset Display mode|Default (Same as Ionea)
+wait 900
+expect gamewindow as launcher
+key back
+wait 600
+closegame
+wait 3000
+expect ingame none
+quit

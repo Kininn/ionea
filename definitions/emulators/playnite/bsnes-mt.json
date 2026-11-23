@@ -1,0 +1,21 @@
+{
+  "id": "bsnes-mt",
+  "name": "bsnes-mt",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^bsnes-mt\\.exe$"
+    ],
+    "archive": "bsnes-mt"
+  },
+  "start": {
+    "args": "--fullscreen \"{rom}\""
+  },
+  "systems": [
+    "snes"
+  ],
+  "extraExts": [
+    ".zip",
+    ".7z"
+  ]
+}

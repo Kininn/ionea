@@ -1,0 +1,50 @@
+{
+  "id": "cemu",
+  "name": "Cemu",
+  "detect": {
+    "programs": [
+      "Cemu.exe"
+    ],
+    "archive": "cemu",
+    "product": [
+      "Cemu"
+    ]
+  },
+  "start": {
+    "args": "-f -g \"{rom}\""
+  },
+  "systems": [
+    "wiiu"
+  ],
+  "saves": {
+    "folders": [
+      "mlc01\\usr\\save"
+    ]
+  },
+  "gameData": {
+    "read": "wiiu-meta",
+    "update": [
+      "mlc01\\usr\\title\\0005000e\\{low}"
+    ],
+    "addons": [
+      "mlc01\\usr\\title\\0005000c\\{low}"
+    ],
+    "install": {
+      "kind": "wiiu-folder"
+    }
+  },
+  "gameFolders": [
+    {
+      "file": "{exe}\\settings.xml",
+      "match": "<Entry>([A-Za-z]:[^<]+)</Entry>"
+    },
+    {
+      "file": "{appdata}\\Cemu\\settings.xml",
+      "match": "<Entry>([A-Za-z]:[^<]+)</Entry>"
+    }
+  ],
+  "release": {
+    "github": "cemu-project/Cemu",
+    "asset": "^cemu-.*-windows-x64\\.zip$"
+  }
+}

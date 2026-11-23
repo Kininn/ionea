@@ -1,0 +1,32 @@
+{
+  "id": "px68k-core",
+  "name": "PX68k core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "px68k_libretro.dll"
+    ],
+    "archive": "px68k_libretro"
+  },
+  "systems": [
+    "x68000"
+  ],
+  "requiredFiles": [
+    {
+      "name": "iplrom.dat",
+      "path": "keropi\\iplrom.dat",
+      "desc": "iplrom.dat (X68000 BIOS)"
+    },
+    {
+      "name": "cgrom.dat",
+      "path": "keropi\\cgrom.dat",
+      "desc": "cgrom.dat (X68000 BIOS 2)"
+    },
+    {
+      "name": "iplrom30.dat",
+      "path": "keropi\\iplrom30.dat",
+      "optional": true,
+      "desc": "iplrom30.dat (X68000 BIOS 3)"
+    }
+  ]
+}

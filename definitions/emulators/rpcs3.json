@@ -1,0 +1,57 @@
+{
+  "id": "rpcs3",
+  "name": "RPCS3",
+  "detect": {
+    "programs": [
+      "rpcs3.exe"
+    ],
+    "archive": "rpcs3",
+    "product": [
+      "RPCS3"
+    ]
+  },
+  "start": {
+    "args": "--no-gui \"{rom}\""
+  },
+  "systems": [
+    "ps3"
+  ],
+  "saves": {
+    "folders": [
+      "dev_hdd0\\home"
+    ]
+  },
+  "requiredFiles": [
+    {
+      "name": "Firmware (.PUP)",
+      "ready": "dev_flash\\vsh\\module\\vsh.self",
+      "install": "--installfw \"{file}\"",
+      "check": "ps3-pup",
+      "share": "ps3-firmware"
+    }
+  ],
+  "gameData": {
+    "read": "sfo",
+    "update": [
+      "dev_hdd0\\game\\{gameid}"
+    ],
+    "addons": [],
+    "install": {
+      "kind": "emulator",
+      "args": "--installpkg \"{file}\"",
+      "exts": [
+        ".pkg"
+      ]
+    }
+  },
+  "gameFolders": [
+    {
+      "file": "{exe}\\config\\games.yml",
+      "match": "(?m)^\\s*[A-Z]{4}\\d{5}:\\s*\"?(.+?)\"?\\s*$"
+    }
+  ],
+  "release": {
+    "github": "RPCS3/rpcs3-binaries-win",
+    "asset": "_win64.*\\.7z$"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "id": "lime3ds",
+  "name": "Lime3DS",
+  "family": "citra",
+  "detect": {
+    "programs": [
+      "lime3ds.exe",
+      "lime3ds-gui.exe"
+    ],
+    "archive": "lime3ds"
+  },
+  "gameFolders": [
+    {
+      "file": "{exe}\\user\\config\\qt-config.ini",
+      "match": "(?m)^Paths\\\\gamedirs\\\\\\d+\\\\path\\s*=\\s*(.+?)\\s*$"
+    },
+    {
+      "file": "{appdata}\\Lime3DS\\config\\qt-config.ini",
+      "match": "(?m)^Paths\\\\gamedirs\\\\\\d+\\\\path\\s*=\\s*(.+?)\\s*$"
+    }
+  ]
+}

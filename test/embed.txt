@@ -1,0 +1,65 @@
+﻿wait 3000
+key accept
+wait 2000
+select Bloodborne
+wait 800
+key accept
+waitlaunch 40
+wait 25000
+expect ingame Bloodborne
+expect paused no
+log mark ingame
+wait 3000
+log mark keydown
+wait 2500
+# 1: Home menu, then Resume
+homebutton
+wait 800
+expect paused yes
+expect screen HomeMenuCard
+expect front yes
+log mark paused
+wait 4000
+key accept
+wait 2000
+expect paused no
+log mark resumed
+wait 3000
+# 2: the real Home key
+log mark presshome
+wait 3000
+expect paused yes
+expect screen HomeMenuCard
+key back
+wait 2000
+expect paused no
+wait 2000
+# 3: Home screen keeps it paused, starting it again resumes it
+homebutton
+wait 800
+cardrow Home screen
+key accept
+wait 1500
+expect screen HomeScreen
+expect paused yes
+log mark homescreen
+wait 2500
+select Bloodborne
+wait 500
+key accept
+wait 2500
+expect paused no
+log mark back
+wait 2500
+# 4: Close game
+homebutton
+wait 800
+cardrow Close game
+key accept
+waitlaunch 20
+wait 2000
+expect ingame none
+expect front yes
+log mark closed
+wait 1500
+quit

@@ -1,0 +1,22 @@
+{
+  "id": "pokemini-core",
+  "name": "PokeMini core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "pokemini_libretro.dll"
+    ],
+    "archive": "pokemini_libretro"
+  },
+  "systems": [
+    "pokemini"
+  ],
+  "requiredFiles": [
+    {
+      "name": "bios.min",
+      "path": "bios.min",
+      "optional": true,
+      "desc": "bios.min (Pokemon Mini BIOS)"
+    }
+  ]
+}

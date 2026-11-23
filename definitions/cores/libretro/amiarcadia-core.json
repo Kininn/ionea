@@ -1,0 +1,14 @@
+{
+  "id": "amiarcadia-core",
+  "name": "AmiArcadia core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "amiarcadia_libretro.dll"
+    ],
+    "archive": "amiarcadia_libretro"
+  },
+  "systems": [
+    "arcadia"
+  ]
+}

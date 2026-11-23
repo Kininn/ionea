@@ -1,0 +1,20 @@
+{
+  "id": "bgb-1",
+  "name": "BGB (bgb.exe)",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^bgb\\.exe$"
+    ]
+  },
+  "start": {
+    "args": "-rom \"{rom}\""
+  },
+  "systems": [
+    "gb",
+    "gbc"
+  ],
+  "extraExts": [
+    ".zip"
+  ]
+}

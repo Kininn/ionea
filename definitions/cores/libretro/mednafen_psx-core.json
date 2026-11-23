@@ -1,0 +1,52 @@
+{
+  "id": "mednafen_psx-core",
+  "name": "Beetle PSX core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "mednafen_psx_libretro.dll"
+    ],
+    "archive": "mednafen_psx_libretro"
+  },
+  "systems": [
+    "psx"
+  ],
+  "extraExts": [
+    ".toc",
+    ".ccd"
+  ],
+  "requiredFiles": [
+    {
+      "name": "scph5500.bin",
+      "path": "scph5500.bin",
+      "md5": "8dd7d5296a650fac7319bce665a6a53c",
+      "desc": "scph5500.bin (PS1 JP BIOS)"
+    },
+    {
+      "name": "scph5501.bin",
+      "path": "scph5501.bin",
+      "md5": "490f666e1afb15b7362b406ed1cea246",
+      "desc": "scph5501.bin (PS1 US BIOS)"
+    },
+    {
+      "name": "scph5502.bin",
+      "path": "scph5502.bin",
+      "md5": "32736f17079d0b2b7024407c39bd3050",
+      "desc": "scph5502.bin (PS1 EU BIOS)"
+    },
+    {
+      "name": "psxonpsp660.bin",
+      "path": "psxonpsp660.bin",
+      "md5": "c53ca5908936d412331790f4426c6c33",
+      "optional": true,
+      "desc": "psxonpsp660.bin (PSP PS1 BIOS)"
+    },
+    {
+      "name": "ps1_rom.bin",
+      "path": "ps1_rom.bin",
+      "md5": "81bbe60ba7a3d1cea1d48c14cbcc647b",
+      "optional": true,
+      "desc": "ps1_rom.bin (PS3 PS1 BIOS)"
+    }
+  ]
+}

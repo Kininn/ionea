@@ -1,0 +1,14 @@
+{
+  "id": "potator-core",
+  "name": "Potator core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "potator_libretro.dll"
+    ],
+    "archive": "potator_libretro"
+  },
+  "systems": [
+    "supervision"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "id": "yabause-core",
+  "name": "Yabause core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "yabause_libretro.dll"
+    ],
+    "archive": "yabause_libretro"
+  },
+  "systems": [
+    "saturn",
+    "saturnjp"
+  ],
+  "requiredFiles": [
+    {
+      "name": "saturn_bios.bin",
+      "path": "saturn_bios.bin",
+      "md5": "af5828fdff51384f99b3c4926be27762",
+      "optional": true,
+      "desc": "saturn_bios.bin (Saturn BIOS)"
+    }
+  ]
+}

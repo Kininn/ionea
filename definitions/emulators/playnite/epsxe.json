@@ -1,0 +1,20 @@
+{
+  "id": "epsxe",
+  "name": "ePSXe",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^ePSXe\\.exe$"
+    ],
+    "archive": "epsxe"
+  },
+  "start": {
+    "args": "-nogui -slowboot -loadbin \"{rom}\""
+  },
+  "systems": [
+    "psx"
+  ],
+  "extraExts": [
+    ".zip"
+  ]
+}

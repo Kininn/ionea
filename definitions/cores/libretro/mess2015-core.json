@@ -1,0 +1,14 @@
+{
+  "id": "mess2015-core",
+  "name": "MESS 2015 (0.160) core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "mess2015_libretro.dll"
+    ],
+    "archive": "mess2015_libretro"
+  },
+  "systems": [
+    "mess"
+  ]
+}

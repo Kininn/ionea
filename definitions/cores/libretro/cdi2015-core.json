@@ -1,0 +1,21 @@
+{
+  "id": "cdi2015-core",
+  "name": "Philips CDi 2015 core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "cdi2015_libretro.dll"
+    ],
+    "archive": "cdi2015_libretro"
+  },
+  "systems": [
+    "cdimono1"
+  ],
+  "requiredFiles": [
+    {
+      "name": "cdimono1.zip",
+      "path": "cdimono1.zip",
+      "desc": "cdimono1.zip"
+    }
+  ]
+}

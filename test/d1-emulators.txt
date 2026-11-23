@@ -1,0 +1,102 @@
+# Emulators: found by themselves, install from the Inbox, add by hand, add game files, start one.
+# Setup: powershell -File test\make-fake-emus.ps1 <T>, then set IONEA_TESTROOT=<T>
+# Run:   --emulators <T>\emus --inbox <T>\inbox --no-import
+wait 900
+type Tester
+key accept
+wait 900
+key accept
+wait 2200
+expect emus 1
+emulog
+# Settings > Emulators
+key menu
+wait 500
+expect screen SettingsCard
+key down 3
+key accept
+key accept
+wait 500
+expect screen EmulatorsCard
+shot launcher-d-emulators-1
+# + Add emulator > Install a checked download > the melonDS zip
+key down
+key accept
+wait 500
+expect screen AddEmulatorCard
+shot launcher-d-add-emulator
+key accept
+wait 500
+expect screen InboxPickCard
+shot launcher-d-inbox
+key accept
+wait 1500
+expect screen EmulatorsCard
+expect emus 2
+shot launcher-d-emulators-2
+key back
+wait 400
+expect screen SettingsCard
+key back 2
+wait 400
+# an archive without an emulator is refused
+installemu T\inbox\no-emulator-test.7z
+wait 600
+expect screen MessageCard
+expect emus 2
+key back
+wait 400
+# a program the launcher doesn't know: asks what it plays
+addemu T\custom\MyEmu.exe
+wait 500
+expect screen SystemPickCard
+key down 6
+key accept
+wait 300
+shot launcher-d-systems
+key up 6
+key accept
+wait 500
+expect screen EmulatorCard
+expect emus 3
+shot launcher-d-emulator
+key back
+wait 400
+expect screen HomeScreen
+emulog
+# game files
+addrom T\roms\Pokemon - White Version 2 (USA, Europe) (NDSi Enhanced).nds
+wait 600
+expect screen AddRomCard
+expect text Pokemon - White Version 2
+shot launcher-d-addrom
+key accept
+wait 900
+expect name Pokemon - White Version 2
+expect source rom
+expect emu melonDS
+addrom T\roms\Pokemon - White Version 2 (USA, Europe) (NDSi Enhanced).nds
+wait 500
+expect screen MessageCard
+key back
+wait 400
+addrom T\roms\Test Island (Europe) (En,Fr,De).rvz
+wait 500
+key accept
+wait 900
+expect emu Dolphin
+addrom T\roms\Pocket Quest (USA).gba
+wait 500
+key accept
+wait 900
+expect emu MyEmu
+expect games 3
+shot launcher-d-home
+# start the DS game: the fake melonDS opens a window and closes after 1 s
+select Pokemon - White Version 2
+key accept
+wait 300
+waitlaunch 25
+expect launch shown
+expect played yes
+quit

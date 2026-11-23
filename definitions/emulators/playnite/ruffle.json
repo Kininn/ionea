@@ -1,0 +1,17 @@
+{
+  "id": "ruffle",
+  "name": "Ruffle",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^ruffle\\.exe$"
+    ],
+    "archive": "ruffle"
+  },
+  "start": {
+    "args": "\"{rom}\""
+  },
+  "systems": [
+    "flash"
+  ]
+}

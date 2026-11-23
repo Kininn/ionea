@@ -1,0 +1,17 @@
+{
+  "id": "flashplayerprojector",
+  "name": "Flash Player Projector",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^flashplayer.*\\.exe$"
+    ],
+    "archive": "flashplayerprojector"
+  },
+  "start": {
+    "args": "\"{rom}\""
+  },
+  "systems": [
+    "flash"
+  ]
+}

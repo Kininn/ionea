@@ -1,0 +1,40 @@
+{
+  "id": "desmume-core",
+  "name": "DeSmuME core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "desmume_libretro.dll"
+    ],
+    "archive": "desmume_libretro"
+  },
+  "systems": [
+    "nds"
+  ],
+  "extraExts": [
+    ".ids",
+    ".bin"
+  ],
+  "requiredFiles": [
+    {
+      "name": "firmware.bin",
+      "path": "firmware.bin",
+      "optional": true,
+      "desc": "firmware.bin (NDS Firmware)"
+    },
+    {
+      "name": "bios7.bin",
+      "path": "bios7.bin",
+      "md5": "df692a80a5b1bc90728bc3dfc76cd948",
+      "optional": true,
+      "desc": "bios7.bin (ARM7 BIOS)"
+    },
+    {
+      "name": "bios9.bin",
+      "path": "bios9.bin",
+      "md5": "a392174eb3e572fed6447e956bde4b25",
+      "optional": true,
+      "desc": "bios9.bin (ARM9 BIOS)"
+    }
+  ]
+}

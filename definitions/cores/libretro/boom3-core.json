@@ -1,0 +1,14 @@
+{
+  "id": "boom3-core",
+  "name": "boom3 core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "boom3_libretro.dll"
+    ],
+    "archive": "boom3_libretro"
+  },
+  "systems": [
+    "doom"
+  ]
+}

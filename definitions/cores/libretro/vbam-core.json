@@ -1,0 +1,44 @@
+{
+  "id": "vbam-core",
+  "name": "VBA-M core",
+  "source": "libretro-core-info@eac3a2784d42",
+  "detect": {
+    "programs": [
+      "vbam_libretro.dll"
+    ],
+    "archive": "vbam_libretro"
+  },
+  "systems": [
+    "gb",
+    "gba",
+    "gbc"
+  ],
+  "extraExts": [
+    ".dmg",
+    ".cgb",
+    ".sgb"
+  ],
+  "requiredFiles": [
+    {
+      "name": "gba_bios.bin",
+      "path": "gba_bios.bin",
+      "md5": "a860e8c0b6d573d191e4ec7db1b1e4f6",
+      "optional": true,
+      "desc": "gba_bios.bin (Game Boy Advance BIOS)"
+    },
+    {
+      "name": "gb_bios.bin",
+      "path": "gb_bios.bin",
+      "md5": "32fbbd84168d3482956eb3c5051637f5",
+      "optional": true,
+      "desc": "gb_bios.bin (Game Boy BIOS)"
+    },
+    {
+      "name": "gbc_bios.bin",
+      "path": "gbc_bios.bin",
+      "md5": "dbfce9db9deaa2567f6a84fde55f9680",
+      "optional": true,
+      "desc": "gbc_bios.bin (Game Boy Color BIOS)"
+    }
+  ]
+}

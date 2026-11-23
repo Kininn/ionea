@@ -1,0 +1,26 @@
+{
+  "id": "fceux-1",
+  "name": "FCEUX (fceux.exe)",
+  "source": "playnite@e2e6efcda311",
+  "detect": {
+    "programs": [
+      "^fceux\\.exe$"
+    ],
+    "archive": "fceux"
+  },
+  "start": {
+    "args": "\"{rom}\""
+  },
+  "systems": [
+    "nes"
+  ],
+  "extraExts": [
+    ".7z",
+    ".zip",
+    ".rar",
+    ".tar",
+    ".nsf",
+    ".nez",
+    ".unif"
+  ]
+}
