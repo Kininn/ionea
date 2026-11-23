@@ -941,20 +941,25 @@ public static class Art
         };
     }
 
-    // Round focus ring for the option buttons.
+    // Focus ring for the option buttons and profile pictures, in the icon shape (round, rounded square, square).
+    // Like the tile ring it hugs the disc: the ring's inside edge sits a little over the disc's edge, so there is
+    // no gap and no seam, and every outline is concentric with the disc, so the corners close up too.
     public static Grid CircleRing(double d, out UIElement glow)
     {
         var gr = new Grid { Width = d + 40, Height = d + 40, IsHitTestVisible = false };
         var gl = new Grid();
         double[] op = { 0.06, 0.1, 0.16, 0.24 };
-        double dr = DiscRad(d);   // the ring follows the icon shape: each outline sits "o" outside the disc's edge
-        Rectangle Around(double o, double t, Brush b) => new() { Width = d + 2 * o, Height = d + 2 * o, RadiusX = dr + o, RadiusY = dr + o, Stroke = b, StrokeThickness = t };
+        double dr = DiscRad(d);
+        // An outline whose stroke centre line sits "o" outside the disc's edge, with a concentric corner. A Rectangle
+        // draws its stroke inside its size and puts RadiusX on the stroke's centre line, hence "+ t" and "dr + o".
+        Rectangle Around(double o, double t, Brush b) => new() { Width = d + 2 * o + t, Height = d + 2 * o + t, RadiusX = dr + o, RadiusY = dr + o, Stroke = b, StrokeThickness = t };
+        const double ringO = 1.75, ringT = 6;   // inside edge 1.25 px over the disc's edge, outside edge 4.75 px out
         for (int i = 0; i < 4; i++)
-            gl.Children.Add(Faded(Around(17 - 2 * i, 2.6, P.GlowInk), op[i]));
+            gl.Children.Add(Faded(Around(ringO + 9.25 - 2 * i, 2.6, P.GlowInk), op[i]));
         gr.Children.Add(gl);
-        gr.Children.Add(Around(9, 5, Palette.RingBrush()));
-        double o2 = 6.5, side = d + 2 * o2, rr = dr + o2, at = (d + 40) / 2 - side / 2;   // the ring stroke's centre line
-        AddRunner(gr, new RectangleGeometry(new Rect(at, at, side, side), rr, rr), 4 * (side - 2 * rr) + 2 * Math.PI * rr, 5, 1300);
+        gr.Children.Add(Around(ringO, ringT, Palette.RingBrush()));
+        double side = d + 2 * ringO, rr = dr + ringO, at = (d + 40) / 2 - side / 2;   // the ring stroke's centre line
+        AddRunner(gr, new RectangleGeometry(new Rect(at, at, side, side), rr, rr), 4 * (side - 2 * rr) + 2 * Math.PI * rr, ringT, 1300);
         glow = gl;
         return gr;
     }

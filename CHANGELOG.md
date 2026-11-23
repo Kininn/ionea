@@ -2,6 +2,9 @@
 
 Newest first. Settings > About and updates shows this file from the update source.
 
+## Not released yet
+- The focus ring on the Home buttons and the profile picture now sits right against the icon, with no gap, in every Icon shape (round, rounded square, square).
+
 ## 1.0.6 (2026-11-23)
 - Two games with the same file name in different folders no longer swap saves between profiles. Each has its own saves per profile; saves made by an earlier version are found and kept.
 - Close game no longer ends a slow emulator after a few seconds, which could cut off a save. If it is still closing after 15 seconds, Ionea asks: Keep waiting (the default) or End it now. Quitting Ionea during a game waits the same way.
