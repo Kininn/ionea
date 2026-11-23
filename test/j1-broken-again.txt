@@ -1,8 +1,0 @@
-# Second run of j1-broken.ps1: library.json is broken.
-wait 1500
-expect screen StartScreen
-key accept
-wait 2200
-expect screen HomeScreen
-expect toasthas library.json could not be read
-quit

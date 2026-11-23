@@ -1,5 +1,0 @@
-# Demo video: the start-up intro once, then the start screen.
-wait 1200
-intro
-wait 1500
-quit

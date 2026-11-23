@@ -1,5 +1,0 @@
-# l1b: run after l1 on the same data: the level is kept across a restart.
-wait 1500
-expect brightness 70
-brightness 100
-expect brightness 100

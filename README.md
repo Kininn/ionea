@@ -169,8 +169,6 @@ Builds are self-contained (the .NET runtime is inside `Launcher.exe`); `Install-
 makes the smaller exe that needs the .NET 10 Desktop Runtime. The installer is built from `installer\Ionea.iss`
 with Inno Setup 6, when it is installed.
 
-How the code is laid out and how to run the tests: [AGENTS.md](AGENTS.md).
-
 </details>
 
 ## Licence
