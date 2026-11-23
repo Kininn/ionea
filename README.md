@@ -142,7 +142,7 @@ own controls.
 - **Library**: emulators, storage places, removed games, adding games, looking for emulators, Task Manager grouping.
 - **Network**: offline mode (per profile), the online switches, network activity, a SteamGridDB key and Discord
   status.
-- **About and updates**: version, changelog, the tutorial, the update source (a GitHub repository or a folder),
+- **About and updates**: version, changelog, the tutorial, where updates come from (this repository's releases, built in),
   checking for and installing updates, and going back to the previous version.
 
 </details>

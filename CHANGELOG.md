@@ -2,6 +2,10 @@
 
 Newest first. Settings > About and updates shows this file from the update source.
 
+## 1.0.3 (2026-11-23)
+- Updates come only from Ionea's own GitHub releases (github.com/Kininn/ionea). The address is built in and shown in Settings > About and updates; it can't be changed or mistyped.
+- Removed the "Update from" choice, the source folder, the repo address and the access token from Settings > About and updates. Older settings with these saved still load; the saved values are ignored.
+
 ## 1.0.2 (2026-11-23)
 - First start: the Network screen starts on Done, so pressing through it leaves everything off. "Turn everything on" becomes "Turn everything off" once all is on.
 - Downloading an emulator or core while Offline mode is on, or while its switch is off, now asks once and can switch it on right there, instead of the download list doing nothing.

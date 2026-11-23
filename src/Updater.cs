@@ -2,18 +2,17 @@
 // Version and updates. Settings > About and updates.
 //   Version: Launcher.csproj's VersionPrefix (1.0.0) plus a build number and date that Install-Launcher.ps1 stamps
 //   (AppVersion). Shown in Settings > About and updates and small in the start screen's corner.
-//   Two update sources (Settings.Updates.Kind):
-//   - Source folder (none by default; the user sets it): Check compares its version (VersionPrefix + build.txt) with
-//     this one; the same version with source files changed after this exe was built also counts as newer.
-//     Update now runs the folder's Install-Launcher.ps1 -BuildOnly into <install>\update\staged, then swaps.
-//   - Repo (the default kind, address DefaultRepo until changed): a GitHub repo's latest release (tag = version, a .zip asset with a
-//     SHA-256). Only with Offline mode off and the "Launcher updates" online switch on (Online.cs), both off by
-//     default. Every request goes to api.github.com/repos/<owner>/<repo>/ of the set repo only (RepoApi); GitHub
-//     sends the zip on to its file storage. A private repo needs the user's own access token (About and updates >
-//     Access token): kept only in settings.json on this PC, encrypted for this Windows user, sent only to
-//     api.github.com, never written to a log. Update now asks once, downloads the zip into
+//   One update source, not a setting: the latest release of Ionea's own GitHub repo (Updater.Owner/Name, built in,
+//     so no other repo can be set or mistyped; tag = version, a .zip asset with a SHA-256). Only with
+//     Offline mode off and the "Launcher updates" online switch on (Online.cs), both off by default. Every request
+//     goes to api.github.com/repos/<Owner>/<Name>/ only (RepoApi); GitHub sends the zip on to its file storage.
+//     Update now asks once, downloads the zip into
 //     <install>\update\download, checks its SHA-256, unpacks it and swaps. A matching zip already in the Inbox or
 //     the Downloads folder is used instead of downloading it again.
+//   Test scripts only (updatekind / updatefolder, never saved or shown): a source folder instead. Check compares its
+//   version (VersionPrefix + build.txt) with this one; the same version with source files changed after this exe
+//   was built also counts as newer. Update now runs the folder's Install-Launcher.ps1 -BuildOnly into
+//   <install>\update\staged, then swaps. This lets the updater's swap be tested offline.
 //   The swap: the running Launcher.exe is renamed to Launcher.previous.exe (a running exe can be renamed, not
 //   overwritten) and the new one copied in; definitions\ the same way (definitions.previous\). The data folder is
 //   never touched. Then Ionea restarts (outro, then Program.Main starts the new exe once this one let go of its
@@ -39,11 +38,8 @@ namespace Ionea;
 // Settings > About and updates (this PC's, in the shared settings.json).
 public sealed class UpdatePrefs
 {
-    public string Kind { get; set; } = "repo";     // "repo" (GitHub releases, downloaded by the user) or "folder" (a source folder built here)
-    public string Folder { get; set; }             // the source folder, or null = none set
-    public const string DefaultRepo = "https://github.com/Kininn/ionea";   // where Ionea's releases are published
-    public string Repo { get; set; } = DefaultRepo; // https://github.com/<owner>/<repo>; "" = none (null is not saved, so it would read back as the default)
-    public string TokenSealed { get; set; }        // the user's GitHub access token for a private repo, encrypted for this Windows user (DPAPI); null = none
+    // (no update source here: updates come only from Updater.Owner/Name; an old settings.json's Kind / Folder /
+    // Repo / TokenSealed are ignored)
     public bool CheckAtStart { get; set; }         // off by default
     public DateTime? LastChecked { get; set; }
     public string LastResult { get; set; }
@@ -121,48 +117,26 @@ public static class Updater
     public static string InstallDir => Path.GetDirectoryName(Exe);
     public static string PreviousExe => Path.Combine(InstallDir, "Launcher.previous.exe");
     public static string WorkDir => Path.Combine(InstallDir, "update");   // next to the exe, never in data\
-    public static string Folder => string.IsNullOrWhiteSpace(P.Folder) ? null : P.Folder;
-    public static bool RepoKind => P.Kind == "repo";
-    public static string RepoName => ParseRepo(P.Repo) is var (o, n) ? $"{o}/{n}" : "no repo";
+    // Test scripts only (TestScript updatekind / updatefolder): a source folder instead of the repo. Never saved.
+    public static bool TestUseFolder;
+    public static string TestFolder;
+    public static string Folder => TestUseFolder && !string.IsNullOrWhiteSpace(TestFolder) ? TestFolder : null;
+    public static bool RepoKind => !TestUseFolder;
+    // Where releases come from: built in, never read from settings.
+    public const string Owner = "Kininn", Name = "ionea";
+    public static string RepoName => $"{Owner}/{Name}";
+    public static string RepoUrl => $"https://github.com/{Owner}/{Name}";
     public static Version PreviousVersion => File.Exists(PreviousExe) ? AppVersion.Of(PreviousExe) : null;
 
-    // ---- the access token (private repos) ----
-    static readonly byte[] TokenSalt = System.Text.Encoding.UTF8.GetBytes(T("settings.ionea_update_token"));
-    public static bool HasToken => !string.IsNullOrEmpty(P?.TokenSealed);
-    public static void SetToken(string token)
-    {
-        token = token?.Trim();
-        P.TokenSealed = string.IsNullOrEmpty(token) ? null
-            : Convert.ToBase64String(ProtectedData.Protect(System.Text.Encoding.UTF8.GetBytes(token), TokenSalt, DataProtectionScope.CurrentUser));
-        settings.Save();
-        Log.Write("update: access token " + (P.TokenSealed == null ? "cleared" : "set"));   // never the token itself
-        Forget();
-    }
-    static string Token()
-    {
-        if (!HasToken) return null;
-        try { return System.Text.Encoding.UTF8.GetString(ProtectedData.Unprotect(Convert.FromBase64String(P.TokenSealed), TokenSalt, DataProtectionScope.CurrentUser)); }
-        catch { Log.Write("update: the saved access token can't be read on this PC or account"); return null; }
-    }
-    // What api.github.com is sent: the token only when one is set (Online.Download keeps headers on the first host).
+    // What api.github.com is sent (Online.Download keeps headers on the first host).
     static Dictionary<string, string> ApiHeaders(string accept)
     {
         var h = new Dictionary<string, string> { ["Accept"] = accept, ["X-GitHub-Api-Version"] = "2022-11-28" };
-        if (Token() is string t) h["Authorization"] = "Bearer " + t;   // an HTTP header: never translated
         return h;
     }
     // The set repo's API root; everything Ionea asks for updates starts with it.
     static string RepoApi(string owner, string name) => $"https://api.github.com/repos/{owner}/{name}/";
     static bool InRepo(string url, string owner, string name) => url != null && url.StartsWith(RepoApi(owner, name), StringComparison.OrdinalIgnoreCase);
-
-    // A refused request said why: no access (private, or the token can't read it) or a refused token.
-    static string NoAccess(int code, string owner, string name) => code switch
-    {
-        401 => T("settings.github_refused_the_access_token", code),
-        403 or 404 when !HasToken => T("settings.no_access_to_if_the_repo", owner, name, code),
-        403 or 404 => T("settings.no_access_to_with_this_access", owner, name, code),
-        _ => null,
-    };
 
     public static bool GameRunning(MainWindow w) => TestGameRunning || w.GameMenu?.Game != null || w.Launch?.Running == true;
 
@@ -187,7 +161,7 @@ public static class Updater
     {
         if (Busy) return;
         Offer = null;
-        Set(UpdateState.Checking, T("settings.checking"), T("settings.checking_2", RepoKind ? (string.IsNullOrEmpty(P.Repo) ? T("settings.checking_no_repo") : P.Repo) : Folder ?? T("settings.checking_no_source_folder")));
+        Set(UpdateState.Checking, T("settings.checking"), T("settings.checking_2", RepoKind ? RepoUrl : Folder ?? T("settings.checking_no_source_folder")));
         try
         {
             var (st, status, detail, offer) = RepoKind ? await CheckRepo(w) : await Task.Run(() => CheckFolder(Folder));
@@ -260,17 +234,9 @@ public static class Updater
         return null;
     }
 
-    // https://github.com/<owner>/<repo> (or owner/repo), else null.
-    public static (string owner, string name)? ParseRepo(string s)
-    {
-        if (string.IsNullOrWhiteSpace(s)) return null;
-        var m = Regex.Match(s.Trim(), @"^(?:https://(?:www\.)?github\.com/)?([A-Za-z0-9_.-]+)/([A-Za-z0-9_.-]+?)(?:\.git)?/?$");
-        return m.Success ? (m.Groups[1].Value, m.Groups[2].Value) : null;
-    }
-
     static async Task<(UpdateState, string, string, UpdateOffer)> CheckRepo(MainWindow w)
     {
-        if (ParseRepo(P.Repo) is not var (owner, name)) return (UpdateState.Failed, T("settings.no_repo"), T("settings.set_the_repo_address_first_https"), null);
+        const string owner = Owner, name = Name;
         Directory.CreateDirectory(WorkDir);
         string info = Path.Combine(WorkDir, "release.json");
         var hdr = ApiHeaders("application/vnd.github+json");
@@ -279,7 +245,6 @@ public static class Updater
         var r = await Online.Download(w, "updates", RepoApi(owner, name) + "releases/latest", info, T("settings.ionea_release_info"), hdr, info: true, status: c => code = c);
         if (r == OnlineResult.Blocked)
             return (UpdateState.Refused, Online.Offline ? T("settings.offline") : T("settings.switched_off"), Online.Offline ? T("settings.offline_mode_is_on_settings_network") : T("settings.the_launcher_updates_switch_is_off"), null);
-        if (r != OnlineResult.Done && NoAccess(code, owner, name) is string na) return (UpdateState.Failed, T("settings.no_access"), na, null);
         if (r != OnlineResult.Done) return (UpdateState.Failed, T("settings.failed"), T("settings.the_release_page_could_not_be_read", owner, name, Online.Word(r) + (code > 0 ? ", " + code : "")), null);
 
         using var doc = JsonDocument.Parse(File.ReadAllText(info));
@@ -395,7 +360,7 @@ public static class Updater
     // (null, path) when it is there, otherwise (why not, null); a wrong download is deleted.
     public static async Task<(string why, string zip)> FetchZip(MainWindow w, UpdateOffer o)
     {
-        if (ParseRepo(P.Repo) is not var (owner, name)) return (T("settings.set_the_repo_address_first"), null);
+        const string owner = Owner, name = Name;
         if (!InRepo(o.AssetApi, owner, name)) return (T("settings.the_zip_is_not_in", owner, name), null);
         string dir = Path.Combine(WorkDir, "download");
         Directory.CreateDirectory(dir);
@@ -404,7 +369,7 @@ public static class Updater
         // Update now's question was the question (UpdateAskCard shows what and from where)
         var r = await Online.Download(w, "updates", o.AssetApi, dest, o.AssetName, ApiHeaders("application/octet-stream"), info: true, status: c => code = c).ConfigureAwait(false);
         if (r == OnlineResult.Blocked) return (Online.Offline ? T("settings.offline_mode_is_on_settings_network_2") : T("settings.the_launcher_updates_switch_is_off_2"), null);
-        if (r != OnlineResult.Done) return (NoAccess(code, owner, name) ?? T("settings.the_download_failed", o.AssetName, Online.Word(r) + (code > 0 ? ", " + code : "")), null);
+        if (r != OnlineResult.Done) return (T("settings.the_download_failed", o.AssetName, Online.Word(r) + (code > 0 ? ", " + code : "")), null);
         if ((o.Size > 0 && new FileInfo(dest).Length != o.Size) || Sha(dest) != o.Sha256)
         {
             try { File.Delete(dest); } catch { /* best-effort cleanup */ }

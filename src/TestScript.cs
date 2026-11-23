@@ -740,18 +740,11 @@ public sealed class TestScript
                 { var q = arg.Split(' '); Online.Set(q[0], q[1] == "on"); break; }
                 case "onlineforget": Online.Forget(arg); break;
                 case "offline": Online.SetOffline(arg == "on"); break;   // offline on|off: Offline mode, as Settings > Network changes it
-                // updates (Updater.cs): updatefolder <dir|default> | updatekind folder|repo | updaterepo <url|none>
+                // updates (Updater.cs): updatefolder <dir|default> | updatekind folder|repo
                 // | updatecheck (waits for it) | updatenow (no question; waits; logs SCRIPT done before a restart)
                 // | updateback (Go back to the previous version, restarts) | updategame on|off (as if a game were running)
-                case "updatefolder": w.Settings.Updates.Folder = arg == "default" ? null : TP(arg); w.Settings.Save(); Updater.Forget(); break;
-                case "updatekind": w.Settings.Updates.Kind = arg; w.Settings.Save(); Updater.Forget(); break;
-                case "updaterepo": w.Settings.Updates.Repo = arg == "none" ? "" : arg; w.Settings.Save(); Updater.Forget(); break;
-                // updatetoken env:<NAME> | none: the access token from an environment variable (never written in a script)
-                case "updatetoken":
-                    if (arg == "none") Updater.SetToken(null);
-                    else if (arg.StartsWith("env:") && Environment.GetEnvironmentVariable(arg[4..]) is string tv && tv.Length > 0) Updater.SetToken(tv);
-                    else Fail("updatetoken: give env:<NAME> (set) or none");
-                    break;
+                case "updatefolder": Updater.TestFolder = arg == "default" ? null : TP(arg); Updater.Forget(); break;   // never saved
+                case "updatekind": Updater.TestUseFolder = arg == "folder"; Updater.Forget(); break;
                 case "updategame": Updater.TestGameRunning = arg == "on"; break;
                 case "updatecheck":
                 {

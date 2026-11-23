@@ -301,7 +301,7 @@ public class MenuCard : Card
         ["Ionea manages controls"] = "controller", ["Play inside Ionea"] = "screen", ["Open the emulator"] = "move",
         ["Add a file or zip"] = "file", ["Add a folder"] = "folder", ["Cover"] = "picture", ["Change cover"] = "picture",
         ["Restart now"] = "restart", ["Quit"] = "door",
-        ["Version"] = "info", ["Update from"] = "swap", ["Source folder"] = "folder", ["Repo address"] = "globe", ["Access token"] = "key",
+        ["Version"] = "info", ["Updates from"] = "globe",
         ["Check for updates"] = "search", ["Update now"] = "save", ["Check at start"] = "bell", ["Last checked"] = "history",
         ["Changelog"] = "file", ["Go back to the previous version"] = "restart",
     };
@@ -1407,38 +1407,15 @@ public sealed class SettingsCard : MenuCard
     void BuildAbout()
     {
         var u = w.Settings.Updates;
-        void Rebuild() { int f = Focus; Show(shown, false); Focus = Math.Min(f, Rows.Count - 1); RefreshAll(); }
         BeginBox("Ionea");
         AddRow(T("settings.version"), () => AppVersion.Text);
         Opens(AddRow(T("settings.changelog"), activate: () => new ChangelogCard(w).Open()));
         AddRow(T("settings.watch_the_tutorial"), () => "", activate: () => { Close(false); w.Tutor.Begin(); });
         BeginBox(T("settings.updates"));
-        WithList(AddRow(T("settings.update_from"), () => u.Kind == "repo" ? T("settings.repo") : T("settings.source_folder"),
-            _ => { u.Kind = u.Kind == "repo" ? "folder" : "repo"; w.Settings.Save(); Updater.Forget(); Rebuild(); }), () => new[] { T("settings.source_folder"), T("settings.repo") },
-            () => u.Kind == "repo" ? 1 : 0, i => { string k = i == 1 ? "repo" : "folder"; if (k != u.Kind) { u.Kind = k; w.Settings.Save(); Updater.Forget(); Rebuild(); } });
-        if (u.Kind != "repo")
-        {
-            // Left / Right clears it
-            AddRow(T("settings.source_folder"), () => Updater.Folder ?? T("common.none"),
-                _ => { if (u.Folder != null) { u.Folder = null; w.Settings.Save(); Updater.Forget(); Refresh(); } },
-                () => new TextCard(w, T("settings.source_folder"), Updater.Folder ?? "", 260, v => { v = v.Trim().TrimEnd(System.IO.Path.DirectorySeparatorChar); u.Folder = v.Length == 0 ? null : v; w.Settings.Save(); Updater.Forget(); Refresh(); },
-                    v => System.IO.Directory.Exists(v.Trim()) ? null : T("settings.that_folder_isn_t_there")).Open());
-        }
-        else
-        {
-            // Left / Right clears it. Goes online only through the Launcher updates switch (Network), never offline.
-            Aside(AddRow(T("settings.repo_address"), () => string.IsNullOrEmpty(u.Repo) ? T("common.none") : u.Repo.Replace("https://github.com/", ""),
-                _ => { if (!string.IsNullOrEmpty(u.Repo)) { u.Repo = ""; w.Settings.Save(); Updater.Forget(); Refresh(); } },
-                () => new TextCard(w, T("settings.repo_address_https_github_com_owner"), string.IsNullOrEmpty(u.Repo) ? "https://github.com/" : u.Repo, 200,
-                    v => { var r = Updater.ParseRepo(v); u.Repo = r is var (o, n) ? $"https://github.com/{o}/{n}" : ""; w.Settings.Save(); Updater.Forget(); Refresh(); },
-                    v => Updater.ParseRepo(v) == null ? T("settings.like_https_github_com_owner_repo") : null).Open()),
-                Online.Offline ? T("settings.offline_mode_is_on") : T("settings.launcher_updates_switch") + (Online.Allowed("updates") ? "on" : "off"));
-            // A private repo answers only with the user's own token. Never shown again once set; Left / Right clears it.
-            Aside(AddRow(T("settings.access_token"), () => Updater.HasToken ? T("settings.set") : T("common.none"),
-                _ => { if (Updater.HasToken) { Updater.SetToken(null); Refresh(); } },
-                () => new TextCard(w, T("settings.access_token_only_for_a_private"), "", 255, v => { Updater.SetToken(v); Refresh(); }).Open()),
-                T("settings.kept_encrypted_on_this_pc_sent"));
-        }
+        // Ionea's own releases, built in (Updater.Owner/Name): shown, never changed. Goes online only through the
+        // Launcher updates switch (Network), never offline.
+        Aside(AddRow(T("settings.update_from"), () => "github.com/" + Updater.RepoName),
+            Online.Offline ? T("settings.offline_mode_is_on") : T("settings.launcher_updates_switch") + (Online.Allowed("updates") ? "on" : "off"));
         AddRow(T("settings.check_for_updates"), () => Updater.Status, activate: () => _ = Updater.Check(w));
         var now = AddRow(T("settings.update_now"), () => Updater.OfferText, activate: () => Updater.UpdateNow(w));
         now.Dim = () => Updater.Offer == null;
