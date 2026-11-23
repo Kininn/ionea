@@ -34,7 +34,8 @@ menu.
 
 **Installer:** download `Ionea-<version>-setup.exe` from the [latest release](https://github.com/Kininn/ionea/releases/latest)
 and run it. It installs for you only, needs no administrator rights and no .NET, and adds a Start menu shortcut.
-Installing a newer release over it keeps your data and settings. Uninstall it from Windows' Settings > Apps; it
+The installer is not signed yet, so Windows may say it is from an unknown publisher: choose
+**More info > Run anyway**. Installing a newer release over it keeps your data and settings. Uninstall it from Windows' Settings > Apps; it
 keeps your data unless you say otherwise.
 
 **Portable:** unpack `Ionea-<version>.zip` into any folder you can write to and start `Launcher.exe`. The data
