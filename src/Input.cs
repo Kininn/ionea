@@ -35,6 +35,13 @@ public sealed class InputHub
     readonly bool[] connected = new bool[Slots];
     readonly ushort[] prev = new ushort[Slots];
     readonly bool[] homeHeld = new bool[Slots];
+    readonly long[] comboSince = new long[Slots];
+    // View + Start (− and + on a Switch pad) opens the Home menu only when both are held this long: games use them
+    // apart, and a quick press of one while the other was still down opened the menu mid-game. Guide / Home is at once.
+    const int ComboHoldMs = 500;
+    long hushUntil;
+    // The Home menu just opened over a game: for a moment, and until released, buttons pressed for the game do nothing here.
+    public void Hush(int ms) => hushUntil = clock.ElapsedMilliseconds + ms;
     readonly bool[] aHeld = new bool[Slots];
     readonly ushort[] xNow = new ushort[4];
     public bool AHeld => aHeld.Any(a => a);   // A held on a pad (the quick menu on a game)
@@ -92,7 +99,7 @@ public sealed class InputHub
     {
         long now = clock.ElapsedMilliseconds;
         bool on = Enabled();
-        bool front = on && CanRead();
+        bool front = on && CanRead() && now >= hushUntil;
         var hids = Hid.List.Where(p => !p.Broken && p.Packet > 0).Take(4).ToList();
         bool anyX = false;
         for (int i = 0; i < Slots; i++)
@@ -126,10 +133,12 @@ public sealed class InputHub
             // Menus follow the letters printed on a Nintendo pad (A confirms, B goes back, as on a Switch);
             // binds (Capture above) and games keep the buttons by position.
             if (i >= 4 && hidAt[i - 4] is HidPads.Pad lp && PadReport.Labelled(lp.Layout)) b = PadReport.ByLabel(b);
-            bool home = (b & 0x0030) == 0x0030 || (b & 0x0400) != 0;   // View + Start, or Guide
+            bool guide = (b & 0x0400) != 0, combo = (b & 0x0030) == 0x0030;
+            if (!combo) comboSince[i] = 0; else if (comboSince[i] == 0) comboSince[i] = now;
+            bool home = guide || (combo && now - comboSince[i] >= ComboHoldMs);   // Guide, or View + Start held
             bool homeDown = home && !homeHeld[i];
             homeHeld[i] = home;
-            if (homeDown && primed && on) HomePressed?.Invoke();
+            if (homeDown && primed && on) { Log.Write($"pad: Home menu button ({(guide ? "Guide / Home" : "View + Start held")}, slot {i})"); HomePressed?.Invoke(); }
             int dir = Dir(b, st.Gamepad.sThumbLX, st.Gamepad.sThumbLY, heldDir[i]);
             if (!front) { prev[i] = 0xFFFF; heldDir[i] = dir; repeatAt[i] = long.MaxValue; aHeld[i] = false; continue; }   // a fresh press is needed after a game
             ushort down = (ushort)(b & ~prev[i]);
@@ -138,7 +147,7 @@ public sealed class InputHub
             if ((down & 0x1000) != 0) Raise(Act.Accept);       // A
             if ((down & 0x2000) != 0) Raise(Act.Back);         // B
             if ((down & 0x4000) != 0) Raise(Act.Option);       // X
-            if ((down & 0x0010) != 0 && !homeDown) Raise(Act.Menu);   // Start (not when it completes View + Start)
+            if ((down & 0x0010) != 0 && (b & 0x0020) == 0) Raise(Act.Menu);   // Start (not with View down: that is the Home menu)
             if ((down & 0x0100) != 0) Raise(Act.PageLeft);     // LB
             if ((down & 0x0200) != 0) Raise(Act.PageRight);    // RB
 

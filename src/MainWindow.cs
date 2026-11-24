@@ -280,6 +280,16 @@ public sealed class MainWindow : Window
     public IReadOnlyList<IScreen> Stack => stack;
 
     // A controller's action: the on-screen keyboard first (Osk.cs), then the screen in front.
+    // The Home menu just came up over a game, or the game ended: for a moment the controller, the keyboard and the
+    // mouse do nothing here, and what was held for the game needs a fresh press (the mouse: to be moved first).
+    long keyHushUntil; bool keyStale;
+    public void HushInput(int ms)
+    {
+        keyHushUntil = Environment.TickCount64 + ms; keyStale = true; keyAccept = false;
+        Input.Hush(ms);
+        Mouse?.Hush(ms);
+    }
+
     public void PadAct(Act a)
     {
         SetPadLast(true);
@@ -332,6 +342,9 @@ public sealed class MainWindow : Window
     {
         if (k == Key.F4 && Keyboard.Modifiers == ModifierKeys.Alt) return false;   // Alt+F4 always closes
         if (!KeyboardOn) return !(TopScreen is IScreen ws && ws.WantsText);
+        // The Home menu just came up over a game: keys pressed or still held for the game don't work the menu.
+        if (Environment.TickCount64 < keyHushUntil || (repeat && keyStale)) return true;
+        if (!repeat) keyStale = false;
         Mouse.Hide();
         SetPadLast(false);
         if (TopScreen is IScreen cap && !repeat && cap.TakeKey(k)) return true;

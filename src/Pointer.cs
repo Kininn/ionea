@@ -165,9 +165,23 @@ public sealed class Pointer
     }
 
     // To the screen in front. Hover sounds can be turned off (Settings > Input > Mouse).
+    // The Home menu just came up over a game (or the game ended): a click meant for the game, with the pointer where
+    // the game left it, must not pick a row. Clicks, the wheel and hover count again once the pointer has moved a little.
+    long hushUntil; Point? hushFrom; bool hushed;
+    const double HushMove = 24;
+    public void Hush(int ms) { hushUntil = Environment.TickCount64 + ms; hushFrom = null; hushed = true; Held = false; }
+    bool Hushed(MouseAct m, Point p)
+    {
+        if (!hushed || Scripted) return false;
+        if (hushFrom is not Point from) { hushFrom = p; return true; }
+        if (Environment.TickCount64 >= hushUntil && m == MouseAct.Move && (p - from).Length > HushMove) { hushed = false; return false; }
+        return true;
+    }
+
     public bool Route(MouseAct m, Point p)
     {
         if (w.Launch.Blocks) return true;   // a game is starting or closing
+        if (Hushed(m, p)) return true;
         if (w.Tutor != null && w.Tutor.SkipHit(m, p)) return true;   // Skip in the tutorial's bubble
         var s = w.TopScreen;
         if (s == null) return false;

@@ -351,6 +351,7 @@ public sealed class GameMenu
     {
         if (game == null) return;
         Log.Write($"home menu: \"{game.Name}\" ended");
+        w.HushInput(600);   // the game went away under the player's hands: their next presses don't start another
         game = null; proc = null; gameProc = null; core = null; Paused = false; Closing = false;
         Changed?.Invoke();
         w.Launch.HideClosing();
@@ -373,6 +374,7 @@ public sealed class GameMenu
 
     void Pause()
     {
+        w.HushInput(400);   // presses and clicks already on their way to the game don't work the menu
         w.Overlay?.HideNow();   // before any still of the game is taken: the overlay is not in it
         w.Profiles.PausePlay();   // play time doesn't count while the Home menu is up
         if (core != null || (emb != null && emb.Alive)) GameWindow.Menu(w, true);   // a small game window grows for the menu
