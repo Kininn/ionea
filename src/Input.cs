@@ -123,6 +123,9 @@ public sealed class InputHub
 
             ushort b = st.Gamepad.wButtons;
             if (Capture != null && front) { Capture(b, st.Gamepad.bLeftTrigger, st.Gamepad.bRightTrigger); prev[i] = 0xFFFF; heldDir[i] = Dir(b, st.Gamepad.sThumbLX, st.Gamepad.sThumbLY, heldDir[i]); continue; }
+            // Menus follow the letters printed on a Nintendo pad (A confirms, B goes back, as on a Switch);
+            // binds (Capture above) and games keep the buttons by position.
+            if (i >= 4 && hidAt[i - 4] is HidPads.Pad lp && PadReport.Labelled(lp.Layout)) b = PadReport.ByLabel(b);
             bool home = (b & 0x0030) == 0x0030 || (b & 0x0400) != 0;   // View + Start, or Guide
             bool homeDown = home && !homeHeld[i];
             homeHeld[i] = home;

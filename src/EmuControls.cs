@@ -153,54 +153,122 @@ public static class EmuControls
         };
     }
 
-    // ---- the XInput controller ----
-    // The launcher reads XInput controllers only, so the controller an emulator is given is an Xbox-type one:
-    // set up for the controller (Main "pad"), each button gets the controller's button instead of a key.
-    // The Qt emulators and melonDS name it by SDL's joystick id and number, with SDL's own XInput layout
-    // (no SDL_GameControllerDB). All values below are from memory: verify against a real Eden / Azahar /
-    // melonDS with an Xbox controller. Other controllers (DualSense, Switch Pro) come later.
-    static bool PadMain(InputPrefs p) => p.Main == "pad" && p.PadOn;
+    // ---- the controller ----
+    // Set up for the controller (Main "pad"), or a game started from a controller (UsePad, set at launch by
+    // Choose), each button gets the controller's button instead of a key. The Qt emulators and melonDS name it by
+    // SDL's joystick id and number:
+    //   an Xbox pad: SDL's XInput layout (values from memory: verify against a real Eden / Azahar / melonDS);
+    //   another HID pad that SDL reads as a plain DirectInput joystick (no SDL mapping, no HIDAPI driver: not a
+    //   PlayStation pad or Nintendo's own): its HID numbers, buttons in report order, axes X Y Z Rx Ry Rz, hat 0,
+    //   ZL / ZR (L2 / R2) as buttons. Checked with SDL 2.32 (as in Eden, Azahar and melonDS) for a PDP Rematch
+    //   Wired Controller for Switch 2 (0E6F:0196): id 0300a5926f0e00009601000000000000, 15 buttons, 4 axes, 1 hat.
+    // PlayStation pads and Nintendo's own still get the Xbox pad's values (SDL's HIDAPI drivers name them otherwise).
+    public static bool UsePad;    // this game was started from a controller
+    public static SdlPad Pad;     // the HID pad to bind, or null: an Xbox pad
+    static bool PadMain(InputPrefs p) => p.PadOn && (p.Main == "pad" || UsePad);
+
+    // At a game's start, before Write: started from a controller (the last action in the menus came from one)
+    // binds the controller even when the controls are set up for the keyboard; which controller it is.
+    public static void Choose(MainWindow w)
+    {
+        UsePad = w.PadLast && w.Devs.Connected("pad");
+        Pad = w.Input.Connected.Any(c => c) ? null
+            : w.Input.Hid.List.Where(h => !h.Broken && h.Mirror >= 0 && h.Packet > 0).Select(SdlPad.Of).FirstOrDefault(sp => sp != null);
+        if (UsePad || w.Settings.Input.Main == "pad") Log.Write($"controls: controller {Pad?.Name ?? "Xbox (XInput)"}" + (UsePad ? ", the game was started from it" : ""));
+    }
+
+    public sealed class SdlPad
+    {
+        public string Name, Guid, YuzuGuid;   // SDL's id; the yuzu family clears its name CRC (bytes 2-3)
+        public Dictionary<string, int> Buttons = new(), Triggers = new();   // action -> SDL button / axis
+        public (int x, int y)[] Sticks = { (0, 1), (3, 4) };
+
+        // SDL's XInput layout: buttons, the d-pad as hat 0, triggers as axes 2 and 5, sticks 0/1 and 3/4. verify
+        public static SdlPad XInput(string guid) => new()
+        {
+            Name = "XInput controller", Guid = guid, YuzuGuid = guid,
+            Buttons = new() { ["a"] = 0, ["b"] = 1, ["x"] = 2, ["y"] = 3, ["lb"] = 4, ["rb"] = 5, ["back"] = 6, ["start"] = 7, ["ls"] = 8, ["rs"] = 9 },
+            Triggers = new() { ["lt"] = 2, ["rt"] = 5 },
+        };
+
+        static readonly (string id, ushort bit)[] Bits =
+        {
+            ("a", PadReport.A), ("b", PadReport.B), ("x", PadReport.X), ("y", PadReport.Y), ("lb", PadReport.LB), ("rb", PadReport.RB),
+            ("back", PadReport.Back), ("start", PadReport.Start), ("ls", PadReport.LThumb), ("rs", PadReport.RThumb),
+        };
+
+        // A HID pad as SDL's DirectInput joystick, or null when SDL reads it some other way.
+        public static SdlPad Of(HidPads.Pad h)
+        {
+            if (h?.Path == null || h.Layout is PadReport.Layout.Sony or PadReport.Layout.Nintendo) return null;
+            var m = System.Text.RegularExpressions.Regex.Match(h.Path.ToLowerInvariant(), @"vid_([0-9a-f]{4}).*?pid_([0-9a-f]{4})");
+            if (!m.Success) return null;
+            static string Le(string hex) => hex.Substring(2, 2) + hex.Substring(0, 2);
+            string tail = Le(m.Groups[1].Value) + "0000" + Le(m.Groups[2].Value) + "0000" + "00000000";   // vendor, product, version 0, no driver
+            ushort crc = Crc16(Encoding.UTF8.GetBytes(h.Name ?? ""));
+            var sp = new SdlPad
+            {
+                Name = h.Name ?? "Controller",
+                Guid = "0300" + (crc & 0xFF).ToString("x2") + (crc >> 8).ToString("x2") + tail,
+                YuzuGuid = "03000000" + tail,
+            };
+            for (int n = 1; n <= Math.Max(h.MaxButtons, 16); n++)
+            {
+                ushort b = PadReport.Buttons(h.Layout, new[] { n }, out bool lt, out bool rt);
+                foreach (var (id, bit) in Bits) if (b == bit) sp.Buttons.TryAdd(id, n - 1);
+                if (lt) sp.Buttons.TryAdd("lt", n - 1);
+                if (rt) sp.Buttons.TryAdd("rt", n - 1);
+            }
+            var axes = h.Axes.Select(a => (int)a.usage).Where(u => u != 0x39).Distinct().OrderBy(u => u).ToList();
+            int At(int u, int alt, int fallback) => axes.IndexOf(u) is int i && i >= 0 ? i : axes.IndexOf(alt) is int j && j >= 0 ? j : fallback;
+            sp.Sticks = new[] { (At(0x30, 0x30, 0), At(0x31, 0x31, 1)), (At(0x32, 0x33, 2), At(0x35, 0x34, 3)) };
+            return sp;
+        }
+
+        // SDL_crc16: CRC-16 (reflected 0xA001, from 0) of the joystick's name.
+        public static ushort Crc16(byte[] data)
+        {
+            int c = 0;
+            foreach (byte d in data) { c ^= d; for (int k = 0; k < 8; k++) c = (c & 1) != 0 ? (c >> 1) ^ 0xA001 : c >> 1; }
+            return (ushort)c;
+        }
+    }
 
     // SDL's id for an XInput controller (USB, Microsoft 045E:028E, driver 'x', subtype 1). verify
     public const string XInputGuid = "030000005e0400008e02000000007801";
-    // The id the emulator already uses for an XInput controller (one set up in its own window), else SDL's.
-    static string PadGuid(string text) =>
-        System.Text.RegularExpressions.Regex.Matches(text, @"guid:([0-9a-f]{32})").Select(m => m.Groups[1].Value).FirstOrDefault(g => g.EndsWith("7801")) ?? XInputGuid;
+    // The controller to bind: the HID pad chosen at launch, else an Xbox pad with the id the emulator already uses
+    // for one (set up in its own window), else SDL's.
+    static SdlPad PadIn(string text) => Pad ?? SdlPad.XInput(
+        System.Text.RegularExpressions.Regex.Matches(text, @"guid:([0-9a-f]{32})").Select(m => m.Groups[1].Value).FirstOrDefault(g => g.EndsWith("7801")) ?? XInputGuid);
 
-    // SDL's XInput layout: buttons, the d-pad as hat 0, triggers as axes 2 and 5, sticks 0/1 and 3/4. verify
-    static int SdlButton(string id) => id switch
-    {
-        "a" => 0, "b" => 1, "x" => 2, "y" => 3, "lb" => 4, "rb" => 5, "back" => 6, "start" => 7, "ls" => 8, "rs" => 9, _ => -1,
-    };
     static string SdlHat(string id) => id switch { "dup" => "up", "ddown" => "down", "dleft" => "left", "dright" => "right", _ => null };
-    static int SdlTrigger(string id) => id switch { "lt" => 2, "rt" => 5, _ => -1 };
-    static readonly (int x, int y)[] SdlSticks = { (0, 1), (3, 4) };
 
     // One controller button as a yuzu-family / Citra-family parameter, or null for none.
-    static string SdlParam(string guid, string id, bool citra)
+    static string SdlParam(SdlPad pad, string id, bool citra)
     {
         if (id == null) return null;
+        string guid = citra ? pad.Guid : pad.YuzuGuid;
         string dev = $"engine:sdl,port:0,guid:{guid}";
-        if (SdlButton(id) is int b && b >= 0) return citra ? $"button:{b},engine:sdl,guid:{guid},port:0" : $"{dev},button:{b}";
+        if (pad.Buttons.TryGetValue(id, out int b)) return citra ? $"button:{b},engine:sdl,guid:{guid},port:0" : $"{dev},button:{b}";
         if (SdlHat(id) is string h) return citra ? $"direction:{h},engine:sdl,guid:{guid},hat:0,port:0" : $"{dev},hat:0,direction:{h}";
-        if (SdlTrigger(id) is int t && t >= 0) return citra ? $"axis:{t},direction:+,engine:sdl,guid:{guid},port:0,threshold:0.500000" : $"{dev},axis:{t},threshold:0.500000,invert:+";
+        if (pad.Triggers.TryGetValue(id, out int t)) return citra ? $"axis:{t},direction:+,engine:sdl,guid:{guid},port:0,threshold:0.500000" : $"{dev},axis:{t},threshold:0.500000,invert:+";
         return null;
     }
-    static string SdlStick(string guid, int which, bool citra)
+    static string SdlStick(SdlPad pad, int which, bool citra)
     {
-        var (x, y) = SdlSticks[which];
-        return citra ? $"axis_x:{x},axis_y:{y},deadzone:0.100000,engine:sdl,guid:{guid},port:0"
-                     : $"engine:sdl,port:0,guid:{guid},axis_x:{x},axis_y:{y},invert_x:+,invert_y:+,deadzone:0.150000,range:1.000000";
+        var (x, y) = pad.Sticks[which];
+        return citra ? $"axis_x:{x},axis_y:{y},deadzone:0.100000,engine:sdl,guid:{pad.Guid},port:0"
+                     : $"engine:sdl,port:0,guid:{pad.YuzuGuid},axis_x:{x},axis_y:{y},invert_x:+,invert_y:+,deadzone:0.150000,range:1.000000";
     }
     // The controller's button for an action, when set up for the controller and the layout has it.
     static string PadOf(InputPrefs p, ControlScope sc, string action) => PadMain(p) && sc.Layout.Has(action) ? p.PadFor(sc, action) : null;
 
     // melonDS's joystick numbers: a button, 0x100 | direction (hat 0), or 0x10000 | axis << 24 | 2 << 20 (a trigger). verify
-    static int MelonPad(string id) =>
+    static int MelonPad(SdlPad pad, string id) =>
         id == null ? -1
-        : SdlButton(id) is int b && b >= 0 ? b
+        : pad.Buttons.TryGetValue(id, out int b) ? b
         : SdlHat(id) is string h ? 0x100 | (h switch { "up" => 1, "right" => 2, "down" => 4, _ => 8 })
-        : SdlTrigger(id) is int t && t >= 0 ? 0x10000 | (t << 24) | (2 << 20) : -1;
+        : pad.Triggers.TryGetValue(id, out int t) ? 0x10000 | (t << 24) | (2 << 20) : -1;
 
     // ---- Lichii / Eden (yuzu family): player 1 ----
     // Switch buttons by place: A right, B bottom, X top, Y left (InputMap.Switch).
@@ -248,12 +316,12 @@ public static class EmuControls
         if (!p.KeyboardOn && !p.MouseOn && !pad) return null;
         const string S = "Controls";
         int n = 0, np = 0;
-        string guid = pad ? PadGuid(ini.Text) : null;
+        SdlPad sp = pad ? PadIn(ini.Text) : null;
         var used = new HashSet<int>();
         foreach (var (key, action) in YuzuButtons)
         {
             string name = "player_0_button_" + key;
-            if (SdlParam(guid, PadOf(p, sc, action), false) is string pp)
+            if (pad && SdlParam(sp, PadOf(p, sc, action), false) is string pp)
             {
                 ini.Set(S, name + "\\default", "false");
                 ini.Set(S, name, Q(pp));
@@ -272,7 +340,7 @@ public static class EmuControls
             if (pad && !(stick == "rstick" && cam))
             {
                 ini.Set(S, name + "\\default", "false");
-                ini.Set(S, name, Q(SdlStick(guid, stick == "lstick" ? 0 : 1, false)));
+                ini.Set(S, name, Q(SdlStick(sp, stick == "lstick" ? 0 : 1, false)));
                 np++;
                 continue;
             }
@@ -309,7 +377,7 @@ public static class EmuControls
             ini.Set("UI", YuzuPanKeySeq + "\\default", "false");
             ini.Set("UI", YuzuPanKeySeq, panKey);
         }
-        return $"player 1, {n} keys" + (pad ? $", XInput controller {np} binds" : "") + (cam ? $", mouse camera at {p.MouseSpeed(sc)}" : "");
+        return $"player 1, {n} keys" + (pad ? $", {sp.Name} {np} binds" : "") + (cam ? $", mouse camera at {p.MouseSpeed(sc)}" : "");
     }
 
     // ---- Azahar (Citra family): the selected controls profile ----
@@ -325,7 +393,7 @@ public static class EmuControls
         bool pad = PadMain(p);
         if (!p.KeyboardOn && !pad) return null;
         const string S = "Controls";
-        string guid = pad ? PadGuid(ini.Text) : null;
+        SdlPad sp = pad ? PadIn(ini.Text) : null;
         int np = 0;
         int prof = int.TryParse(ini.Get(S, "profile"), out int pi) ? pi + 1 : 1;
         string pre = $"profiles\\{prof}\\";
@@ -335,7 +403,7 @@ public static class EmuControls
         string CitraKey(string b) => $"code:{KeyOrNone(b)},engine:keyboard";
         foreach (var (key, action) in CitraButtons)
         {
-            if (SdlParam(guid, PadOf(p, sc, action), true) is string pp)
+            if (pad && SdlParam(sp, PadOf(p, sc, action), true) is string pp)
             {
                 ini.Set(S, pre + key + "\\default", "false");
                 ini.Set(S, pre + key, Q(pp));
@@ -354,7 +422,7 @@ public static class EmuControls
             if (pad)
             {
                 ini.Set(S, pre + stick + "\\default", "false");
-                ini.Set(S, pre + stick, Q(SdlStick(guid, stick == "circle_pad" ? 0 : 1, true)));
+                ini.Set(S, pre + stick, Q(SdlStick(sp, stick == "circle_pad" ? 0 : 1, true)));
                 np++;
                 continue;
             }
@@ -367,7 +435,7 @@ public static class EmuControls
             ini.Set(S, pre + stick, Q($"down:{K(1)},engine:analog_from_button,left:{K(2)},modifier:{mod},modifier_scale:{Param(old, "modifier_scale") ?? "0.500000"},right:{K(3)},up:{K(0)}"));
             n += ids.Count(id => Bind(p, sc, id) is string b && !InputMap.IsMouse(b));
         }
-        return $"profile {prof}, {n} keys" + (pad ? $", XInput controller {np} binds" : "");
+        return $"profile {prof}, {n} keys" + (pad ? $", {sp.Name} {np} binds" : "");
     }
 
     // ---- melonDS ----
@@ -382,6 +450,7 @@ public static class EmuControls
         bool pad = PadMain(p);
         if (!p.KeyboardOn && !pad) return null;
         string S = "Instance0.Keyboard", J = "Instance0.Joystick";
+        SdlPad sp = pad ? PadIn(ini.Text) : null;
         if (!ini.HasSection(S)) return null;
         int n = 0, np = 0;
         foreach (var (key, action) in MelonButtons)
@@ -391,13 +460,13 @@ public static class EmuControls
             if (code != 0) n++;
             if (pad)
             {
-                int j = MelonPad(PadOf(p, sc, action));
+                int j = MelonPad(sp, PadOf(p, sc, action));
                 ini.Set(J, key, j.ToString());
                 if (j >= 0) np++;
             }
         }
         if (pad) ini.Set("Instance0", "JoystickID", "0");
-        return $"{n} keys" + (pad ? $", XInput controller {np} binds" : "");
+        return $"{n} keys" + (pad ? $", {sp.Name} {np} binds" : "");
     }
 
     // ---- mGBA ----

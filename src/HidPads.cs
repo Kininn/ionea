@@ -1,7 +1,8 @@
 // Controllers that aren't Xbox pads (PlayStation, Switch Pro, most other HID game controllers) in the launcher's
 // menus and its built-in cores. Their HID reports arrive through raw input (also while a game is in front, so the
 // Home button works there too) and are turned into the same state an Xbox pad gives, with the buttons by
-// position: the bottom button is A, the right one B, the left one X, the top one Y.
+// position: the bottom button is A, the right one B, the left one X, the top one Y. In the launcher's menus a pad
+// printed with Nintendo's letters is read by its letters instead (InputHub.Poll): A confirms, B goes back.
 // A pad that Steam or a pad tool already shows as an Xbox pad would act twice; the first press tells: when the
 // Xbox pad shows the same buttons at the same moment, the HID pad is left to the Xbox pad.
 using System;
@@ -17,12 +18,31 @@ public static class PadReport
     public const ushort Up = 0x1, Down = 0x2, Left = 0x4, Right = 0x8, Start = 0x10, Back = 0x20, LThumb = 0x40, RThumb = 0x80,
         LB = 0x100, RB = 0x200, Guide = 0x400, A = 0x1000, B = 0x2000, X = 0x4000, Y = 0x8000;
 
-    public enum Layout { Generic, Sony, Nintendo }
+    // NintendoWired: wired pads for Switch by other makers (PDP, HORI, PowerA ...). Their HID buttons come as
+    // Y, B, A, X (left, bottom, right, top), then L, R, ZL, ZR, Minus, Plus, the stick clicks, Home, Capture.
+    public enum Layout { Generic, Sony, Nintendo, NintendoWired }
 
-    public static Layout LayoutOf(string? path)
+    public static Layout LayoutOf(string? path, string? name = null)
     {
         string p = path?.ToLowerInvariant() ?? "";
-        return p.Contains("vid_054c") ? Layout.Sony : p.Contains("vid_057e") ? Layout.Nintendo : Layout.Generic;
+        if (p.Contains("vid_054c")) return Layout.Sony;
+        if (p.Contains("vid_057e")) return Layout.Nintendo;
+        string n = name?.ToLowerInvariant() ?? "";
+        return n.Contains("switch") || n.Contains("nintendo") || n.Contains("pokken") ? Layout.NintendoWired : Layout.Generic;
+    }
+
+    // Printed with Nintendo's letters: A on the right, B at the bottom, X on top, Y on the left.
+    public static bool Labelled(Layout l) => l is Layout.Nintendo or Layout.NintendoWired;
+
+    // Buttons by position -> by the letters printed on a Nintendo pad (A and B, X and Y change places).
+    public static ushort ByLabel(ushort b)
+    {
+        ushort r = (ushort)(b & ~(A | B | X | Y));
+        if ((b & A) != 0) r |= B;
+        if ((b & B) != 0) r |= A;
+        if ((b & X) != 0) r |= Y;
+        if ((b & Y) != 0) r |= X;
+        return r;
     }
 
     public static bool IsDualSense(string path)
@@ -55,6 +75,10 @@ public static class PadReport
                 case (Layout.Nintendo, 2): b |= B; break;    // A, the right one
                 case (Layout.Nintendo, 3): b |= X; break;    // Y, the left one
                 case (Layout.Nintendo, 4): b |= Y; break;    // X, the top one
+                case (Layout.NintendoWired, 1): b |= X; break;   // Y, the left one
+                case (Layout.NintendoWired, 2): b |= A; break;   // B, the bottom one
+                case (Layout.NintendoWired, 3): b |= B; break;   // A, the right one
+                case (Layout.NintendoWired, 4): b |= Y; break;   // X, the top one
                 case (Layout.Generic, 1): b |= A; break;
                 case (Layout.Generic, 2): b |= B; break;
                 case (Layout.Generic, 3): b |= X; break;
@@ -130,6 +154,7 @@ public sealed class HidPads
         public IntPtr Handle, Pre;
         public string? Path;
         public PadReport.Layout Layout;
+        public string? Name;
         public readonly List<(ushort usage, long min, long max, int bits)> Axes = new();
         public int MaxButtons;
         public Native.XINPUT_GAMEPAD State;
@@ -209,6 +234,7 @@ public sealed class HidPads
         var pad = new Pad { Handle = dev, Path = path, Layout = PadReport.LayoutOf(path) };
         pads.Add(pad);
         if (path == null || PadReport.ReadByXInput(path)) { pad.Broken = true; return pad; }   // read as an Xbox pad
+        if (Devices.Describe(path, out string? name)) { pad.Name = name; pad.Layout = PadReport.LayoutOf(path, name); }
         uint psz = 0;
         GetRawInputDeviceInfo(dev, 0x20000005, IntPtr.Zero, ref psz);   // RIDI_PREPARSEDDATA
         if (psz == 0) { pad.Broken = true; return pad; }
@@ -233,7 +259,7 @@ public sealed class HidPads
                 }
         }
         pad.MaxButtons = (int)HidP_MaxUsageListLength(0, 9, pad.Pre);
-        Log.Write($"controllers: HID pad ({pad.Layout}, {pad.MaxButtons} buttons, {pad.Axes.Count} axes)");
+        Log.Write($"controllers: HID pad {pad.Name} ({pad.Layout}, {pad.MaxButtons} buttons, {pad.Axes.Count} axes)");
         return pad;
     }
 

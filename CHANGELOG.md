@@ -2,6 +2,10 @@
 
 Newest first. Settings > About and updates shows this file from the update source.
 
+## Not released yet
+- Wired controllers for Switch by other makers (PDP, HORI, PowerA and others) now have their buttons in the right places. In Ionea's menus, A selects and B goes back on any controller with Nintendo's letters, as on a Switch.
+- A game started with the controller now gets the controller's buttons in Eden, Lichii, Azahar and melonDS, even when Settings > Controls is set up for the keyboard. A controller that isn't an Xbox pad is bound by its own buttons and sticks instead of an Xbox pad's.
+
 ## 1.0.7 (2026-11-23)
 - The focus ring on the Home buttons and the profile picture now sits right against the icon, with no gap, in every Icon shape (round, rounded square, square).
 - Import a folder (Home + > Import a folder, Add game > Games folder, Add emulator > Emulators folder, Settings > Library): Ionea finds every emulator and game in one folder and its subfolders and shows them on one screen, one row per system, so a big collection is added in one go. Systems come from folder names such as "SNES", "PS2" or "Nintendo - Game Boy Advance", or from a file type only one system uses.

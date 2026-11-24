@@ -154,7 +154,11 @@ public sealed class LaunchFx
                 emuStart = new ProcessStartInfo(EmbedLogic.Alias(emu), DisplayLogic.Args(w, g, emu, EmbedLogic.Windowed(emu, RomLogic.Args(emu, g.Rom)))) { UseShellExecute = false, WorkingDirectory = System.IO.Path.GetDirectoryName(emu.Exe) };
                 EmbedLogic.Prepare(emu, emuStart);
                 Quiet.Apply(emu, emuStart);   // its own overlays, OSD and popups kept off (Quiet.cs)
-                if (EmuControls.Writes(emu, InputMap.SystemOf(w, g))) EmuControls.Write(emu, w.Settings.Input, InputMap.ScopeFor(w, g));   // this game's controls (EmuControls.cs)
+                if (EmuControls.Writes(emu, InputMap.SystemOf(w, g)))
+                {
+                    EmuControls.Choose(w);   // started from a controller: it gets the buttons; which controller
+                    EmuControls.Write(emu, w.Settings.Input, InputMap.ScopeFor(w, g));   // this game's controls (EmuControls.cs)
+                }
                 videoToken = Tweaks.ApplyGame(emu, g);   // its own video values, for an emulator without per-game files (Tweaks.cs)
                 // The active profile's saves, never someone else's.
                 if (ProfileSaves.Prepare(w.Profiles, emu, g.Rom, out bool shared) is string perr)
