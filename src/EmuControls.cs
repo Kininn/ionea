@@ -165,7 +165,7 @@ public static class EmuControls
     // PlayStation pads and Nintendo's own still get the Xbox pad's values (SDL's HIDAPI drivers name them otherwise).
     public static bool UsePad;    // this game was started from a controller
     public static SdlPad Pad;     // the HID pad to bind, or null: an Xbox pad
-    static bool PadMain(InputPrefs p) => p.PadOn && (p.Main == "pad" || UsePad);
+    public static bool PadMain(InputPrefs p) => p.PadOn && (p.Main == "pad" || UsePad);
 
     // At a game's start, before Write: started from a controller (the last action in the menus came from one)
     // binds the controller even when the controls are set up for the keyboard; which controller it is.
@@ -333,11 +333,12 @@ public static class EmuControls
             ini.Set(S, name, Q(b == null ? YuzuNone : YuzuParam(b)));
             if (b != null) { n++; used.Add(QtKey(b)); }
         }
-        bool cam = InputMap.MouseCamOn(p, sc);
+        // Played with the controller: its right stick is the camera, not the mouse (one source per stick).
+        bool cam = InputMap.MouseCamOn(p, sc) && !pad;
         foreach (var (stick, ids) in new[] { ("lstick", SysLayout.StickIds), ("rstick", SysLayout.RightIds) })
         {
             string name = "player_0_" + stick, old = Unq(ini.Get(S, name));
-            if (pad && !(stick == "rstick" && cam))
+            if (pad)
             {
                 ini.Set(S, name + "\\default", "false");
                 ini.Set(S, name, Q(SdlStick(sp, stick == "lstick" ? 0 : 1, false)));

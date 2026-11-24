@@ -103,7 +103,7 @@ public sealed class GameMenu
         game = g; proc = p; gameProc = null; Paused = false; gameWindow = IntPtr.Zero; mouseLook = false;
         ctlAtStart = null; ctlTold = false; panSent = false; panChecking = false; panTimer = false; panGen++; panDone = false; panTries = 0;
         panWanted = Ports.EmuOf(w, g) is Emulator pe && EmuControls.MousePanning(pe) && EmuControls.Writes(pe, InputMap.SystemOf(w, g))
-            && InputMap.MouseCamOn(w.Settings.Input, InputMap.ScopeFor(w, g));
+            && InputMap.MouseCamOn(w.Settings.Input, InputMap.ScopeFor(w, g)) && !EmuControls.PadMain(w.Settings.Input);   // a controller game: its stick is the camera
         // Embedded: counted from when its window is taken in (WatchForWindow). On its own: from now.
         panAfter = embed ? DateTime.MaxValue : DateTime.Now.AddSeconds(PanSettleSecs + 3);
         if (panWanted && !embed) PanLater(panAfter);
