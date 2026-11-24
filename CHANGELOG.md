@@ -2,9 +2,11 @@
 
 Newest first. Settings > About and updates shows this file from the update source.
 
-## Not released yet
+## 1.0.8 (2026-11-24)
 - Wired controllers for Switch by other makers (PDP, HORI, PowerA and others) now have their buttons in the right places. In Ionea's menus, A selects and B goes back on any controller with Nintendo's letters, as on a Switch.
 - A game started with the controller now gets the controller's buttons in Eden, Lichii, Azahar and melonDS, even when Settings > Controls is set up for the keyboard. A controller that isn't an Xbox pad is bound by its own buttons and sticks instead of an Xbox pad's.
+- In a game played with the controller, the right stick moves the camera, not the mouse.
+- Buttons, keys and clicks meant for the game no longer work Ionea's menus by accident. On a controller, − and + now open the Home menu only when both are held for half a second (the Home button still opens it at once). When the Home menu opens or a game ends, Ionea ignores the controller, keyboard and mouse for a moment. A button or key held from the game must be pressed again, and the mouse must be moved before a click counts. The Switch games prompt starts on Cancel.
 
 ## 1.0.7 (2026-11-23)
 - The focus ring on the Home buttons and the profile picture now sits right against the icon, with no gap, in every Icon shape (round, rounded square, square).
